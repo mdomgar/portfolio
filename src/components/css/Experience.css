@@ -4,6 +4,8 @@
   background-color: #0f0f0f;
   color: white;
   font-family: "Poppins", sans-serif;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 .timeline-title {
@@ -12,7 +14,7 @@
 
 .timeline-line {
   position: absolute;
-  left: 12%;
+  left: calc(8% + 40px);
   top: 150px;
   bottom: 40px;
   width: 3px;

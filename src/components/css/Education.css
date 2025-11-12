@@ -1,8 +1,14 @@
+.education-container {
+  background-color: #141414;
+}
+
 .education-section {
   background-color: #141414;
   color: white;
   padding: 80px 100px;
   font-family: "Poppins", sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .education-title {

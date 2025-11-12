@@ -1,4 +1,10 @@
 .about-container {
+  background-color: #0f0f0f;
+}
+
+.about {
+  margin: 0 auto;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,6 +13,7 @@
   background-color: #0f0f0f;
   color: white;
   font-family: "Poppins", sans-serif;
+  max-width: 1200px;
 }
 
 .about-left {

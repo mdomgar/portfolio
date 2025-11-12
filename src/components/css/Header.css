@@ -32,19 +32,45 @@
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 25px;
+  gap: 30px;
   margin: 0;
   padding: 0;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .nav-list li {
-  cursor: pointer;
-  transition: color 0.2s ease;
+  position: relative;
 }
 
-.nav-list li:hover {
-  color: #b3b3b3;
+.nav-list a {
+  text-decoration: none;
+  color: #e0e0e0;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+  padding-bottom: 5px;
+  display: inline-block;
+}
+
+.nav-list a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0%;
+  background-color: #00ffff;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+  transition: width 0.3s ease;
+}
+
+.nav-list a:hover {
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.nav-list a:hover::after {
+  width: 100%;
 }
 
 @media (max-width: 900px) {
