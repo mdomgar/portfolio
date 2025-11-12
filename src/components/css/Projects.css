@@ -1,0 +1,124 @@
+.projects {
+  padding: 100px 80px;
+  background-color: #0f0f0f;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+}
+
+.projects-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 40px;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.project-card {
+  background: #141414;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.project-card p {
+  text-align: left;
+  margin-top: 10px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: #ccc;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 4px 12px rgba(0, 255, 255, 0.2);
+}
+
+.project-img {
+  min-width: 10%;
+  max-width: 10%;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  object-fit: cover;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-title {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+  
+.project-header h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+.project-tech {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.project-tech span {
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.project-tech span:hover {
+  transform: scale(1.2);
+}
+
+.project-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.live-btn,
+.git-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.live-btn {
+  background: #00ffff20;
+  color: #00ffff;
+}
+
+.live-btn:hover {
+  background: #00ffff40;
+}
+
+.git-btn {
+  background: #333;
+  color: #fff;
+}
+
+.git-btn:hover {
+  background: #555;
+}

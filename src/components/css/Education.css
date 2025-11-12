@@ -1,0 +1,93 @@
+.education-section {
+  background-color: #141414;
+  color: white;
+  padding: 80px 100px;
+  font-family: "Poppins", sans-serif;
+}
+
+.education-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 40px;
+  color: #d8f3ff;
+}
+
+.education-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.education-card {
+  background-color: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 20px 30px;
+  position: relative;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+  text-align: left;
+}
+
+.education-card:hover {
+  border-color: #00ffff;
+  transform: translateY(-3px);
+}
+
+.education-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.education-degree {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #fff;
+  margin: 0;
+}
+
+.education-date {
+  background-color: #101010;
+  color: #ccc;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border-radius: 12px;
+  border: 1px solid #222;
+  
+}
+
+.education-place {
+  color: #00ffff;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin: 5px 0;
+}
+
+.education-grade {
+  font-weight: 300;
+  line-height: 1.7;
+  color: #ddd;
+}
+
+.linkedin-link:hover {
+  color: #4a9ce9; 
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .education-section {
+    padding: 60px 30px;
+  }
+
+  .education-date {
+    font-size: 0.7rem;
+  }
+
+  .education-card {
+    padding: 15px 20px;
+  }
+}

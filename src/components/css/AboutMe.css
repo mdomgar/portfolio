@@ -1,0 +1,89 @@
+.about-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 140px 120px 100px 120px;
+  background-color: #0f0f0f;
+  color: white;
+  font-family: "Poppins", sans-serif;
+}
+
+.about-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about-text h3{
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.about-text p{
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+.about-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 10% 30%;
+  border: 3px solid #444;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.about-icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.linkedin-link {
+  color: #0a66c2;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.mail-link {
+  color: #433d3d;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.about-container {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.linkedin-link:hover {
+  color: #4a9ce9; 
+  transform: scale(1.1);
+}
+
+.mail-link:hover {
+  color: #514b4b; 
+  transform: scale(1.1);
+}
+
+.linkedin-icon,
+.mail-icon {
+  font-size: 2rem;
+}
+
+.about-text {
+  max-width: 500px;
+  text-align: left;
+}
