@@ -9,7 +9,7 @@ const AboutMe = ({ info, skillsData }) => {
     <section id="about-me" className="about-container">
       <div className="about-left">
         <img
-          src="src\assets\foto-perfil.JPG"
+          src="/foto-perfil.JPG"
           alt="Miguel Ángel"
           className="about-photo"
         />

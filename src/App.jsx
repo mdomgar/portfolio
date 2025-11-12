@@ -61,7 +61,7 @@ function App() {
             { icon: <SiInfluxdb />, color: "#22ADF4" },      
 
           ],
-    live: "https://tutienda-demo.com",
+    live: "",
     github: "https://github.com/mdomgar/SolarMetrics",
     img: "/SolarMetrics.png",
   },
