@@ -1,6 +1,6 @@
 .timeline {
   position: relative;
-  padding: 80px 15%;
+  padding: 80px 15% 0px 15%;
   background-color: #0f0f0f;
   color: white;
   font-family: "Poppins", sans-serif;
@@ -54,7 +54,7 @@
 
 .timeline-content:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 255, 255, 0.2);
 }
 
 .timeline-date {

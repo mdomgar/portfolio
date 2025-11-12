@@ -65,22 +65,6 @@ function App() {
     github: "https://github.com/mdomgar/SolarMetrics",
     img: "/SolarMetrics.png",
   },
-    {
-    title: "SolarMetrics",
-    desc: "El proyecto consiste en un portal web para visualizar datos de medición fotovoltaica. Incluye un sistema de login y gestión de usuarios. El backend genera datos ficticios y los almacena en InfluxDB, mientras que el frontend, desarrollado en React, consume la API para mostrar la información de forma dinámica.",
-    tech: [
-            { icon: <FaReact />, color: "#61DBFB" },       
-            { icon: <SiJavascript />, color: "#F7DF1E" },  
-            { icon: <SiSpringboot />, color: "#6DB33F" },  
-            { icon: <SiPython />, color: "#3776AB" },      
-            { icon: <FaJava />, color: "#E76F00" },   
-            { icon: <SiInfluxdb />, color: "#22ADF4" },      
-
-          ],
-    live: "",
-    github: "https://github.com/mdomgar/SolarMetrics",
-    img: "/SolarMetrics.png",
-  },
 ];
 
 const educationData = [
@@ -125,8 +109,6 @@ const educationData = [
       { name: "Docker", icon: <SiDocker color="#0db7ed" /> },
       { name: "MySQL", icon: <SiMysql color="#4479A1" /> },
       { name: "InfluxDB", icon: <SiInfluxdb color="#22ADF4" /> },
-
-
     ],
   },
   {

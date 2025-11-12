@@ -15,6 +15,38 @@
   box-sizing: border-box;
 }
 
+.header h4 {
+  text-decoration: none;
+  color: #e0e0e0;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+  padding-bottom: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.header h4::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0%;
+  background-color: #00ffff;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+  transition: width 0.3s ease;
+}
+
+.header h4:hover {
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.header h4:hover::after {
+  width: 100%;
+}
+
 .header-title {
   font-size: 1rem;
   font-weight: 600;

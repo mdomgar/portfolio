@@ -1,11 +1,11 @@
 .education-container {
-  background-color: #141414;
+  background-color: #0f0f0f;
 }
 
 .education-section {
-  background-color: #141414;
+  background-color: #0f0f0f;
   color: white;
-  padding: 80px 100px;
+  padding: 80px 100px 20px 100px;
   font-family: "Poppins", sans-serif;
   max-width: 1200px;
   margin: 0 auto;
@@ -37,7 +37,7 @@
 }
 
 .education-card:hover {
-  border-color: #00ffff;
+  box-shadow: 0 4px 12px rgba(0, 255, 255, 0.2);
   transform: translateY(-3px);
 }
 

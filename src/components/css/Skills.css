@@ -1,14 +1,14 @@
 .skills-container {
-  background-color: #141414;
+  background-color: #0f0f0f;
 }
 
 .skills-section {
-  background-color: #141414;
+  background-color: #0f0f0f;
   color: #fff;
   font-family: "Poppins", sans-serif;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px;
+  padding: 40px 40px 0px 40px;
 }
 
 .skills-title {

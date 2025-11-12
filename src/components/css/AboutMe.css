@@ -1,5 +1,6 @@
 .about-container {
   background-color: #0f0f0f;
+  width: 100%;
 }
 
 .about {
@@ -9,7 +10,7 @@
   align-items: center;
   justify-content: center;
   gap: 40px;
-  padding: 140px 120px 100px 120px;
+  padding: 140px 120px 0px 120px;
   background-color: #0f0f0f;
   color: white;
   font-family: "Poppins", sans-serif;
