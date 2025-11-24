@@ -11,6 +11,7 @@ import Experience from './components/Experience'
 import Projects from './components/Projects'
 import Education from './components/Education';
 import ContactMe from './components/ContactMe';
+import Stars from './components/Stars';
 
 
 function App() {
@@ -75,7 +76,7 @@ const educationData = [
       grade: "Nota media: 9.7 / 9 (Proyecto final de curso 'SolarMetrics')",
     },
     {
-      degree: "Técnico en Admninistrador de Sistemas informáticos en Red",
+      degree: "Técnico Superior en Admninistrador de Sistemas informáticos en Red",
       place: "IES Virgen del Carmen, Jaén",
       date: "Septiembre 2020 - Junio 2022",
       grade: "Nota media: 9.4 / 9 (Proyecto final de curso)",
@@ -123,6 +124,7 @@ const educationData = [
 
   return (
     <>
+      <Stars />
       <Header/>
       <AboutMe info={info} skillsData={skillsData}/>
       <Experience experiences={experiences}/>

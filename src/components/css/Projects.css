@@ -22,6 +22,7 @@
   margin-bottom: 40px;
   letter-spacing: 0.5px;
   text-align: center;
+  color: #00ffff; 
 }
 
 .projects-grid {
@@ -33,7 +34,7 @@
 .project-card {
   background: #141414;
   border-radius: 16px;
-  padding: 20px;
+  padding: 25px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -43,18 +44,18 @@
 }
 
 .project-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 255, 255, 0.2);
-  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3); 
+  transform: translateY(-5px);
 }
 
 .projects-grid .project-card:only-child {
-  max-width: 12000px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
 .project-card p {
   text-align: left;
-  margin-top: 10px;
+  margin-top: 15px;
   font-weight: 300;
   line-height: 1.7;
   color: #ccc;
@@ -64,6 +65,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15px;
 }
 
 .project-title {
@@ -76,7 +78,7 @@
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: 0.5px;
-  color: #fff;
+  color: #00ffff; 
 }
 
 .project-img {
@@ -92,22 +94,24 @@
   justify-content: flex-end; 
   gap: 10px;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 15px
 }
 
 .project-tech span {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   transition: transform 0.3s ease;
+  color: #e0e0e0;
 }
 
 .project-tech span:hover {
-  transform: scale(1.2);
+  transform: scale(1.3);
+  color: #ff00ff;
 }
 
 .project-links {
   display: flex;
   gap: 15px;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 .live-btn,
@@ -119,5 +123,56 @@
   border-radius: 8px;
   font-size: 0.9rem;
   text-decoration: none;
-  transition: all 0.3
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.live-btn {
+  background-color: transparent;
+  color: #00ffff;
+  border: 1px solid #00ffff;
+  box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+.live-btn:hover {
+  background-color: #00ffff;
+  color: #0f0f0f;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+}
+
+.git-btn {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #ff00ff;
+  box-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+}
+
+.git-btn:hover {
+  background-color: #ff00ff;
+  color: #0f0f0f;
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.8);
+}
+
+@media (max-width: 600px) {
+  .projects-section {
+    padding: 60px 0;
+  }
+  
+  .project-card {
+    padding: 20px;
+  }
+
+  .project-header h3 {
+    font-size: 1.3rem;
+  }
+
+  .project-tech span {
+    font-size: 1.5rem;
+  }
+
+  .project-links {
+    flex-direction: column;
+    gap: 10px;
+  }
 }

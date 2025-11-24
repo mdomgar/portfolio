@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   gap: 40px;
-  padding: 140px 120px 0px 120px;
+  padding: 100px 5% 0px 5%; 
   background-color: #0f0f0f;
   color: white;
   font-family: "Poppins", sans-serif;
@@ -26,6 +26,7 @@
 .about-text h3{
   font-weight: 600;
   letter-spacing: 0.5px;
+  color: #00ffff; 
 }
 
 .about-text p{
@@ -39,7 +40,7 @@
   border-radius: 50%;
   object-fit: cover;
   object-position: 10% 30%;
-  border: 3px solid #444;
+  border: 3px solid; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -56,7 +57,7 @@
 }
 
 .mail-link {
-  color: #433d3d;
+  color: #a0a0a0; 
   text-decoration: none;
   transition: color 0.3s ease, transform 0.3s ease;
 }
@@ -82,7 +83,7 @@
 }
 
 .mail-link:hover {
-  color: #514b4b; 
+  color: #00ffff; 
   transform: scale(1.1);
 }
 
@@ -94,4 +95,18 @@
 .about-text {
   max-width: 500px;
   text-align: left;
+}
+
+@media (max-width: 900px) {
+  .about {
+    flex-direction: column;
+    padding: 100px 20px 0px 20px;
+    text-align: center;
+    gap: 20px;
+  }
+  
+  .about-text {
+    text-align: center;
+    max-width: 100%;
+  }
 }

@@ -53,3 +53,14 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
+.projects-section, 
+.timeline, 
+.education-container,
+.skills-section,
+.about-me-section,
+.contact-section {
+    background-color: #0f0f0f;
+    position: relative;
+    z-index: 2;
+}

@@ -1,86 +1,133 @@
-.contact {
-  text-align: center;
-  padding: 80px 20px;
+.contact-section {
   background-color: #0f0f0f;
-  color: #fff;
+  padding: 80px 5% 100px 5%;
   font-family: "Poppins", sans-serif;
+  color: #fff;
+}
+
+.contact-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .contact-title {
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: #fff;
-  margin-bottom: 15px;
-  letter-spacing: 1px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #00ffff;
 }
 
-.contact p {
-  max-width: 650px;
-  margin: 0 auto 35px auto;
+.contact-card {
+  background-color: #141414;
+  border-radius: 16px;
+  padding: 40px;
+  border: 2px solid #2a2a2a;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 255, 255, 0.25);
+}
+
+.contact-intro-text {
   font-size: 1.1rem;
-  color: #ddd;
-  font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  color: #ccc;
+}
+
+.contact-action-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ff00ff; /* Neón magenta para destacar */
+  margin-bottom: 25px;
+}
+
+.email-cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 30px;
+  margin-bottom: 40px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 10px;
+  background-color: transparent;
+  color: #00ffff;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+  transition: all 0.3s ease;
+}
+
+.email-cta-button:hover {
+  background-color: #00ffff;
+  color: #0f0f0f;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 1);
+  transform: scale(1.05);
+}
+
+.button-icon {
+  font-size: 1.3rem;
+}
+
+.social-links-group {
+    padding-top: 25px;
+    border-top: 1px solid #2a2a2a;
+}
+
+.social-text {
+    font-size: 0.95rem;
+    color: #999;
+    margin-bottom: 15px;
 }
 
 .about-icons {
   display: flex;
   justify-content: center;
-  gap: 25px;
+  gap: 30px;
+}
+
+.linkedin-link,
+.mail-link {
+  color: #fff;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .linkedin-icon,
 .mail-icon {
-  font-size: 2rem;
-  transition: transform 0.3s ease, color 0.3s ease;
-  cursor: pointer;
-}
-
-.linkedin-icon {
-  color: #0a66c2;
-}
-
-.mail-icon {
-  color: #433d3d;
+  font-size: 2.5rem;
 }
 
 .linkedin-link:hover {
-  color: #4a9ce9; 
+  color: #00ffff; /* Neón */
   transform: scale(1.1);
 }
 
 .mail-link:hover {
-  color: #514b4b; 
+  color: #ff00ff; /* Neón magenta */
   transform: scale(1.1);
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.contact {
-  animation: fadeInUp 0.8s ease forwards;
-}
-
 @media (max-width: 600px) {
-  .contact-title {
-    font-size: 1.6rem;
-  }
-
-  .contact p {
-    font-size: 1rem;
-    padding: 0 10px;
-  }
-
-  .linkedin-icon,
-  .mail-icon {
-    font-size: 1.7rem;
-  }
+    .contact-card {
+        padding: 25px 20px;
+    }
+    
+    .contact-title {
+        font-size: 2rem;
+    }
+    
+    .email-cta-button {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    
+    .linkedin-icon,
+    .mail-icon {
+      font-size: 2rem;
+    }
 }
