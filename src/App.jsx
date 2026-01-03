@@ -47,6 +47,15 @@ function App() {
         "Gestión de modelos, vistas, lógica de negocio y creación de portales para cliente/trabajdor."
       ],
     },
+    {
+      title: "Técnico Power BI",
+      company: "Macrosad, Jaén",
+      date: "Diciembre 2025 – Actualidad",
+      tasks: [
+        "Desarrollo con NodeJS, React para la creación de aplicaciones empresariales.",
+        "Testeado y consumo de APIs RESTful.",
+      ],
+    },
   ];
 
   const projects = [
