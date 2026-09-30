@@ -48,7 +48,7 @@ function App() {
       ],
     },
     {
-      title: "Técnico Power BI",
+      title: "Web Developer",
       company: "Macrosad, Jaén",
       date: "Diciembre 2025 – Actualidad",
       tasks: [
@@ -59,25 +59,25 @@ function App() {
   ];
 
   const projects = [
-  {
-    title: "SolarMetrics",
-    desc: "El proyecto consiste en un portal web para visualizar datos de medición fotovoltaica. Incluye un sistema de login y gestión de usuarios. El backend genera datos ficticios y los almacena en InfluxDB, mientras que el frontend, desarrollado en React, consume la API para mostrar la información de forma dinámica.",
-    tech: [
-            { icon: <FaReact />, color: "#61DBFB" },       
-            { icon: <SiJavascript />, color: "#F7DF1E" },  
-            { icon: <SiSpringboot />, color: "#6DB33F" },  
-            { icon: <SiPython />, color: "#3776AB" },      
-            { icon: <FaJava />, color: "#E76F00" },   
-            { icon: <SiInfluxdb />, color: "#22ADF4" },      
+    {
+      title: "SolarMetrics",
+      desc: "El proyecto consiste en un portal web para visualizar datos de medición fotovoltaica. Incluye un sistema de login y gestión de usuarios. El backend genera datos ficticios y los almacena en InfluxDB, mientras que el frontend, desarrollado en React, consume la API para mostrar la información de forma dinámica.",
+      tech: [
+        { icon: <FaReact />, color: "#61DBFB" },
+        { icon: <SiJavascript />, color: "#F7DF1E" },
+        { icon: <SiSpringboot />, color: "#6DB33F" },
+        { icon: <SiPython />, color: "#3776AB" },
+        { icon: <FaJava />, color: "#E76F00" },
+        { icon: <SiInfluxdb />, color: "#22ADF4" },
 
-          ],
-    live: "https://solarmetrics.vercel.app",
-    github: "https://github.com/mdomgar/SolarMetrics",
-    img: "/SolarMetrics.png",
-  },
-];
+      ],
+      live: "https://solarmetrics.vercel.app",
+      github: "https://github.com/mdomgar/SolarMetrics",
+      img: "/SolarMetrics.png",
+    },
+  ];
 
-const educationData = [
+  const educationData = [
     {
       degree: "Técnico Superior en Desarrollo de Aplicaciones Multiplataforma",
       place: "IES Virgen del Carmen, Jaén",
@@ -93,53 +93,53 @@ const educationData = [
   ];
 
   const skillsData = [
-  {
-    category: "Herramientas",
-    skills: [
-      { name: "IntelliJ IDEA", icon: <SiIntellijidea color="#000000" /> },
-      { name: "VS Code", icon: <BiLogoVisualStudio  color="#007ACC" /> },
-      { name: "Github", icon: <SiGithub color="#ffffff" /> },
-      { name: "Virtual Box", icon: <SiVirtualbox  color="#00ccc2ff" /> },
-      { name: "Postman", icon: <SiPostman  color="#cc8800ff" /> },
-    ],
-  },
-  {
-    category: "Lenguajes de Programación",
-    skills: [
-      { name: "JavaScript", icon: <SiJavascript color="#f7df1e" /> },
-      { name: "Java", icon: <FaJava color="#ea2d2e" /> },
-      { name: "Python", icon: <FaPython color="#3776AB" /> },
-    ],
-  },
-  {
-    category: "Tecnologías Backend",
-    skills: [
-      { name: "Spring Boot", icon: <SiSpringboot color="#6DB33F" /> },
-      { name: "MongoDB", icon: <SiMongodb color="#4DB33D" /> },
-      { name: "Docker", icon: <SiDocker color="#0db7ed" /> },
-      { name: "MySQL", icon: <SiMysql color="#4479A1" /> },
-      { name: "InfluxDB", icon: <SiInfluxdb color="#22ADF4" /> },
-    ],
-  },
-  {
-    category: "Frontend y Librerías",
-    skills: [
-      { name: "HTML", icon: <FaHtml5 color="#E34F26" /> },
-      { name: "CSS", icon: <FaCss3 color="#1572B6" /> },
-      { name: "React", icon: <FaReact color="#61DBFB" /> },
-    ],
-  },
-];
+    {
+      category: "Herramientas",
+      skills: [
+        { name: "IntelliJ IDEA", icon: <SiIntellijidea color="#000000" /> },
+        { name: "VS Code", icon: <BiLogoVisualStudio color="#007ACC" /> },
+        { name: "Github", icon: <SiGithub color="#ffffff" /> },
+        { name: "Virtual Box", icon: <SiVirtualbox color="#00ccc2ff" /> },
+        { name: "Postman", icon: <SiPostman color="#cc8800ff" /> },
+      ],
+    },
+    {
+      category: "Lenguajes de Programación",
+      skills: [
+        { name: "JavaScript", icon: <SiJavascript color="#f7df1e" /> },
+        { name: "Java", icon: <FaJava color="#ea2d2e" /> },
+        { name: "Python", icon: <FaPython color="#3776AB" /> },
+      ],
+    },
+    {
+      category: "Tecnologías Backend",
+      skills: [
+        { name: "Spring Boot", icon: <SiSpringboot color="#6DB33F" /> },
+        { name: "MongoDB", icon: <SiMongodb color="#4DB33D" /> },
+        { name: "Docker", icon: <SiDocker color="#0db7ed" /> },
+        { name: "MySQL", icon: <SiMysql color="#4479A1" /> },
+        { name: "InfluxDB", icon: <SiInfluxdb color="#22ADF4" /> },
+      ],
+    },
+    {
+      category: "Frontend y Librerías",
+      skills: [
+        { name: "HTML", icon: <FaHtml5 color="#E34F26" /> },
+        { name: "CSS", icon: <FaCss3 color="#1572B6" /> },
+        { name: "React", icon: <FaReact color="#61DBFB" /> },
+      ],
+    },
+  ];
 
   return (
     <>
       <Stars />
-      <Header/>
-      <AboutMe info={info} skillsData={skillsData}/>
-      <Experience experiences={experiences}/>
-      <Education educationData={educationData}/>
-      <Projects projects={projects}/>
-      <ContactMe/>
+      <Header />
+      <AboutMe info={info} skillsData={skillsData} />
+      <Experience experiences={experiences} />
+      <Education educationData={educationData} />
+      <Projects projects={projects} />
+      <ContactMe />
     </>
   )
 }
