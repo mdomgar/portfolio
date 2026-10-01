@@ -7,6 +7,7 @@ import CameraRig from './CameraRig'
 import Lights from './Lights'
 import Room from './Room'
 import Desk from './Desk'
+import Monitors from './Monitors'
 import Effects from './Effects'
 
 export default function SceneCanvas({ tier, reducedMotion }) {
@@ -43,6 +44,7 @@ export default function SceneCanvas({ tier, reducedMotion }) {
       <Lights shadows={settings.shadows} />
       <Room />
       <Desk />
+      <Monitors reducedMotion={reducedMotion} />
       {settings.bloom && <Effects />}
     </Canvas>
   )
