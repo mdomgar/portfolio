@@ -1,7 +1,7 @@
 import { MathUtils } from 'three'
 
 export const CAMERA_POSES = {
-  hero: { position: [1.1, 1.55, 3.4], target: [0.2, 1.0, 0] },
+  hero: { position: [-0.9, 1.4, 3.9], target: [-1.0, 1.0, 0] },
   about: { position: [-2.6, 1.9, 2.4], target: [0, 0.95, 0] },
   experience: { position: [2.4, 2.3, 2.8], target: [0, 0.9, 0] },
   projects: { position: [-0.45, 1.14, 1.4], target: [-0.45, 1.14, -0.22] },

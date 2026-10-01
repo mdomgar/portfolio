@@ -1,16 +1,35 @@
-# React + Vite
+# Portfolio · Miguel Ángel Domínguez García
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portfolio personal con un escritorio de developer en 3D (React Three Fiber) detrás de un contenido HTML accesible: sobre mí, experiencia, proyectos, educación y contacto.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+React 19 · Vite 7 · three.js + @react-three/fiber/drei/postprocessing · GSAP + ScrollTrigger · Lenis · zustand · Vitest + Testing Library
 
-## React Compiler
+## Scripts
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev      # servidor de desarrollo
+npm test         # tests
+npm run lint     # ESLint
+npm run build    # build de producción en dist/
+```
 
-## Expanding the ESLint configuration
+## Contenido
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Todo el texto está en `src/data/` (contenido) y `src/i18n/strings.js` (interfaz), en español e inglés.
+
+## Calidad del 3D
+
+La calidad se detecta sola (`src/scene/quality.js`). Para probar un nivel concreto añade `?scene=high|medium|low|static` a la URL; `static` muestra el fondo sin WebGL.
+
+## Imágenes
+
+`scripts/process-images.py` genera `public/img/*` (foto recortada, logo e imagen para redes) a partir de `scripts/source/portrait-original.webp`:
+
+```bash
+python -m venv scripts/.venv
+scripts/.venv/Scripts/python -m pip install "rembg[cpu]" pillow
+scripts/.venv/Scripts/python scripts/process-images.py scripts/source/portrait-original.webp
+```

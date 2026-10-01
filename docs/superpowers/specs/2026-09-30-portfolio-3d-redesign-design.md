@@ -93,7 +93,8 @@ src/
   data/          profile.js, experience.js, projects.js, education.js, skills.js
                  (cada texto como { es, en })
   i18n/          LanguageContext.jsx, es.js, en.js (textos de interfaz)
-  scene/         SceneCanvas.jsx, Desk.jsx, Monitors.jsx, SolarDashboardScreen.jsx,
+  scene/         layout.js (DIMMED_SECTIONS: sin three, para que three.js quede fuera del bundle principal),
+                 SceneCanvas.jsx, Desk.jsx, Monitors.jsx, SolarDashboardScreen.jsx,
                  Keyboard.jsx, Props.jsx (taza, planta, lámpara, auriculares, olivo),
                  CameraRig.jsx, Effects.jsx, SceneFallback.jsx
   components/    Preloader, Navbar, LanguageToggle, Hero, HeroPortrait, About (bento),
@@ -103,7 +104,7 @@ src/
   store/         sceneStore.js (zustand: sección activa y progreso)
   styles/        tokens.css, global.css
 public/
-  img/           portrait.webp/avif (recorte transparente), og-image.jpg, desk-fallback.webp
+  img/           portrait-1086.webp / portrait-540.webp (recorte transparente), og-image.jpg, solarmetrics-logo.webp
   cv/            cv-miguel-angel-es.pdf, cv-miguel-angel-en.pdf
   seq/           (fase 3) frames de la animación de brazos
 ```
@@ -112,7 +113,7 @@ public/
 - **Contenido**: `data/*` → componentes de sección, que eligen `es`/`en` según `LanguageContext`.
 - **Scroll → 3D**: cada sección registra un ScrollTrigger que escribe en `sceneStore` la sección activa y el progreso (0–1). `CameraRig` lee el store en `useFrame` e interpola posición y objetivo de cámara hacia el punto de vista de esa sección (hero → órbita → timeline con cámara atenuada → zoom al monitor → alejamiento).
 - **Lenis ↔ GSAP**: Lenis dirige el scroll y se sincroniza con `ScrollTrigger.update` en el ticker de GSAP.
-- **Monitor**: `SolarDashboardScreen` se renderiza como HTML en la pantalla (Drei `<Html transform occlude>`) solo durante la sección de proyectos; el resto del tiempo muestra una textura de código ligera.
+- **Monitor**: `Monitors` pinta el dashboard de SolarMetrics en la `CanvasTexture` de la pantalla principal durante la sección de proyectos (sin DOM dentro del 3D); `DashboardPreview` reutiliza el mismo dibujo en un canvas 2D cuando no hay 3D o en pantallas < 1024 px.
 
 ### Idiomas
 - Contexto propio, sin librería. Idioma inicial: el guardado en `localStorage` o, si no hay, el del navegador (por defecto `es`).
@@ -132,8 +133,8 @@ public/
 
 ### Rendimiento
 - El canvas 3D se carga en diferido (`React.lazy` + `Suspense`); el HTML y el preloader aparecen al instante.
-- `useQualityTier`: detecta el dispositivo (núcleos, memoria, ancho de pantalla, `PerformanceMonitor` de Drei) → nivel `high` / `medium` / `low` / `static`. En `medium` se desactivan las sombras, en `low` se quita el bloom y se baja el DPR, y en `static` se muestra `desk-fallback.webp`.
-- Imágenes: la foto nueva de Miguel (fondo blanco) → se le quita el fondo en local con `rembg` (se pedirá permiso antes de instalarlo) → recorte WebP/AVIF transparente de unos 150 KB con un ligero contorno de luz cian aplicado en CSS; captura de SolarMetrics optimizada. `foto-perfil.JPG` (3,9 MB) se elimina.
+- `useQualityTier`: detecta el dispositivo (núcleos, memoria, ancho de pantalla, `PerformanceMonitor` de Drei) → nivel `high` / `medium` / `low` / `static`. En `medium` se desactivan las sombras, en `low` se quita el bloom y se baja el DPR, y en `static` se muestra `SceneFallback` (degradados cian/violeta y rejilla en perspectiva hechos en CSS).
+- Imágenes: la foto nueva de Miguel (fondo blanco) → se le quita el fondo en local con `rembg` (modelo `isnet-general-use`; el logo de SolarMetrics sale de `scripts/source/solarmetrics-logo.png`; se pedirá permiso antes de instalarlo) → recorte WebP transparente (1086 px y 540 px) de unos 150 KB con un ligero contorno de luz cian aplicado en CSS; captura de SolarMetrics optimizada. `foto-perfil.JPG` (3,9 MB) se elimina.
 - `prefers-reduced-motion`: sin movimientos de cámara, sin animación automática de brazos (se ve el fotograma final), sin Lenis; solo fundidos.
 
 ### SEO y accesibilidad
