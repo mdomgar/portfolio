@@ -16,6 +16,10 @@ npm run lint     # ESLint
 npm run build    # build de producción en dist/
 ```
 
+## Configuración
+
+La URL pública del sitio se define con `VITE_SITE_URL` en `.env` (por defecto `https://miandoga.vercel.app`). Vite la inyecta en las etiquetas `canonical` y Open Graph de `index.html`; cámbiala si el sitio se publica en otro dominio.
+
 ## Contenido
 
 Todo el texto está en `src/data/` (contenido) y `src/i18n/strings.js` (interfaz), en español e inglés.

@@ -92,7 +92,7 @@ Scroll suave (Lenis), revelado de textos al entrar en pantalla, botones magnéti
 src/
   data/          profile.js, experience.js, projects.js, education.js, skills.js
                  (cada texto como { es, en })
-  i18n/          LanguageContext.jsx, es.js, en.js (textos de interfaz)
+  i18n/          strings.js, useLang.js (textos de interfaz)
   scene/         layout.js (DIMMED_SECTIONS: sin three, para que three.js quede fuera del bundle principal),
                  SceneCanvas.jsx, Desk.jsx, Monitors.jsx, SolarDashboardScreen.jsx,
                  Keyboard.jsx, Props.jsx (taza, planta, lámpara, auriculares, olivo),
