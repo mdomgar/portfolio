@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { CanvasTexture, SRGBColorSpace } from 'three'
 
-export function useCanvasTexture({ width, height, fps = 20, draw }) {
+export function useCanvasTexture({ width, height, fps = 20, draw, animate = true }) {
   const canvas = useMemo(() => {
     const element = document.createElement('canvas')
     element.width = width
@@ -26,7 +26,14 @@ export function useCanvasTexture({ width, height, fps = 20, draw }) {
 
   useEffect(() => () => texture.dispose(), [texture])
 
+  useLayoutEffect(() => {
+    if (animate) return
+    draw(canvas.getContext('2d'), 0, width, height)
+    texture.needsUpdate = true
+  }, [animate, draw, canvas, texture, width, height])
+
   useFrame((state, delta) => {
+    if (!animate) return
     elapsed.current += delta
     if (elapsed.current < 1 / fps) return
     elapsed.current = 0

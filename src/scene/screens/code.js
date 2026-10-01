@@ -80,7 +80,7 @@ export function drawCode(ctx, time, width, height, complete = false) {
       x += ctx.measureText(token.text).width
     }
     const isLast = index === lines.length - 1
-    if (isLast && Math.floor(time * 2) % 2 === 0) {
+    if (isLast && (complete || Math.floor(time * 2) % 2 === 0)) {
       ctx.fillStyle = '#00e5ff'
       ctx.fillRect(x + 2, y - 18, 10, 22)
     }

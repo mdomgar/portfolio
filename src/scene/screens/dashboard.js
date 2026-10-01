@@ -39,7 +39,7 @@ export function drawDashboard(ctx, time, width, height, complete = false, labels
   const kpis = [
     [labels.power, `${solarPower(hourNow, PEAK).toFixed(1)} kW`, '#00e5ff'],
     [labels.energy, `${energyUntil(hourNow, PEAK).toFixed(1)} kWh`, '#3ddc97'],
-    [labels.efficiency, `${(17.6 + Math.sin(time) * 0.4).toFixed(1)} %`, '#ffb454'],
+    [labels.efficiency, `${(17.6 + (complete ? 0 : Math.sin(time) * 0.4)).toFixed(1)} %`, '#ffb454'],
   ]
   kpis.forEach(([label, value, color], index) => {
     const y = 52 + index * 98

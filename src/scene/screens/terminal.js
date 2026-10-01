@@ -33,7 +33,7 @@ export function drawTerminal(ctx, time, width, height, complete = false) {
     ctx.fillStyle = line.color
     ctx.fillText(line.text, 14, 62 + index * 28)
   })
-  if (Math.floor(time * 2) % 2 === 0) {
+  if (complete || Math.floor(time * 2) % 2 === 0) {
     ctx.fillStyle = '#00e5ff'
     ctx.fillRect(14, 62 + visible * 28 - 16, 10, 20)
   }

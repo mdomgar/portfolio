@@ -48,6 +48,7 @@ export default function Monitors({ reducedMotion }) {
     width: 1024,
     height: 368,
     fps: 24,
+    animate: !reducedMotion,
     draw: (ctx, time, w, h) =>
       showDashboard
         ? drawDashboard(ctx, time, w, h, reducedMotion, DASHBOARD_LABELS[lang])
@@ -57,6 +58,7 @@ export default function Monitors({ reducedMotion }) {
     width: 384,
     height: 680,
     fps: 8,
+    animate: !reducedMotion,
     draw: (ctx, time, w, h) => drawTerminal(ctx, time, w, h, reducedMotion),
   })
 
