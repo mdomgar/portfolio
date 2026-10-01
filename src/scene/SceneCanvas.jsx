@@ -8,6 +8,8 @@ import Lights from './Lights'
 import Room from './Room'
 import Desk from './Desk'
 import Monitors from './Monitors'
+import Keyboard from './Keyboard'
+import Props from './props/Props'
 import Effects from './Effects'
 
 export default function SceneCanvas({ tier, reducedMotion }) {
@@ -45,6 +47,8 @@ export default function SceneCanvas({ tier, reducedMotion }) {
       <Room />
       <Desk />
       <Monitors reducedMotion={reducedMotion} />
+      <Keyboard reducedMotion={reducedMotion} />
+      <Props reducedMotion={reducedMotion} sparkles={settings.sparkles} />
       {settings.bloom && <Effects />}
     </Canvas>
   )
