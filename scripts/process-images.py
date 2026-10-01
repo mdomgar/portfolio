@@ -41,7 +41,7 @@ def save_portraits(cut):
 
 
 def save_logo():
-    logo = Image.open(ROOT / "public" / "SolarMetrics.png").convert("RGBA")
+    logo = Image.open(ROOT / "scripts" / "source" / "solarmetrics-logo.png").convert("RGBA")
     logo.resize((256, 256), Image.LANCZOS).save(OUT / "solarmetrics-logo.webp", "WEBP", quality=85, method=6)
 
 
