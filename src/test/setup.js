@@ -7,6 +7,7 @@ window.IntersectionObserver = MockIntersectionObserver
 globalThis.IntersectionObserver = MockIntersectionObserver
 HTMLCanvasElement.prototype.getContext = () => null
 window.scrollTo = () => {}
+mockMatchMedia(() => false)
 
 beforeEach(() => {
   mockMatchMedia(() => false)
