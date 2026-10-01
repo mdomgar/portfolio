@@ -1,0 +1,49 @@
+.education-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  max-width: 980px;
+}
+
+.education-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.75rem;
+}
+
+.education-period {
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+
+.education-card h3 {
+  font-size: 1.3rem;
+  line-height: 1.25;
+}
+
+.education-place {
+  color: var(--text-muted);
+}
+
+.education-footer {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.education-grade {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--warm);
+}
+
+.education-note {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}

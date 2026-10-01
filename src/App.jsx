@@ -4,6 +4,8 @@ import Hero from './components/Hero'
 import About from './components/About'
 import Experience from './components/Experience'
 import Projects from './components/Projects'
+import Education from './components/Education'
+import Contact from './components/Contact'
 import Preloader from './components/Preloader'
 import SceneLayer from './scene/SceneLayer'
 import { loadScene } from './scene/loadScene'
@@ -39,6 +41,8 @@ export default function App() {
         <About reducedMotion={reducedMotion} />
         <Experience reducedMotion={reducedMotion} />
         <Projects reducedMotion={reducedMotion} />
+        <Education />
+        <Contact />
       </main>
       <Preloader tasks={PRELOAD_TASKS} reducedMotion={reducedMotion} onDone={handleLoaded} />
     </>
