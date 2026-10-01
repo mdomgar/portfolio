@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
+import Experience from './components/Experience'
 import Preloader from './components/Preloader'
 import SceneLayer from './scene/SceneLayer'
 import { loadScene } from './scene/loadScene'
@@ -35,6 +36,7 @@ export default function App() {
       <main id="main">
         <Hero ready={ready} reducedMotion={reducedMotion} />
         <About reducedMotion={reducedMotion} />
+        <Experience reducedMotion={reducedMotion} />
       </main>
       <Preloader tasks={PRELOAD_TASKS} reducedMotion={reducedMotion} onDone={handleLoaded} />
     </>
