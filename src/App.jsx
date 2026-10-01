@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
 import Experience from './components/Experience'
+import Projects from './components/Projects'
 import Preloader from './components/Preloader'
 import SceneLayer from './scene/SceneLayer'
 import { loadScene } from './scene/loadScene'
@@ -37,6 +38,7 @@ export default function App() {
         <Hero ready={ready} reducedMotion={reducedMotion} />
         <About reducedMotion={reducedMotion} />
         <Experience reducedMotion={reducedMotion} />
+        <Projects reducedMotion={reducedMotion} />
       </main>
       <Preloader tasks={PRELOAD_TASKS} reducedMotion={reducedMotion} onDone={handleLoaded} />
     </>
