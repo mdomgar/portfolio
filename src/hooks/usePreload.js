@@ -35,8 +35,16 @@ export function usePreload(tasks, { minDuration = 1400, timeout = 6000 } = {}) {
     }
     frame = requestAnimationFrame(tick)
 
+    // Hard stop: rAF is throttled in background tabs, so never rely on it alone to finish.
+    const hardStop = setTimeout(() => {
+      if (cancelled) return
+      cancelAnimationFrame(frame)
+      setState({ progress: 100, finished: true })
+    }, timeout)
+
     return () => {
       cancelled = true
+      clearTimeout(hardStop)
       cancelAnimationFrame(frame)
     }
   }, [initialTasks, minDuration, timeout])

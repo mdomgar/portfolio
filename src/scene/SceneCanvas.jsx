@@ -32,7 +32,7 @@ export default function SceneCanvas({ tier, reducedMotion }) {
     <Canvas
       className="scene-canvas"
       dpr={settings.dpr}
-      shadows={settings.shadows}
+      shadows={settings.shadows && 'percentage'}
       camera={{ position: getPose('hero').position, fov: 40, near: 0.1, far: 50 }}
       gl={{ antialias: tier !== 'low', powerPreference: 'high-performance' }}
       eventSource={document.getElementById('root')}

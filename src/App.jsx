@@ -6,6 +6,7 @@ import Experience from './components/Experience'
 import Projects from './components/Projects'
 import Education from './components/Education'
 import Contact from './components/Contact'
+import Footer from './components/Footer'
 import Preloader from './components/Preloader'
 import SceneLayer from './scene/SceneLayer'
 import { loadScene } from './scene/loadScene'
@@ -37,8 +38,8 @@ export default function App() {
   return (
     <>
       <SceneLayer reducedMotion={reducedMotion} />
-      <Navbar />
-      <main id="main">
+      <Navbar ready={ready} />
+      <main id="main" inert={!ready}>
         <Hero ready={ready} reducedMotion={reducedMotion} />
         <About reducedMotion={reducedMotion} />
         <Experience reducedMotion={reducedMotion} />
@@ -46,6 +47,7 @@ export default function App() {
         <Education />
         <Contact />
       </main>
+      <Footer />
       <Preloader tasks={PRELOAD_TASKS} reducedMotion={reducedMotion} onDone={handleLoaded} />
     </>
   )

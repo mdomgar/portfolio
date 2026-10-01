@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { detectTier, TIER_SETTINGS } from './quality'
+import { describe, expect, it, vi } from 'vitest'
+import { detectTier, hasWebGL, TIER_SETTINGS } from './quality'
 
 const desktop = { webgl: true, cores: 8, memory: 8, width: 1440, saveData: false, forced: null }
 
@@ -34,5 +34,29 @@ describe('detectTier', () => {
 
   it('defines settings for every live tier', () => {
     expect(Object.keys(TIER_SETTINGS)).toEqual(['high', 'medium', 'low'])
+  })
+})
+
+describe('hasWebGL', () => {
+  it('releases the probe context after detecting support', () => {
+    const loseContext = vi.fn()
+    const gl = { getExtension: vi.fn(() => ({ loseContext })) }
+    const spy = vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(gl)
+    try {
+      expect(hasWebGL()).toBe(true)
+      expect(gl.getExtension).toHaveBeenCalledWith('WEBGL_lose_context')
+      expect(loseContext).toHaveBeenCalled()
+    } finally {
+      spy.mockRestore()
+    }
+  })
+
+  it('reports false when no context is available', () => {
+    const spy = vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null)
+    try {
+      expect(hasWebGL()).toBe(false)
+    } finally {
+      spy.mockRestore()
+    }
   })
 })

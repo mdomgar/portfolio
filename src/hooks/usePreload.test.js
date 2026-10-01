@@ -53,4 +53,30 @@ describe('usePreload', () => {
     })
     expect(result.current).toEqual({ progress: 100, finished: true })
   })
+
+  it('still finishes at the timeout when requestAnimationFrame never fires', async () => {
+    vi.stubGlobal('requestAnimationFrame', () => 0)
+    vi.stubGlobal('cancelAnimationFrame', () => {})
+    try {
+      const never = () => new Promise(() => {})
+      const { result } = renderHook(() => usePreload([never], { minDuration: 100, timeout: 1000 }))
+      expect(result.current.finished).toBe(false)
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1100)
+      })
+      expect(result.current).toEqual({ progress: 100, finished: true })
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
+  it('does not fire the hard stop after unmount', async () => {
+    const never = () => new Promise(() => {})
+    const { result, unmount } = renderHook(() => usePreload([never], { minDuration: 100, timeout: 1000 }))
+    unmount()
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1500)
+    })
+    expect(result.current.finished).toBe(false)
+  })
 })

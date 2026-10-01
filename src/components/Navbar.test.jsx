@@ -46,6 +46,13 @@ describe('Navbar', () => {
     expect(screen.getByRole('link', { name: 'Proyectos' })).not.toHaveAttribute('aria-current')
   })
 
+  it('is inert until the page is ready', () => {
+    const { container, rerender } = render(<Navbar ready={false} />)
+    expect(container.querySelector('header')).toHaveAttribute('inert')
+    rerender(<Navbar ready />)
+    expect(container.querySelector('header')).not.toHaveAttribute('inert')
+  })
+
   it('offers a skip link to the main content', () => {
     render(<Navbar />)
     expect(screen.getByRole('link', { name: 'Saltar al contenido' })).toHaveAttribute('href', '#main')

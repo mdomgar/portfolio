@@ -7,7 +7,7 @@ import './css/Navbar.css'
 
 const NAV_ITEMS = SECTIONS.filter((section) => section.id !== 'hero')
 
-export default function Navbar() {
+export default function Navbar({ ready = true }) {
   const lang = useLang()
   const t = useT()
   const active = useSceneStore((state) => state.section)
@@ -31,7 +31,7 @@ export default function Navbar() {
   }, [open])
 
   return (
-    <header className={`navbar${scrolled ? ' is-scrolled' : ''}`}>
+    <header className={`navbar${scrolled ? ' is-scrolled' : ''}`} inert={!ready}>
       <a className="skip-link" href="#main">
         {t('skipToContent')}
       </a>
