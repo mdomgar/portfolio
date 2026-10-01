@@ -40,10 +40,11 @@
 .hero-portrait {
   position: absolute;
   bottom: 0;
-  left: 50%;
+  left: 0;
+  right: 0;
   z-index: 1;
   width: min(520px, 78vw);
-  transform: translateX(-50%);
+  margin-inline: auto;
 }
 
 .hero-portrait img {
