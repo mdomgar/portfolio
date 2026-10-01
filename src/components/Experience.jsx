@@ -25,7 +25,7 @@ export default function Experience({ reducedMotion }) {
       )
       gsap.utils.toArray('.timeline-item').forEach((item) => {
         gsap.from(item, {
-          x: 40,
+          x: -24,
           opacity: 0,
           duration: 0.8,
           ease: 'power3.out',

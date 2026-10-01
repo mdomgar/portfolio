@@ -126,7 +126,6 @@
 
 .marquee-track {
   display: flex;
-  gap: 2.5rem;
   width: max-content;
   animation: marquee 40s linear infinite;
 }
@@ -139,6 +138,7 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  padding-right: 2.5rem;
   color: var(--text-muted);
   font-family: var(--font-display);
   font-size: 1.4rem;
@@ -155,8 +155,13 @@
   .marquee-track {
     flex-wrap: wrap;
     justify-content: center;
+    gap: 2.5rem;
     width: auto;
     animation: none;
+  }
+
+  .marquee-item {
+    padding-right: 0;
   }
 
   .marquee-item[data-duplicate] {

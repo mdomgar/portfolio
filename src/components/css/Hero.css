@@ -143,6 +143,15 @@
   }
 }
 
+@media (min-width: 768px) and (max-width: 1279px) {
+  .hero-portrait {
+    left: auto;
+    right: 16px;
+    margin: 0;
+    width: min(440px, 50vw);
+  }
+}
+
 @media (max-width: 767px) {
   .hero-portrait {
     width: 72vw;
@@ -150,11 +159,11 @@
   }
 
   .hero-meta {
-    left: 16px;
-    right: 16px;
+    left: 0;
+    right: 0;
     bottom: 4vh;
     max-width: none;
-    padding-top: 2rem;
+    padding: 2rem 16px 0;
     background: linear-gradient(to bottom, transparent, var(--bg) 30%);
   }
 

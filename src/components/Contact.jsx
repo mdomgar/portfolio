@@ -41,12 +41,6 @@ export default function Contact() {
           </li>
         </ul>
       </Reveal>
-      <footer className="footer container">
-        <p>
-          © {new Date().getFullYear()} {profile.name}
-        </p>
-        <p className="mono">{t('footerBuilt')}</p>
-      </footer>
     </section>
   )
 }

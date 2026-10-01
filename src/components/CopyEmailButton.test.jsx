@@ -25,6 +25,7 @@ describe('CopyEmailButton', () => {
     render(<CopyEmailButton email={EMAIL} />)
     fireEvent.click(screen.getByRole('button', { name: 'Copiar email' }))
     expect(await screen.findByRole('link', { name: EMAIL })).toHaveAttribute('href', `mailto:${EMAIL}`)
+    expect(screen.getByRole('status')).toHaveAttribute('data-status', 'failed')
   })
 
   it('shows the email as a mailto link when there is no clipboard API', async () => {

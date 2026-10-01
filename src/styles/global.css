@@ -152,7 +152,8 @@ main {
   color: var(--text);
   font: 600 0.95rem/1 var(--font-body);
   cursor: pointer;
-  transition: transform 0.25s var(--ease-out), background 0.25s, border-color 0.25s, box-shadow 0.25s;
+  transition: transform 0.25s var(--ease-out), translate 0.25s var(--ease-out), background 0.25s, border-color 0.25s,
+    box-shadow 0.25s;
 }
 
 .btn:hover {
@@ -220,11 +221,6 @@ main {
     background-image: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 229, 255, 0.09), transparent 45%);
     border-color: var(--border-strong);
   }
-}
-
-.btn {
-  transition: transform 0.25s var(--ease-out), translate 0.25s var(--ease-out), background 0.25s, border-color 0.25s,
-    box-shadow 0.25s;
 }
 
 [data-tilt] {

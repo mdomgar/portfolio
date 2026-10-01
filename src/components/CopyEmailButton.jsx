@@ -23,7 +23,7 @@ export default function CopyEmailButton({ email }) {
         <FiCopy aria-hidden="true" />
         {t('copyEmail')}
       </button>
-      <p className="copy-email-status" role="status">
+      <p className="copy-email-status" role="status" data-status={status}>
         {status === 'copied' && t('emailCopied')}
         {status === 'failed' && (
           <>
