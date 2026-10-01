@@ -55,7 +55,7 @@ export default function Keyboard({ reducedMotion }) {
       }}
       onPointerOut={() => setHovered(false)}
     >
-      <mesh position={[0.1, -0.018, 0.02]} receiveShadow>
+      <mesh position={[0.1, -0.0105, 0.02]} receiveShadow>
         <boxGeometry args={[0.9, 0.003, 0.34]} />
         <meshStandardMaterial color="#0e1119" roughness={0.9} />
       </mesh>

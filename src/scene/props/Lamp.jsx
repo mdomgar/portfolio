@@ -6,7 +6,7 @@ import { DESK_TOP } from '../layout'
 
 const METAL = '#1d2230'
 
-export default function Lamp({ sparkles }) {
+export default function Lamp({ reducedMotion, sparkles }) {
   const lampOn = useSceneStore((state) => state.lampOn)
   const toggleLamp = useSceneStore((state) => state.toggleLamp)
   const [hovered, setHovered] = useState(false)
@@ -52,7 +52,7 @@ export default function Lamp({ sparkles }) {
         scale={[0.6, 0.5, 0.6]}
         position={[-0.5, 1.0, -0.05]}
         size={1.6}
-        speed={0.25}
+        speed={reducedMotion ? 0 : 0.25}
         opacity={lampOn ? 0.6 : 0.15}
         color="#ffd9a0"
       />

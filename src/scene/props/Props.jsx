@@ -8,7 +8,7 @@ export default function Props({ reducedMotion, sparkles }) {
   return (
     <>
       <Mug reducedMotion={reducedMotion} />
-      <Lamp sparkles={sparkles} />
+      <Lamp reducedMotion={reducedMotion} sparkles={sparkles} />
       <Headphones />
       <Tower />
       <DeskPlant />
