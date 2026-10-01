@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { useSceneStore } from '../store/sceneStore'
-import { DIMMED_SECTIONS } from './cameraPoses'
+import { DIMMED_SECTIONS } from './layout'
 import { loadScene } from './loadScene'
 import SceneErrorBoundary from './SceneErrorBoundary'
 import SceneFallback from './SceneFallback'

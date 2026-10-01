@@ -9,8 +9,6 @@ export const CAMERA_POSES = {
   contact: { position: [0, 2.6, 5.4], target: [0, 0.9, 0] },
 }
 
-export const DIMMED_SECTIONS = new Set(['experience', 'education'])
-
 export function getPose(section) {
   return CAMERA_POSES[section] ?? CAMERA_POSES.hero
 }
