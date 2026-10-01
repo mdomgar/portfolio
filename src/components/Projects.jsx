@@ -18,7 +18,7 @@ export default function Projects({ reducedMotion }) {
       <div className="container">
         <SectionHeading id="projects-title" eyebrow="03" title={t('projectsTitle')} />
         {projects.map((project) => (
-          <Reveal as="article" key={project.id} className="card project" aria-labelledby={`${project.id}-title`}>
+          <Reveal as="article" key={project.id} className="card project" data-tilt aria-labelledby={`${project.id}-title`}>
             <header className="project-header">
               <img
                 src={project.logo.src}

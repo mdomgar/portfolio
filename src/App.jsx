@@ -12,6 +12,7 @@ import { loadScene } from './scene/loadScene'
 import { useQualityTier } from './scene/useQualityTier'
 import { useReducedMotion } from './hooks/useReducedMotion'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
+import { useMicroInteractions } from './hooks/useMicroInteractions'
 import { useActiveSection } from './hooks/useActiveSection'
 import { SECTION_IDS } from './data/sections'
 import { loadImage } from './lib/loadImage'
@@ -30,6 +31,7 @@ export default function App() {
 
   useQualityTier()
   useSmoothScroll(ready && !reducedMotion)
+  useMicroInteractions(ready && !reducedMotion)
   useActiveSection(SECTION_IDS)
 
   return (

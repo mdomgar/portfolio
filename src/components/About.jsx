@@ -25,7 +25,7 @@ export default function About({ reducedMotion }) {
             <p className="bento-bio-text">{localize(profile.bio, lang)}</p>
           </article>
 
-          <article className="card bento-now">
+          <article className="card bento-now" data-tilt>
             <p className="bento-kicker">
               <span className="dot" aria-hidden="true" /> {t('aboutNow')}
             </p>
@@ -33,7 +33,7 @@ export default function About({ reducedMotion }) {
             <p className="bento-muted">@ {currentJob.company}</p>
           </article>
 
-          <article className="card bento-location">
+          <article className="card bento-location" data-tilt>
             <p className="bento-kicker">{t('aboutBasedIn')}</p>
             <h3>{localize(profile.location, lang)}</h3>
             <p className="bento-muted mono">37.78° N · 3.78° W</p>
@@ -43,7 +43,7 @@ export default function About({ reducedMotion }) {
           </article>
 
           {profile.stats.map((stat) => (
-            <article key={stat.id} className="card bento-stat">
+            <article key={stat.id} className="card bento-stat" data-tilt>
               <p className="bento-stat-value">
                 <CountUp value={stat.value} decimals={stat.decimals} suffix={stat.suffix} reducedMotion={reducedMotion} />
               </p>

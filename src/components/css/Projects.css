@@ -2,6 +2,10 @@
   min-height: 130vh;
 }
 
+.projects .container {
+  perspective: 1000px;
+}
+
 .project {
   display: flex;
   flex-direction: column;
