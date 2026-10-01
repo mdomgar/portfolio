@@ -215,9 +215,11 @@ main {
   color: transparent;
 }
 
-.card:hover {
-  background-image: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 229, 255, 0.09), transparent 45%);
-  border-color: var(--border-strong);
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    background-image: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 229, 255, 0.09), transparent 45%);
+    border-color: var(--border-strong);
+  }
 }
 
 .btn {

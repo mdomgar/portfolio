@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mockMatchMedia } from '../test/mocks'
 import { useMicroInteractions } from './useMicroInteractions'
 
@@ -18,22 +18,111 @@ function Page({ enabled }) {
 }
 
 describe('useMicroInteractions', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('tracks the cursor inside cards, tilts them and pulls buttons towards it', () => {
     render(<Page enabled />)
-    fireEvent.pointerMove(screen.getByRole('link'), { clientX: 40, clientY: 20 })
     const card = screen.getByTestId('card')
-    expect(card.style.getPropertyValue('--mx')).toBe('40px')
-    expect(card.style.getPropertyValue('--my')).toBe('20px')
-    expect(card.style.rotate).not.toBe('')
-    expect(screen.getByRole('link').style.translate).not.toBe('')
+    const link = screen.getByRole('link')
+
+    vi.spyOn(card, 'getBoundingClientRect').mockReturnValue({
+      left: 0,
+      top: 0,
+      width: 200,
+      height: 100,
+      right: 200,
+      bottom: 100,
+      x: 0,
+      y: 0,
+    })
+    vi.spyOn(link, 'getBoundingClientRect').mockReturnValue({
+      left: 0,
+      top: 0,
+      width: 100,
+      height: 40,
+      right: 100,
+      bottom: 40,
+      x: 0,
+      y: 0,
+    })
+
+    fireEvent.pointerMove(link, { clientX: 150, clientY: 25 })
+    expect(card.style.getPropertyValue('--mx')).toBe('150px')
+    expect(card.style.getPropertyValue('--my')).toBe('25px')
+    expect(link.style.translate).toBe('25.0px 1.8px')
+    expect(card.style.rotate).toBe('0.250 0.250 0 4.24deg')
   })
 
   it('releases buttons and cards when the cursor leaves them', () => {
     render(<Page enabled />)
-    fireEvent.pointerMove(screen.getByRole('link'), { clientX: 40, clientY: 20 })
-    fireEvent.pointerMove(screen.getByTestId('outside'), { clientX: 400, clientY: 400 })
-    expect(screen.getByRole('link').style.translate).toBe('')
-    expect(screen.getByTestId('card').style.rotate).toBe('')
+    const card = screen.getByTestId('card')
+    const link = screen.getByRole('link')
+
+    vi.spyOn(card, 'getBoundingClientRect').mockReturnValue({
+      left: 0,
+      top: 0,
+      width: 200,
+      height: 100,
+      right: 200,
+      bottom: 100,
+      x: 0,
+      y: 0,
+    })
+    vi.spyOn(link, 'getBoundingClientRect').mockReturnValue({
+      left: 0,
+      top: 0,
+      width: 100,
+      height: 40,
+      right: 100,
+      bottom: 40,
+      x: 0,
+      y: 0,
+    })
+
+    fireEvent.pointerMove(link, { clientX: 150, clientY: 25 })
+    expect(link.style.translate).toBe('25.0px 1.8px')
+    expect(card.style.rotate).toBe('0.250 0.250 0 4.24deg')
+
+    fireEvent.pointerLeave(document.documentElement)
+    expect(link.style.translate).toBe('')
+    expect(card.style.rotate).toBe('')
+  })
+
+  it('clears effects on unmount (cleanup)', () => {
+    const { unmount } = render(<Page enabled />)
+    const card = screen.getByTestId('card')
+    const link = screen.getByRole('link')
+
+    vi.spyOn(card, 'getBoundingClientRect').mockReturnValue({
+      left: 0,
+      top: 0,
+      width: 200,
+      height: 100,
+      right: 200,
+      bottom: 100,
+      x: 0,
+      y: 0,
+    })
+    vi.spyOn(link, 'getBoundingClientRect').mockReturnValue({
+      left: 0,
+      top: 0,
+      width: 100,
+      height: 40,
+      right: 100,
+      bottom: 40,
+      x: 0,
+      y: 0,
+    })
+
+    fireEvent.pointerMove(link, { clientX: 150, clientY: 25 })
+    expect(link.style.translate).toBe('25.0px 1.8px')
+    expect(card.style.rotate).toBe('0.250 0.250 0 4.24deg')
+
+    unmount()
+    expect(link.style.translate).toBe('')
+    expect(card.style.rotate).toBe('')
   })
 
   it('does nothing when disabled or on touch screens', () => {
