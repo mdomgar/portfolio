@@ -6,6 +6,7 @@ import { energyUntil, solarPower } from './solar'
 import { BUILD_STEPS, drawSiteBuild, SITE_BUILD_LABELS, stepFraction, typedText } from './siteBuild'
 import { drawSeenat, pulseAt, SEENAT_LABELS } from './seenat'
 import { SCREENS } from './index'
+import { fillRound } from './drawUtils'
 import { strings } from '../../i18n/strings'
 
 describe('tokenizeLine', () => {
@@ -175,16 +176,16 @@ describe('screen registry', () => {
 })
 
 describe('drawUtils', () => {
-  it('fillRound draws a rounded rectangle using canvas methods', () => {
+  it('fillRound draws a rounded rectangle using canvas methods in order', () => {
     const { ctx, calls } = createRecordingContext()
-    const fillRound = (ctx, x, y, w, h, r) => {
-      ctx.beginPath()
-      ctx.roundRect(x, y, w, h, r)
-      ctx.fill()
-    }
     fillRound(ctx, 10, 20, 100, 50, 5)
     expect(calls).toContainEqual(['beginPath'])
     expect(calls).toContainEqual(['roundRect', 10, 20, 100, 50, 5])
     expect(calls).toContainEqual(['fill'])
+    const beginIdx = calls.findIndex((c) => c[0] === 'beginPath')
+    const roundIdx = calls.findIndex((c) => c[0] === 'roundRect')
+    const fillIdx = calls.findIndex((c) => c[0] === 'fill')
+    expect(beginIdx < roundIdx).toBe(true)
+    expect(roundIdx < fillIdx).toBe(true)
   })
 })
