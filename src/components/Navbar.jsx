@@ -1,18 +1,23 @@
 import { useEffect, useState } from 'react'
-import { SECTIONS } from '../data/sections'
+import { useLocation } from 'react-router'
+import { NAV_ITEMS } from '../data/sections'
 import { localize } from '../data/localize'
 import { useLang, useT } from '../i18n/useLang'
 import { useSceneStore } from '../store/sceneStore'
+import SectionLink from './SectionLink'
 import './css/Navbar.css'
 
-const NAV_ITEMS = SECTIONS.filter((section) => section.id !== 'hero')
+const VISIBLE_ITEMS = NAV_ITEMS.filter((item) => item.enabled)
 
 export default function Navbar({ ready = true }) {
   const lang = useLang()
   const t = useT()
-  const active = useSceneStore((state) => state.section)
+  const { pathname } = useLocation()
+  const section = useSceneStore((state) => state.section)
+  const active = pathname.startsWith('/casos/') ? 'casos' : pathname === '/' ? section : null
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const close = () => setOpen(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -22,7 +27,7 @@ export default function Navbar({ ready = true }) {
   }, [])
 
   useEffect(() => {
-    if (!open) return
+    if (!open) return undefined
     const onKey = (event) => {
       if (event.key === 'Escape') setOpen(false)
     }
@@ -36,9 +41,9 @@ export default function Navbar({ ready = true }) {
         {t('skipToContent')}
       </a>
       <nav className="navbar-inner container" aria-label={t('navLabel')}>
-        <a href="#hero" className="navbar-brand" aria-label={`${localize(SECTIONS[0].label, lang)} · Miguel Ángel`}>
+        <SectionLink id="hero" className="navbar-brand" aria-label={t('brandLabel')}>
           <span aria-hidden="true">&lt;MDG /&gt;</span>
-        </a>
+        </SectionLink>
         <button
           type="button"
           className="navbar-toggle"
@@ -51,17 +56,18 @@ export default function Navbar({ ready = true }) {
           <span />
         </button>
         <ul id="nav-menu" className={`navbar-links${open ? ' is-open' : ''}`}>
-          {NAV_ITEMS.map((item) => (
+          {VISIBLE_ITEMS.map((item) => (
             <li key={item.id}>
-              <a
-                href={`#${item.id}`}
-                aria-current={active === item.id ? 'true' : undefined}
-                onClick={() => setOpen(false)}
-              >
+              <SectionLink id={item.id} aria-current={active === item.id ? 'true' : undefined} onClick={close}>
                 {localize(item.label, lang)}
-              </a>
+              </SectionLink>
             </li>
           ))}
+          <li className="navbar-cta-item">
+            <SectionLink id="brief" className="btn btn-primary navbar-cta" onClick={close}>
+              {t('ctaBrief')}
+            </SectionLink>
+          </li>
         </ul>
       </nav>
     </header>

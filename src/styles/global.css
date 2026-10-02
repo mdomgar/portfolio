@@ -152,14 +152,16 @@ main {
   color: var(--text);
   font: 600 0.95rem/1 var(--font-body);
   cursor: pointer;
-  transition: transform 0.25s var(--ease-out), translate 0.25s var(--ease-out), background 0.25s, border-color 0.25s,
-    box-shadow 0.25s;
+  transition:
+    transform var(--dur-press) var(--ease-out),
+    translate var(--dur-ui) var(--ease-out),
+    background-color var(--dur-ui) var(--ease-out),
+    border-color var(--dur-ui) var(--ease-out),
+    box-shadow var(--dur-ui) var(--ease-out);
 }
 
-.btn:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 24px rgba(0, 229, 255, 0.18);
-  transform: translateY(-2px);
+.btn:active {
+  transform: scale(0.97);
 }
 
 .btn-primary {
@@ -168,9 +170,16 @@ main {
   color: #041016;
 }
 
-.btn-primary:hover {
-  background: #5cf0ff;
-  box-shadow: 0 0 32px rgba(0, 229, 255, 0.45);
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 24px rgba(0, 229, 255, 0.18);
+  }
+
+  .btn-primary:hover {
+    background: #5cf0ff;
+    box-shadow: 0 0 32px rgba(0, 229, 255, 0.45);
+  }
 }
 
 .chip {
@@ -224,7 +233,7 @@ main {
 }
 
 [data-tilt] {
-  transition: rotate 0.35s var(--ease-out);
+  transition: rotate var(--dur-ui) var(--ease-out);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -233,6 +242,7 @@ main {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-property: opacity, color, background-color, border-color, box-shadow !important;
+    scroll-behavior: auto !important;
   }
 }

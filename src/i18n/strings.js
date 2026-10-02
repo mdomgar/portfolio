@@ -44,6 +44,10 @@ export const strings = {
   copyFailed: { es: 'No se pudo copiar. Aquí lo tienes:', en: "Couldn't copy it. Here it is:" },
   writeEmail: { es: 'Escribir email', en: 'Send an email' },
   footerBuilt: { es: 'Hecho con React y Three.js', en: 'Built with React and Three.js' },
+  ctaBrief: { es: 'Cuéntame tu proyecto', en: 'Tell me about your project' },
+  brandLabel: { es: 'Inicio · Miguel Ángel', en: 'Home · Miguel Ángel' },
+  footerPrivacy: { es: 'Privacidad', en: 'Privacy' },
+  footerLegal: { es: 'Aviso legal', en: 'Legal notice' },
   notFoundTitle: { es: 'Esta página no existe', en: "This page doesn't exist" },
   notFoundText: {
     es: 'Puede que el enlace esté roto o que la página se haya movido.',
