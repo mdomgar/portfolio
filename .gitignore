@@ -25,3 +25,9 @@ dist-ssr
 
 # Entorno del script de imágenes
 scripts/.venv/
+
+# React Router / Playwright
+build
+.react-router
+playwright-report
+test-results

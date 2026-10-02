@@ -1,0 +1,15 @@
+.page-simple {
+  min-height: 70svh;
+  padding-top: calc(var(--nav-h) + clamp(3rem, 10vh, 6rem));
+}
+
+.page-simple h1 {
+  margin-block: 0.75rem 1rem;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+}
+
+.page-simple p {
+  max-width: 60ch;
+  margin-bottom: 1.5rem;
+  color: var(--text-muted);
+}

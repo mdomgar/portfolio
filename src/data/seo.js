@@ -1,0 +1,33 @@
+import { localize } from './localize.js'
+
+const PAGES = {
+  '/': {
+    title: {
+      es: 'Miguel Ángel Domínguez · Webs, herramientas y apps a medida',
+      en: 'Miguel Ángel Domínguez · Custom websites, tools and apps',
+    },
+    description: {
+      es: 'Desarrollador web en Jaén. Construyo webs para negocios, herramientas web personalizadas y apps móviles, de la idea al lanzamiento.',
+      en: 'Web developer based in Jaén, Spain. I build websites for businesses, custom web tools and mobile apps, from idea to launch.',
+    },
+  },
+  '/404': {
+    title: { es: 'Página no encontrada · Miguel Ángel Domínguez', en: 'Page not found · Miguel Ángel Domínguez' },
+    description: {
+      es: 'La página que buscas no existe o se ha movido. Vuelve al inicio para ver mis servicios y casos.',
+      en: 'The page you are looking for does not exist or has moved. Go back home to see my services and case studies.',
+    },
+    noindex: true,
+  },
+}
+
+export function getPageSeo(path, lang = 'es') {
+  const page = PAGES[path]
+  if (!page) return null
+  return {
+    title: localize(page.title, lang),
+    description: localize(page.description, lang),
+    image: page.image,
+    noindex: Boolean(page.noindex),
+  }
+}
