@@ -25,6 +25,14 @@ export const strings = {
     es: 'Vista animada del panel de SolarMetrics con potencia, energía y curva de producción solar',
     en: 'Animated view of the SolarMetrics dashboard with power, energy and the solar production curve',
   },
+  siteBuildAlt: {
+    es: 'Animación de una web que se maqueta sola: cabecera, titular, botón de reserva y tarjetas de servicios',
+    en: 'Animation of a website laying itself out: header, headline, booking button and service cards',
+  },
+  seenatAlt: {
+    es: 'Interfaz de Seenat en un móvil: evento, burbuja cercana y botón para pedir el Instagram (datos de ejemplo)',
+    en: 'Seenat interface on a phone: event, nearby bubble and a button to request an Instagram (sample data)',
+  },
   educationTitle: { es: 'Educación', en: 'Education' },
   contactTitle: { es: '¿Hablamos?', en: "Let's talk" },
   contactText: {

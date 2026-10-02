@@ -1,4 +1,5 @@
 import { energyUntil, solarPower } from './solar'
+import { fillRound } from './drawUtils'
 
 export const DASHBOARD_LABELS = {
   es: { site: 'Planta Jaén · Hoy', power: 'Potencia', energy: 'Energía hoy', efficiency: 'Eficiencia', chart: 'Producción (kW)' },
@@ -8,12 +9,6 @@ export const DASHBOARD_LABELS = {
 const PEAK = 5.4
 const LOOP_SECONDS = 12
 const DRAW_SECONDS = 5
-
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath()
-  ctx.roundRect(x, y, w, h, r)
-  ctx.fill()
-}
 
 export function drawDashboard(ctx, time, width, height, complete = false, labels = DASHBOARD_LABELS.es) {
   const progress = complete ? 1 : Math.min(1, (time % LOOP_SECONDS) / DRAW_SECONDS)
@@ -44,7 +39,7 @@ export function drawDashboard(ctx, time, width, height, complete = false, labels
   kpis.forEach(([label, value, color], index) => {
     const y = 52 + index * 98
     ctx.fillStyle = '#131722'
-    roundRect(ctx, 16, y, 220, 90, 10)
+    fillRound(ctx, 16, y, 220, 90, 10)
     ctx.fillStyle = '#8a93a6'
     ctx.font = '14px Inter, sans-serif'
     ctx.fillText(label, 32, y + 30)
@@ -55,7 +50,7 @@ export function drawDashboard(ctx, time, width, height, complete = false, labels
 
   const chart = { x: 252, y: 52, w: width - 268, h: height - 68 }
   ctx.fillStyle = '#131722'
-  roundRect(ctx, chart.x, chart.y, chart.w, chart.h, 10)
+  fillRound(ctx, chart.x, chart.y, chart.w, chart.h, 10)
   ctx.fillStyle = '#8a93a6'
   ctx.font = '14px Inter, sans-serif'
   ctx.fillText(labels.chart, chart.x + 16, chart.y + 26)

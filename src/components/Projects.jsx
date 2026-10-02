@@ -6,7 +6,7 @@ import { localize } from '../data/localize'
 import { useLang, useT } from '../i18n/useLang'
 import Reveal from './Reveal'
 import SectionHeading from './SectionHeading'
-import DashboardPreview from './DashboardPreview'
+import ScreenPreview from './ScreenPreview'
 import './css/Projects.css'
 
 export default function Projects({ reducedMotion }) {
@@ -34,7 +34,7 @@ export default function Projects({ reducedMotion }) {
               </div>
             </header>
             <p className="project-summary">{localize(project.summary, lang)}</p>
-            <DashboardPreview reducedMotion={reducedMotion} />
+            <ScreenPreview screen="dashboard" reducedMotion={reducedMotion} />
             <dl className="project-story">
               <div>
                 <dt>{t('projectProblem')}</dt>

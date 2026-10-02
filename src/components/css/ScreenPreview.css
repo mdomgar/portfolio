@@ -1,0 +1,16 @@
+.screen-preview {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #0a0d16;
+}
+
+.screen-preview--seenat {
+  width: min(100%, 260px);
+  margin-inline: auto;
+  border: 6px solid #0d1017;
+  border-radius: 30px;
+  box-shadow: 0 0 0 1px var(--border-strong), 0 24px 60px rgba(124, 92, 255, 0.18);
+}

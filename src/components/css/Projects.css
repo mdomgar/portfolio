@@ -39,20 +39,16 @@
   font-size: 1.05rem;
 }
 
-.dashboard-preview {
+.project .screen-preview {
   display: none;
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--border);
-  border-radius: 12px;
 }
 
-html[data-scene='static'] .dashboard-preview {
+html[data-scene='static'] .project .screen-preview {
   display: block;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dashboard-preview {
+  .project .screen-preview {
     display: block;
   }
 }
@@ -62,7 +58,7 @@ html[data-scene='static'] .dashboard-preview {
     max-width: none;
   }
 
-  .dashboard-preview {
+  .project .screen-preview {
     display: block;
   }
 }

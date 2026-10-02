@@ -3,6 +3,10 @@ import { drawCode, tokenizeLine, typedLines } from './code'
 import { drawTerminal } from './terminal'
 import { DASHBOARD_LABELS, drawDashboard } from './dashboard'
 import { energyUntil, solarPower } from './solar'
+import { BUILD_STEPS, drawSiteBuild, SITE_BUILD_LABELS, stepFraction, typedText } from './siteBuild'
+import { drawSeenat, pulseAt, SEENAT_LABELS } from './seenat'
+import { SCREENS } from './index'
+import { strings } from '../../i18n/strings'
 
 describe('tokenizeLine', () => {
   it('splits a line into highlighted tokens that rebuild the original text', () => {
@@ -86,7 +90,7 @@ function record(draw, time) {
 }
 
 describe('reduced motion (complete = true)', () => {
-  const screens = { drawCode, drawTerminal, drawDashboard }
+  const screens = { drawCode, drawTerminal, drawDashboard, drawSiteBuild, drawSeenat }
 
   Object.entries(screens).forEach(([name, draw]) => {
     it(`${name} draws the same frame at any time`, () => {
@@ -101,5 +105,86 @@ describe('reduced motion (complete = true)', () => {
 describe('DASHBOARD_LABELS', () => {
   it('has the same keys in every language', () => {
     expect(Object.keys(DASHBOARD_LABELS.es)).toEqual(Object.keys(DASHBOARD_LABELS.en))
+  })
+})
+
+describe('site-build screen', () => {
+  it('types text progressively and never overflows', () => {
+    expect(typedText('Hola', 0)).toBe('')
+    expect(typedText('Hola', 0.5)).toBe('Ho')
+    expect(typedText('Hola', 1)).toBe('Hola')
+    expect(typedText('Hola', 3)).toBe('Hola')
+  })
+
+  it('reveals the blocks one after another and completes at the end', () => {
+    for (let index = 0; index < BUILD_STEPS.length; index += 1) {
+      expect(stepFraction(0, index)).toBe(0)
+      expect(stepFraction(1, index)).toBe(1)
+    }
+    expect(stepFraction(0.3, 0)).toBeGreaterThan(stepFraction(0.3, 3))
+    for (let p = 0; p < 1; p += 0.1) expect(stepFraction(p + 0.1, 2)).toBeGreaterThanOrEqual(stepFraction(p, 2))
+  })
+
+  it('draws the whole page, headline included, on the static frame', () => {
+    const { ctx, calls } = createRecordingContext()
+    drawSiteBuild(ctx, 0, 1024, 368, true)
+    expect(calls).toContainEqual(['fillText', SITE_BUILD_LABELS.es.headline, expect.any(Number), expect.any(Number)])
+  })
+})
+
+describe('seenat screen', () => {
+  it('pulses between 0 and 1 and freezes when complete', () => {
+    for (const t of [0, 0.4, 1.3, 7.9]) {
+      expect(pulseAt(t, false)).toBeGreaterThanOrEqual(0)
+      expect(pulseAt(t, false)).toBeLessThan(1)
+    }
+    expect(pulseAt(3.3, true)).toBe(pulseAt(0, true))
+  })
+
+  it('shows the bubble and the Instagram button', () => {
+    const { ctx, calls } = createRecordingContext()
+    drawSeenat(ctx, 0, 360, 720, true)
+    const texts = calls.filter((call) => call[0] === 'fillText').map((call) => call[1])
+    expect(texts).toContain(SEENAT_LABELS.es.bubble)
+    expect(texts).toContain(SEENAT_LABELS.es.request)
+  })
+})
+
+describe('screen registry', () => {
+  it('describes every screen with a size and a draw function', () => {
+    expect(Object.keys(SCREENS)).toEqual(['code', 'dashboard', 'site-build', 'seenat'])
+    for (const screen of Object.values(SCREENS)) {
+      expect(screen.width).toBeGreaterThan(0)
+      expect(screen.height).toBeGreaterThan(0)
+      expect(typeof screen.draw).toBe('function')
+    }
+  })
+
+  it('has alt text in both languages for every previewable screen', () => {
+    for (const id of ['dashboard', 'site-build', 'seenat']) {
+      const text = strings[SCREENS[id].altKey]
+      expect(text?.es, id).toBeTruthy()
+      expect(text?.en, id).toBeTruthy()
+    }
+  })
+
+  it('keeps the same label keys in every language', () => {
+    expect(Object.keys(SITE_BUILD_LABELS.es)).toEqual(Object.keys(SITE_BUILD_LABELS.en))
+    expect(Object.keys(SEENAT_LABELS.es)).toEqual(Object.keys(SEENAT_LABELS.en))
+  })
+})
+
+describe('drawUtils', () => {
+  it('fillRound draws a rounded rectangle using canvas methods', () => {
+    const { ctx, calls } = createRecordingContext()
+    const fillRound = (ctx, x, y, w, h, r) => {
+      ctx.beginPath()
+      ctx.roundRect(x, y, w, h, r)
+      ctx.fill()
+    }
+    fillRound(ctx, 10, 20, 100, 50, 5)
+    expect(calls).toContainEqual(['beginPath'])
+    expect(calls).toContainEqual(['roundRect', 10, 20, 100, 50, 5])
+    expect(calls).toContainEqual(['fill'])
   })
 })

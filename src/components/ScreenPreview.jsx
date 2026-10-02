@@ -1,19 +1,21 @@
 import { useEffect, useRef } from 'react'
-import { DASHBOARD_LABELS, drawDashboard } from '../scene/screens/dashboard'
+import { SCREENS } from '../scene/screens'
 import { useLang, useT } from '../i18n/useLang'
+import './css/ScreenPreview.css'
 
-export default function DashboardPreview({ reducedMotion }) {
+export default function ScreenPreview({ screen, reducedMotion, className = '' }) {
   const lang = useLang()
   const t = useT()
   const ref = useRef(null)
+  const { width, height, altKey } = SCREENS[screen]
 
   useEffect(() => {
     const canvas = ref.current
     const ctx = canvas.getContext('2d')
     if (!ctx) return undefined
-    const labels = DASHBOARD_LABELS[lang]
+    const { draw } = SCREENS[screen]
     if (reducedMotion) {
-      drawDashboard(ctx, 0, canvas.width, canvas.height, true, labels)
+      draw(ctx, 0, canvas.width, canvas.height, true, lang)
       return undefined
     }
     let frame = 0
@@ -21,7 +23,7 @@ export default function DashboardPreview({ reducedMotion }) {
     const start = performance.now()
     const loop = (now) => {
       if (!visible) return
-      drawDashboard(ctx, (now - start) / 1000, canvas.width, canvas.height, false, labels)
+      draw(ctx, (now - start) / 1000, canvas.width, canvas.height, false, lang)
       frame = requestAnimationFrame(loop)
     }
     const observer = new IntersectionObserver(([entry]) => {
@@ -34,7 +36,16 @@ export default function DashboardPreview({ reducedMotion }) {
       observer.disconnect()
       cancelAnimationFrame(frame)
     }
-  }, [reducedMotion, lang])
+  }, [screen, reducedMotion, lang])
 
-  return <canvas ref={ref} className="dashboard-preview" width={1024} height={368} role="img" aria-label={t('dashboardAlt')} />
+  return (
+    <canvas
+      ref={ref}
+      className={`screen-preview screen-preview--${screen} ${className}`.trim()}
+      width={width}
+      height={height}
+      role="img"
+      aria-label={t(altKey)}
+    />
+  )
 }
