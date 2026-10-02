@@ -1,0 +1,29 @@
+.w {
+  display: inline-block;
+}
+
+.w-mask {
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+  vertical-align: top;
+}
+
+.w-inner {
+  display: inline-block;
+}
+
+@keyframes word-in {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}

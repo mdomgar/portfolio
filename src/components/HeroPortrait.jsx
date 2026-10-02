@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useT } from '../i18n/useLang'
 
-export default function HeroPortrait({ reducedMotion }) {
+export default function HeroPortrait({ reducedMotion, visible = true }) {
   const t = useT()
   const ref = useRef(null)
 
@@ -25,16 +25,19 @@ export default function HeroPortrait({ reducedMotion }) {
   }, [reducedMotion])
 
   return (
-    <div className="hero-portrait" ref={ref}>
-      <img
-        src="/img/portrait-1086.webp"
-        srcSet="/img/portrait-540.webp 540w, /img/portrait-1086.webp 1086w"
-        sizes="(max-width: 768px) 78vw, 520px"
-        width="1086"
-        height="1448"
-        alt={t('portraitAlt')}
-        fetchPriority="high"
-      />
+    <div className="hero-portrait" data-visible={visible ? 'true' : 'false'} ref={ref}>
+      {/* The route's links() already preloads this image; <picture> stops React hoisting a second preload. */}
+      <picture>
+        <img
+          src="/img/portrait-1086.webp"
+          srcSet="/img/portrait-540.webp 540w, /img/portrait-1086.webp 1086w"
+          sizes="(max-width: 768px) 78vw, 520px"
+          width="1086"
+          height="1448"
+          alt={t('portraitAlt')}
+          fetchPriority="high"
+        />
+      </picture>
     </div>
   )
 }

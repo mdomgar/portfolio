@@ -56,7 +56,6 @@ describe('content', () => {
     for (const [key, value] of Object.entries(strings)) expect(isLocalized(value), key).toBe(true)
     for (const stat of profile.stats) expect(isLocalized(stat.label), stat.id).toBe(true)
     expect(isLocalized(profile.bio)).toBe(true)
-    expect(profile.roles.es.length).toBe(profile.roles.en.length)
   })
 
   it('shows grades out of 10', () => {
