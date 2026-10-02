@@ -1,6 +1,5 @@
-// Facts verified read-only against C:/Users/Mikel/Documents/Proyectos/seenat on 2026-10-01.
-// 163 = sum of plan(n) across supabase/tests/database/*.sql (pgTAP plan() counts as of 2026-10-02).
-// Miguel confirms with `npx supabase test db` before publishing.
+// Test count is a floor: pgTAP plan() totals in Seenat's supabase/tests/database were 164+ on 2026-10-02.
+// The site uses '160+' to avoid stale exact numbers as Miguel adds tests.
 export const seenat = {
   slug: 'seenat',
   name: 'Seenat',
@@ -12,7 +11,7 @@ export const seenat = {
   },
   highlight: null,
   stats: [
-    { id: 'tests', value: '163', label: { es: 'pruebas automáticas en el backend', en: 'automated backend tests' } },
+    { id: 'tests', value: '160+', label: { es: 'pruebas automáticas en el backend', en: 'automated backend tests' } },
     { id: 'coordinates', value: '0', label: { es: 'coordenadas guardadas', en: 'coordinates stored' } },
   ],
   stack: ['flutter', 'dart', 'supabase', 'postgresql'],

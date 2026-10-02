@@ -108,11 +108,19 @@ describe('cases', () => {
       expect(item.highlight !== null || item.stats.length > 0, item.slug).toBe(true)
       if (item.highlight) expect(isLocalized(item.highlight)).toBe(true)
       for (const stat of item.stats) {
-        expect(stat.value).toMatch(/^\d+$/)
+        expect(stat.value).toMatch(/^\d+\+?$/)
         expect(isLocalized(stat.label)).toBe(true)
       }
     }
     expect(getCase('solarmetrics').stats).toEqual([])
+  })
+
+  it('uses "160+" for Seenat tests and avoids exact counts', () => {
+    const seenatTests = getCase('seenat').stats.find((s) => s.id === 'tests')
+    expect(seenatTests.value).toBe('160+')
+    // Verify that the serialized Seenat data never contains the exact count '163'
+    const seenatSerialized = JSON.stringify(getCase('seenat'))
+    expect(seenatSerialized).not.toContain('"163"')
   })
 
   it('keeps the development journal dated and newest first', () => {
