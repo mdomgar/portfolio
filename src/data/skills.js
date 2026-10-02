@@ -1,14 +1,19 @@
 import { FaCss3Alt, FaHtml5, FaJava, FaNodeJs, FaPython, FaReact } from 'react-icons/fa'
 import {
+  SiChartdotjs,
+  SiDart,
   SiDocker,
+  SiFlutter,
   SiGithub,
   SiInfluxdb,
   SiIntellijidea,
   SiJavascript,
   SiMongodb,
   SiMysql,
+  SiPostgresql,
   SiPostman,
   SiSpringboot,
+  SiSupabase,
   SiVirtualbox,
 } from 'react-icons/si'
 import { BiLogoVisualStudio } from 'react-icons/bi'
@@ -31,6 +36,11 @@ export const TECH = {
   intellij: { name: 'IntelliJ IDEA', Icon: SiIntellijidea, color: '#fe315d' },
   postman: { name: 'Postman', Icon: SiPostman, color: '#ff6c37' },
   virtualbox: { name: 'VirtualBox', Icon: SiVirtualbox, color: '#00ccc2' },
+  chartjs: { name: 'Chart.js', Icon: SiChartdotjs, color: '#ff6384' },
+  flutter: { name: 'Flutter', Icon: SiFlutter, color: '#47c5fb' },
+  dart: { name: 'Dart', Icon: SiDart, color: '#2cb7f6' },
+  supabase: { name: 'Supabase', Icon: SiSupabase, color: '#3ecf8e' },
+  postgresql: { name: 'PostgreSQL', Icon: SiPostgresql, color: '#6b8cff' },
 }
 
 export const skillCategories = [

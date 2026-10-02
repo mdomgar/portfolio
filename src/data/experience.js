@@ -3,6 +3,7 @@ export const experience = [
     id: 'macrosad',
     role: { es: 'Web Developer', en: 'Web Developer' },
     company: 'Macrosad',
+    shortName: 'Macrosad',
     location: 'Jaén',
     start: '2025-12',
     end: null,
@@ -19,6 +20,7 @@ export const experience = [
     id: 'grupo-avanza',
     role: { es: 'Técnico Auxiliar IT', en: 'IT Support Technician' },
     company: 'Grupo Avanza',
+    shortName: 'Grupo Avanza',
     location: 'Jaén',
     start: '2023-03',
     end: '2024-08',
@@ -42,6 +44,7 @@ export const experience = [
     id: 'intelec',
     role: { es: 'Desarrollador Full Stack y Odoo', en: 'Full Stack & Odoo Developer' },
     company: 'Intelec',
+    shortName: 'Intelec',
     location: 'Jaén',
     start: '2024-03',
     end: '2024-06',
@@ -63,6 +66,7 @@ export const experience = [
     id: 'mecaofi',
     role: { es: 'Técnico Informático', en: 'IT Technician' },
     company: 'Mecaofi Jaén 1992',
+    shortName: 'Mecaofi',
     location: 'Jaén',
     start: '2023-11',
     end: '2024-02',
@@ -76,3 +80,6 @@ export const experience = [
     },
   },
 ]
+
+// Order of the "Quién soy" journey (spec §4.5): support → ERP → current job.
+export const JOURNEY_IDS = ['mecaofi', 'grupo-avanza', 'intelec', 'macrosad']
