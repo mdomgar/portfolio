@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { useSceneStore } from '../store/sceneStore'
-import { DIMMED_SECTIONS } from './layout'
+import { DIMMED_POSES, resolvePoseId } from './poses'
 import { loadScene } from './loadScene'
 import SceneErrorBoundary from './SceneErrorBoundary'
 import SceneFallback from './SceneFallback'
@@ -10,7 +10,7 @@ const SceneCanvas = lazy(loadScene)
 
 export default function SceneLayer({ reducedMotion }) {
   const tier = useSceneStore((state) => state.tier)
-  const dimmed = useSceneStore((state) => DIMMED_SECTIONS.has(state.section))
+  const dimmed = useSceneStore((state) => DIMMED_POSES.has(resolvePoseId(state)))
   const setTier = useSceneStore((state) => state.setTier)
 
   if (!tier) return null

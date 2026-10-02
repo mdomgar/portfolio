@@ -22,13 +22,15 @@ describe('SceneLayer', () => {
     expect(container.firstChild).toHaveAttribute('aria-hidden', 'true')
   })
 
-  it('dims the scene behind text-heavy sections', () => {
+  it('dims the scene behind text-heavy sections unless a cue takes over', () => {
     act(() => {
       useSceneStore.getState().setTier('static')
-      useSceneStore.getState().setSection('experience')
+      useSceneStore.getState().setSection('proceso')
     })
     const { container } = render(<SceneLayer reducedMotion={false} />)
     expect(container.firstChild).toHaveAttribute('data-dimmed', 'true')
+    act(() => useSceneStore.getState().setSceneCue('service-web'))
+    expect(container.firstChild).toHaveAttribute('data-dimmed', 'false')
   })
 })
 

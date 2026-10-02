@@ -1,17 +1,18 @@
 import { describe, expect, it } from 'vitest'
 import { Vector3 } from 'three'
 import { CAMERA_POSES, dampVec3, getPose } from './cameraPoses'
-import { SECTION_IDS } from '../data/sections'
 
-describe('camera poses', () => {
-  it('defines a pose for every section', () => {
-    for (const id of SECTION_IDS) expect(CAMERA_POSES[id], id).toBeDefined()
+describe('getPose', () => {
+  it('returns the requested pose', () => {
+    expect(getPose('brief')).toBe(CAMERA_POSES.brief)
   })
 
-  it('falls back to the hero pose for unknown sections', () => {
-    expect(getPose('nope')).toBe(CAMERA_POSES.hero)
+  it('falls back to the open-desk pose for unknown ids', () => {
+    expect(getPose('nope')).toBe(CAMERA_POSES['hero-q4'])
   })
+})
 
+describe('dampVec3', () => {
   it('moves a vector towards the target without overshooting', () => {
     const v = new Vector3(0, 0, 0)
     dampVec3(v, [10, -10, 4], 2, 1 / 60)

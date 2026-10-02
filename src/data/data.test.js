@@ -64,7 +64,7 @@ describe('content', () => {
   })
 
   it('uses unique section ids in page order', () => {
-    expect(SECTION_IDS).toEqual(['hero', 'about', 'experience', 'projects', 'education', 'contact'])
+    expect(SECTION_IDS).toEqual(['hero', 'servicios', 'casos', 'proceso', 'quien-soy', 'ahora', 'brief'])
   })
 
   it('only references known technologies', () => {

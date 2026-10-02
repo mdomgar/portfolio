@@ -1,16 +1,10 @@
 import { MathUtils } from 'three'
+import { CAMERA_POSES, DEFAULT_POSE } from './poses'
 
-export const CAMERA_POSES = {
-  hero: { position: [-0.9, 1.4, 3.9], target: [-1.0, 1.0, 0] },
-  about: { position: [-2.6, 1.9, 2.4], target: [0, 0.95, 0] },
-  experience: { position: [2.4, 2.3, 2.8], target: [0, 0.9, 0] },
-  projects: { position: [-0.45, 1.14, 1.4], target: [-0.45, 1.14, -0.22] },
-  education: { position: [2.8, 1.5, 1.4], target: [0, 1.0, 0] },
-  contact: { position: [0, 2.6, 5.4], target: [0, 0.9, 0] },
-}
+export { CAMERA_POSES }
 
-export function getPose(section) {
-  return CAMERA_POSES[section] ?? CAMERA_POSES.hero
+export function getPose(id) {
+  return CAMERA_POSES[id] ?? CAMERA_POSES[DEFAULT_POSE]
 }
 
 export function dampVec3(current, target, lambda, delta) {

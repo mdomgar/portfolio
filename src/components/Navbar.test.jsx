@@ -13,11 +13,12 @@ describe('Navbar', () => {
   it('links to every content section in page order', () => {
     render(<Navbar />)
     expect(navLinks().map((a) => a.getAttribute('href'))).toEqual([
-      '#about',
-      '#experience',
-      '#projects',
-      '#education',
-      '#contact',
+      '#servicios',
+      '#casos',
+      '#proceso',
+      '#quien-soy',
+      '#ahora',
+      '#brief',
     ])
   })
 
@@ -27,7 +28,7 @@ describe('Navbar', () => {
     fireEvent.click(toggle)
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
     expect(toggle).toHaveAccessibleName('Cerrar menú')
-    fireEvent.click(screen.getByRole('link', { name: 'Proyectos' }))
+    fireEvent.click(screen.getByRole('link', { name: 'Casos' }))
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
   })
 
@@ -41,9 +42,9 @@ describe('Navbar', () => {
 
   it('marks the active section', () => {
     render(<Navbar />)
-    act(() => useSceneStore.getState().setSection('experience'))
-    expect(screen.getByRole('link', { name: 'Experiencia' })).toHaveAttribute('aria-current', 'true')
-    expect(screen.getByRole('link', { name: 'Proyectos' })).not.toHaveAttribute('aria-current')
+    act(() => useSceneStore.getState().setSection('casos'))
+    expect(screen.getByRole('link', { name: 'Casos' })).toHaveAttribute('aria-current', 'true')
+    expect(screen.getByRole('link', { name: 'Cómo trabajo' })).not.toHaveAttribute('aria-current')
   })
 
   it('is inert until the page is ready', () => {

@@ -3,5 +3,5 @@ export const DESK_TOP = DESK.height
 export const MAIN_SCREEN = { position: [0, 1.12, -0.22], size: [1.06, 0.38] }
 export const SIDE_SCREEN = { position: [0.95, 1.16, -0.18], rotationY: -0.45, size: [0.34, 0.6] }
 export const LAMP_HEAD = [-0.64, 1.22, -0.22]
-
-export const DIMMED_SECTIONS = new Set(['experience', 'education'])
+export const PHONE = { position: [0.62, DESK_TOP, 0.22], rotationY: -0.3, size: [0.075, 0.155] }
+export const NOTEBOOK = { position: [-0.5, DESK_TOP, 0.24], rotationY: 0.22, size: [0.15, 0.21] }

@@ -1,10 +1,10 @@
-import { useSceneStore } from '../store/sceneStore'
+import { selectPoseId, useSceneStore } from '../store/sceneStore'
 import { useLang } from '../i18n/useLang'
 import { useCanvasTexture } from './useCanvasTexture'
 import { DESK_TOP, MAIN_SCREEN, SIDE_SCREEN } from './layout'
-import { drawCode } from './screens/code'
+import { mainScreenFor } from './poses'
+import { SCREENS } from './screens'
 import { drawTerminal } from './screens/terminal'
-import { DASHBOARD_LABELS, drawDashboard } from './screens/dashboard'
 
 const BEZEL = '#0d1017'
 const STAND = '#1d2230'
@@ -42,17 +42,14 @@ function Stand({ height, depthOffset = -0.05 }) {
 
 export default function Monitors({ reducedMotion }) {
   const lang = useLang()
-  const showDashboard = useSceneStore((state) => state.section === 'projects')
+  const screenId = useSceneStore((state) => mainScreenFor(selectPoseId(state)))
 
   const main = useCanvasTexture({
     width: 1024,
     height: 368,
     fps: 24,
     animate: !reducedMotion,
-    draw: (ctx, time, w, h) =>
-      showDashboard
-        ? drawDashboard(ctx, time, w, h, reducedMotion, DASHBOARD_LABELS[lang])
-        : drawCode(ctx, time, w, h, reducedMotion),
+    draw: (ctx, time, w, h) => SCREENS[screenId].draw(ctx, time, w, h, reducedMotion, lang),
   })
   const side = useCanvasTexture({
     width: 384,
