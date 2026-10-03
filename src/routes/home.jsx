@@ -1,5 +1,6 @@
 import { useOutletContext } from 'react-router'
 import Hero from '../components/Hero'
+import { PORTRAIT_SIZES } from '../components/HeroPortrait'
 import Services from '../components/Services'
 import Cases from '../components/Cases'
 import Process from '../components/Process'
@@ -19,7 +20,7 @@ export const links = () => [
     as: 'image',
     href: '/img/portrait-1086.webp',
     imageSrcSet: '/img/portrait-540.webp 540w, /img/portrait-1086.webp 1086w',
-    imageSizes: '(max-width: 768px) 78vw, 520px',
+    imageSizes: PORTRAIT_SIZES,
     fetchPriority: 'high',
   },
 ]

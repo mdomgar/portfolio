@@ -11,7 +11,8 @@ export default defineConfig([
     extends: [js.configs.recommended, reactHooks.configs['recommended-latest'], reactRefresh.configs.vite],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      // __BUILD_YEAR__ is replaced by Vite `define` (vite.config.js).
+      globals: { ...globals.browser, __BUILD_YEAR__: 'readonly' },
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },

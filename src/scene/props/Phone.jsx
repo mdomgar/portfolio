@@ -8,17 +8,22 @@ import { PHONE } from '../layout'
 
 const BODY_HEIGHT = 0.009
 
-export default function Phone({ reducedMotion }) {
+// Mounted only while the phone is lit: an off phone creates and draws no canvas texture.
+function PhoneScreen({ reducedMotion }) {
   const lang = useLang()
-  const lit = useSceneStore((state) => isPhoneLit(selectPoseId(state)))
   const { width, height, draw } = SCREENS.seenat
   const texture = useCanvasTexture({
     width,
     height,
     fps: 20,
-    animate: lit && !reducedMotion,
+    animate: !reducedMotion,
     draw: (ctx, time, w, h) => draw(ctx, time, w, h, reducedMotion, lang),
   })
+  return <meshBasicMaterial map={texture} toneMapped={false} />
+}
+
+export default function Phone({ reducedMotion }) {
+  const lit = useSceneStore((state) => isPhoneLit(selectPoseId(state)))
   const [w, d] = PHONE.size
 
   return (
@@ -29,7 +34,7 @@ export default function Phone({ reducedMotion }) {
       <mesh position={[0, BODY_HEIGHT + 0.0002, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[w - 0.006, d - 0.008]} />
         {lit ? (
-          <meshBasicMaterial map={texture} toneMapped={false} />
+          <PhoneScreen reducedMotion={reducedMotion} />
         ) : (
           <meshStandardMaterial color="#05060a" metalness={0.6} roughness={0.2} />
         )}

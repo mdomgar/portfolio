@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { useT } from '../i18n/useLang'
 
+// Mirrors the .hero-portrait widths in Hero.css (phone, tablet, desktop). The home route preloads with it too.
+export const PORTRAIT_SIZES = '(max-width: 767px) 62vw, (max-width: 1023px) min(340px, 40vw), min(440px, 34vw)'
+
 export default function HeroPortrait({ reducedMotion, visible = true }) {
   const t = useT()
   const ref = useRef(null)
@@ -31,7 +34,7 @@ export default function HeroPortrait({ reducedMotion, visible = true }) {
         <img
           src="/img/portrait-1086.webp"
           srcSet="/img/portrait-540.webp 540w, /img/portrait-1086.webp 1086w"
-          sizes="(max-width: 768px) 78vw, 520px"
+          sizes={PORTRAIT_SIZES}
           width="1086"
           height="1448"
           alt={t('portraitAlt')}

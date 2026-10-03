@@ -11,7 +11,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="container footer-inner">
         <p>
-          © {new Date().getFullYear()} {profile.name}
+          © {__BUILD_YEAR__} {profile.name}
         </p>
         <ul className="footer-links">
           <li>
