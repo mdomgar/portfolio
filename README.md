@@ -56,7 +56,7 @@ La calidad se detecta sola (`src/scene/quality.js`). Para probar un nivel concre
 2. **Vercel**: en el proyecto → *Settings* → *Environment Variables*, añadir `RESEND_API_KEY`, `BRIEF_TO_EMAIL` y (opcional) `BRIEF_FROM_EMAIL` para *Production* y *Preview*, y `VITE_SITE_URL` si el dominio no es `https://miandoga.vercel.app`. Volver a desplegar después de guardarlas.
 3. **Probar el brief en producción**: enviar uno real desde la web desplegada y comprobar que llega, con "Responder a" apuntando al email escrito en el formulario.
 4. **Textos legales**: revisar `src/data/legal.js` y añadir tu NIF (y domicilio si quieres darlo completo) en `profile.legal` de `src/data/profile.js`; la fila NIF aparece sola cuando no es `null`.
-5. **Seenat**: confirmar con `npx supabase test db` el número real de pruebas del backend. La web dice "160+" (`src/data/cases/seenat.js`); déjalo así salvo que el número real sea menor. Revisar también el diario de desarrollo del mismo archivo.
+5. **Seenat**: confirmar con `npx supabase test db` el número real de pruebas del backend. La web dice "160+" (`src/data/cases/seenat.js`); déjalo así salvo que el número real sea menor. Revisar también el diario de desarrollo del mismo archivo y confirmar la frase del estado del backend ("El backend de la versión 1 está hecho…").
 6. **Capturas de Seenat**: aún no hay; el caso usa una vista previa dibujada. Añadir capturas reales de la app cuando las tengas.
 7. **Nota del TFG de SolarMetrics**: añadirla al caso (`src/data/cases/solarmetrics.js`) si quieres mostrarla.
 8. **Copy por revisar**: etiquetas rápidas del brief para herramienta y app (`src/data/brief.js`), "48 h" y "30 días" del proceso.

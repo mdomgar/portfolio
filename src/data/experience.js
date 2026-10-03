@@ -81,5 +81,5 @@ export const experience = [
   },
 ]
 
-// Order of the "Quién soy" journey (spec §4.5): support → ERP → current job.
+// Order of the "Quién soy" journey (spec §4.5), four stops: repair shop → IT support → ERP → current job.
 export const JOURNEY_IDS = ['mecaofi', 'grupo-avanza', 'intelec', 'macrosad']

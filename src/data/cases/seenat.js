@@ -92,8 +92,8 @@ export const seenat = {
     },
   ],
   result: {
-    es: 'El backend está terminado y cubierto con pruebas pgTAP de privacidad, presencia y conexiones. La app en Flutter tiene sus pantallas principales; ahora toca conectar la verificación de identidad y las notificaciones.',
-    en: 'The backend is finished and covered by pgTAP tests for privacy, presence and connections. The Flutter app has its main screens; next comes wiring up identity verification and notifications.',
+    es: 'El backend de la versión 1 está hecho y cubierto con pruebas pgTAP de privacidad, presencia y conexiones. La app en Flutter tiene sus pantallas principales; ahora toca conectar la verificación de identidad y las notificaciones.',
+    en: 'The version 1 backend is done and covered by pgTAP tests for privacy, presence and connections. The Flutter app has its main screens; next comes wiring up identity verification and notifications.',
   },
   next: {
     es: 'Una beta cerrada en uno o dos locales antes de abrirla a más gente.',

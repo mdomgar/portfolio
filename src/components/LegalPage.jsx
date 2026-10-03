@@ -17,8 +17,9 @@ export default function LegalPage({ page }) {
         {page.sections.map((section) => (
           <section key={section.id} aria-labelledby={`legal-${section.id}`}>
             <h2 id={`legal-${section.id}`}>{localize(section.title, lang)}</h2>
-            {localize(section.body, lang).map((paragraph) => (
-              <p key={paragraph}>{fill(paragraph, values)}</p>
+            {/* Static copy: the position is a stable key (two equal paragraphs would collide as text). */}
+            {localize(section.body, lang).map((paragraph, index) => (
+              <p key={`${section.id}-${index}`}>{fill(paragraph, values)}</p>
             ))}
             {section.owner && <OwnerDetails legal={profile.legal} />}
           </section>

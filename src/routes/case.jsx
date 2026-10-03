@@ -17,6 +17,7 @@ export default function CasePage() {
   const { reducedMotion } = useOutletContext()
   usePageScene('case')
   const item = getCase(pathname.split('/').filter(Boolean).pop())
+  // Defensive: routes.js only registers published slugs, so this is unreachable today.
   if (!item) return <NotFound />
   return <CaseStudy item={item} reducedMotion={reducedMotion} />
 }

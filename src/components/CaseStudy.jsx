@@ -43,7 +43,7 @@ export default function CaseStudy({ item, reducedMotion }) {
       </header>
 
       <div className="container case-body">
-        <figure className={`case-figure case-figure--${item.preview}`}>
+        <figure className="case-figure">
           <ScreenPreview screen={item.preview} reducedMotion={reducedMotion} />
         </figure>
 

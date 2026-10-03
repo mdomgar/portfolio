@@ -16,5 +16,5 @@ export const NAV_ITEMS = [
   { id: 'casos', label: { es: 'Casos', en: 'Case studies' }, enabled: true },
   { id: 'proceso', label: { es: 'Cómo trabajo', en: 'How I work' }, enabled: true },
   { id: 'quien-soy', label: { es: 'Quién soy', en: 'About me' }, enabled: true },
-  { id: 'lab', label: { es: 'Lab', en: 'Lab' }, to: '/lab', enabled: false },
+  { id: 'lab', label: { es: 'Lab', en: 'Lab' }, enabled: false },
 ]
