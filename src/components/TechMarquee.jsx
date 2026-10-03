@@ -1,4 +1,5 @@
 import { TECH } from '../data/skills'
+import './css/TechMarquee.css'
 
 const ITEMS = Object.entries(TECH)
 

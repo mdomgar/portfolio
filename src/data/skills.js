@@ -42,18 +42,3 @@ export const TECH = {
   supabase: { name: 'Supabase', Icon: SiSupabase, color: '#3ecf8e' },
   postgresql: { name: 'PostgreSQL', Icon: SiPostgresql, color: '#6b8cff' },
 }
-
-export const skillCategories = [
-  { id: 'languages', label: { es: 'Lenguajes', en: 'Languages' }, items: ['javascript', 'java', 'python'] },
-  { id: 'frontend', label: { es: 'Frontend', en: 'Frontend' }, items: ['react', 'html', 'css'] },
-  {
-    id: 'backend',
-    label: { es: 'Backend y datos', en: 'Backend & data' },
-    items: ['node', 'springboot', 'mysql', 'mongodb', 'influxdb', 'docker'],
-  },
-  {
-    id: 'tools',
-    label: { es: 'Herramientas', en: 'Tools' },
-    items: ['github', 'vscode', 'intellij', 'postman', 'virtualbox'],
-  },
-]

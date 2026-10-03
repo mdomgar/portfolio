@@ -1,10 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { localize } from './localize'
 import { profile } from './profile'
-import { SECTIONS, SECTION_IDS } from './sections'
+import { NAV_ITEMS, SECTIONS, SECTION_IDS } from './sections'
 import { experience } from './experience'
-import { education } from './education'
-import { TECH, skillCategories } from './skills'
+import { TECH } from './skills'
 import { strings } from '../i18n/strings'
 
 const isLocalized = (v) => Boolean(v) && typeof v === 'object' && v.es !== undefined && v.en !== undefined
@@ -41,27 +40,21 @@ describe('content', () => {
       expect(isLocalized(job.period), job.id).toBe(true)
       expect(job.tasks.es.length, job.id).toBe(job.tasks.en.length)
     }
-    for (const item of education) {
-      expect(isLocalized(item.degree), item.id).toBe(true)
-      expect(isLocalized(item.note), item.id).toBe(true)
-    }
     for (const section of SECTIONS) expect(isLocalized(section.label), section.id).toBe(true)
-    for (const category of skillCategories) expect(isLocalized(category.label), category.id).toBe(true)
+    for (const item of NAV_ITEMS) expect(isLocalized(item.label), item.id).toBe(true)
     for (const [key, value] of Object.entries(strings)) expect(isLocalized(value), key).toBe(true)
-    for (const stat of profile.stats) expect(isLocalized(stat.label), stat.id).toBe(true)
-    expect(isLocalized(profile.bio)).toBe(true)
-  })
-
-  it('shows grades out of 10', () => {
-    for (const item of education) expect(item.grade).toMatch(/ \/ 10$/)
+    expect(isLocalized(profile.location)).toBe(true)
   })
 
   it('uses unique section ids in page order', () => {
     expect(SECTION_IDS).toEqual(['hero', 'servicios', 'casos', 'proceso', 'quien-soy', 'ahora', 'brief'])
   })
 
-  it('only references known technologies', () => {
-    const used = skillCategories.flatMap((c) => c.items)
-    for (const id of used) expect(TECH[id], id).toBeDefined()
+  it('gives every technology a name, an icon and a colour', () => {
+    for (const [id, tech] of Object.entries(TECH)) {
+      expect(tech.name, id).toBeTruthy()
+      expect(typeof tech.Icon, id).toBe('function')
+      expect(tech.color, id).toMatch(/^#[0-9a-f]{6}$/i)
+    }
   })
 })

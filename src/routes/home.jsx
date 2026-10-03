@@ -1,11 +1,10 @@
 import { useOutletContext } from 'react-router'
 import Hero from '../components/Hero'
 import Services from '../components/Services'
-import About from '../components/About'
-import Experience from '../components/Experience'
 import Cases from '../components/Cases'
 import Process from '../components/Process'
-import Education from '../components/Education'
+import WhoAmI from '../components/WhoAmI'
+import Now from '../components/Now'
 import Contact from '../components/Contact'
 import { useActiveSection } from '../hooks/useActiveSection'
 import { SECTION_IDS } from '../data/sections'
@@ -35,9 +34,8 @@ export default function Home() {
       <Services reducedMotion={reducedMotion} />
       <Cases />
       <Process reducedMotion={reducedMotion} />
-      <About reducedMotion={reducedMotion} />
-      <Experience reducedMotion={reducedMotion} />
-      <Education />
+      <WhoAmI reducedMotion={reducedMotion} />
+      <Now />
       <Contact />
     </>
   )
