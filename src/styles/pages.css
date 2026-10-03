@@ -18,6 +18,8 @@
   display: grid;
   gap: 1.75rem;
   max-width: 760px;
+  /* Even dimmed, the lit desk shows through behind the muted body text. */
+  text-shadow: var(--text-halo);
 }
 
 .legal-body h2 {

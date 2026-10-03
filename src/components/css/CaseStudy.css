@@ -42,6 +42,12 @@
   margin: 0;
 }
 
+/* Even dimmed, the lit desk shows through behind the muted body text. */
+.case-hero-tagline,
+.case-section {
+  text-shadow: var(--text-halo);
+}
+
 .case-section h2 {
   margin-bottom: 0.9rem;
   font-size: clamp(1.6rem, 3vw, 2.2rem);

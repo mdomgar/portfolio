@@ -6,7 +6,7 @@
 }
 
 .scene-layer[data-dimmed='true'] {
-  opacity: 0.35;
+  opacity: 0.25;
   filter: saturate(0.8);
 }
 
