@@ -51,10 +51,12 @@ export default function WhoAmI({ reducedMotion }) {
         <ol className="journey" data-lit={reducedMotion || journeyLit ? 'true' : 'false'}>
           {JOURNEY.map((job, index) => (
             <li key={job.id} className="journey-stop" style={{ '--i': index }}>
+              {/* A visual reveal, not a disclosure: the detail is always in the accessibility tree, so the
+                  button claims no expanded/collapsed state. */}
               <button
                 type="button"
                 className="journey-button"
-                aria-expanded={open === job.id}
+                data-open={open === job.id ? 'true' : 'false'}
                 onClick={() => setOpen((current) => (current === job.id ? null : job.id))}
               >
                 <span className="journey-dot" aria-hidden="true" />

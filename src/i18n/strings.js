@@ -99,7 +99,8 @@ export const strings = {
   errInvalidPhone: { es: 'Revisa el teléfono.', en: 'Check the phone number.' },
   errMustAccept: { es: 'Necesito tu permiso para responderte.', en: 'I need your permission to reply.' },
   errInvalid: { es: 'Revisa este campo.', en: 'Please check this field.' },
-  brandLabel: { es: 'Inicio · Miguel Ángel', en: 'Home · Miguel Ángel' },
+  // Starts with the visible text (<MDG />) so speech input can target it (WCAG 2.5.3).
+  brandLabel: { es: 'MDG · Inicio', en: 'MDG · Home' },
   legalHolder: { es: 'Titular', en: 'Owner' },
   legalNif: { es: 'NIF', en: 'Tax ID (NIF)' },
   legalAddress: { es: 'Domicilio', en: 'Address' },

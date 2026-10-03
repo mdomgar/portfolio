@@ -225,7 +225,7 @@
 .brief-field textarea:focus-visible {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.18);
-  outline: none;
+  outline: 2px solid transparent; /* forced-colors mode paints it; the box-shadow ring is stripped there */
 }
 
 .brief-field [aria-invalid='true'] {
@@ -385,19 +385,9 @@
   }
 }
 
-@keyframes brief-fade {
-  from {
-    opacity: 0;
-  }
-}
-
-/* Reduced motion: fades and colour changes stay, slides, the draw and the progress sweep go. */
+/* Reduced motion: the draw and the progress sweep go. The step change is instant (the global
+   reduced-motion rule cuts every keyframe animation short). */
 @media (prefers-reduced-motion: reduce) {
-  .brief-step[data-direction='forward'],
-  .brief-step[data-direction='backward'] {
-    animation: brief-fade 200ms var(--ease-out) both;
-  }
-
   .brief-progress span {
     transition: none;
   }

@@ -16,7 +16,7 @@ describe('Navbar', () => {
     renderWithRouter(<Navbar />)
     expect(sectionLinks().map((a) => a.getAttribute('href'))).toEqual(['#servicios', '#casos', '#proceso', '#quien-soy'])
     expect(screen.getByRole('link', { name: 'Cuéntame tu proyecto' })).toHaveAttribute('href', '#brief')
-    expect(screen.getByRole('link', { name: 'Inicio · Miguel Ángel' })).toHaveAttribute('href', '#hero')
+    expect(screen.getByRole('link', { name: 'MDG · Inicio' })).toHaveAttribute('href', '#hero')
   })
 
   it('goes back to the home page sections from any other page', () => {
@@ -28,7 +28,7 @@ describe('Navbar', () => {
       '/#quien-soy',
     ])
     expect(screen.getByRole('link', { name: 'Cuéntame tu proyecto' })).toHaveAttribute('href', '/#brief')
-    expect(screen.getByRole('link', { name: 'Inicio · Miguel Ángel' })).toHaveAttribute('href', '/')
+    expect(screen.getByRole('link', { name: 'MDG · Inicio' })).toHaveAttribute('href', '/')
     expect(screen.getByRole('link', { name: 'Casos' })).toHaveAttribute('aria-current', 'true')
   })
 

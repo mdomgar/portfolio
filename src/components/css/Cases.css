@@ -92,7 +92,7 @@
 }
 
 .case-link:focus-visible {
-  outline: none;
+  outline: 2px solid transparent; /* forced-colors mode paints it; the box-shadow ring is stripped there */
 }
 
 @media (hover: hover) and (pointer: fine) {
