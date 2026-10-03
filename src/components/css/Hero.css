@@ -201,9 +201,11 @@
   mask-image: linear-gradient(to bottom, #000 80%, transparent);
 }
 
-.hero[data-instant='true'] *,
-.hero[data-instant='true'] *::before,
-.hero[data-instant='true'] *::after {
+/* A skipped intro jumps to the final composition. Only the intro's own targets: the CTAs and the
+   portrait image keep their hover and parallax transitions. */
+.hero[data-instant='true'] :is(.hero-q, .hero-answer, .hero-body, .hero-portrait),
+.hero[data-instant='true'] :is(.hero-q, .hero-answer) .w-inner,
+.hero[data-instant='true'] .hero-answer::after {
   animation: none !important;
   transition: none !important;
 }

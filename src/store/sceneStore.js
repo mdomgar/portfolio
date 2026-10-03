@@ -8,6 +8,8 @@ export const useSceneStore = create((set, get) => ({
   sceneCue: null,
   tier: null,
   lampOn: true,
+  // One-shot: the next camera frame jumps to its pose instead of flying (keyboard actions never animate).
+  snapCamera: false,
   setSection: (section) => set({ section }),
   setSceneCue: (sceneCue) => set({ sceneCue }),
   releaseSceneCue: (cue) => {
@@ -19,6 +21,12 @@ export const useSceneStore = create((set, get) => ({
     if (index > 1) set({ tier: TIERS[index - 1] })
   },
   toggleLamp: () => set((state) => ({ lampOn: !state.lampOn })),
+  requestCameraSnap: () => set({ snapCamera: true }),
+  consumeCameraSnap: () => {
+    if (!get().snapCamera) return false
+    set({ snapCamera: false })
+    return true
+  },
 }))
 
 export const selectPoseId = (state) => resolvePoseId(state)

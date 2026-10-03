@@ -87,6 +87,19 @@ describe('Hero', () => {
     expect(hero()).toHaveAttribute('data-instant', 'true')
   })
 
+  it('snaps the camera to the open desk on a key skip, but lets it fly on a pointer skip', () => {
+    const first = render(<Hero ready reducedMotion={false} />)
+    fireEvent.keyDown(window, { key: 'Tab' })
+    expect(useSceneStore.getState()).toMatchObject({ sceneCue: null, snapCamera: true })
+    first.unmount()
+    useSceneStore.setState(useSceneStore.getInitialState(), true)
+    window.sessionStorage.clear()
+    render(<Hero ready reducedMotion={false} />)
+    fireEvent.pointerDown(window)
+    expect(hero()).toHaveAttribute('data-moment', '4')
+    expect(useSceneStore.getState().snapCamera).toBe(false)
+  })
+
   it('starts on the answer when it was already seen in this session', () => {
     window.sessionStorage.setItem(HERO_SEEN_KEY, '1')
     render(<Hero ready reducedMotion={false} />)

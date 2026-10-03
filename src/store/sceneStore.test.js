@@ -7,7 +7,23 @@ beforeEach(() => {
 
 describe('sceneStore', () => {
   it('starts at the hero with no tier and the lamp on', () => {
-    expect(useSceneStore.getState()).toMatchObject({ section: 'hero', sceneCue: null, tier: null, lampOn: true })
+    expect(useSceneStore.getState()).toMatchObject({
+      section: 'hero',
+      sceneCue: null,
+      tier: null,
+      lampOn: true,
+      snapCamera: false,
+    })
+  })
+
+  it('hands out a requested camera snap exactly once', () => {
+    const { requestCameraSnap, consumeCameraSnap } = useSceneStore.getState()
+    expect(consumeCameraSnap()).toBe(false)
+    requestCameraSnap()
+    expect(useSceneStore.getState().snapCamera).toBe(true)
+    expect(consumeCameraSnap()).toBe(true)
+    expect(consumeCameraSnap()).toBe(false)
+    expect(useSceneStore.getState().snapCamera).toBe(false)
   })
 
   it('downgrades one quality step at a time and never below low', () => {

@@ -1,8 +1,10 @@
+import { useEffect } from 'react'
 import { profile } from '../data/profile'
 import { localize } from '../data/localize'
 import { useLang, useT } from '../i18n/useLang'
 import { FINAL_MOMENT, useHeroSequence } from '../hooks/useHeroSequence'
 import { useSceneCue } from '../hooks/useSceneCue'
+import { useSceneStore } from '../store/sceneStore'
 import HeroPortrait from './HeroPortrait'
 import SplitWords from './SplitWords'
 import './css/Hero.css'
@@ -20,6 +22,10 @@ export default function Hero({ ready, reducedMotion }) {
   const { moment, instant } = useHeroSequence({ running: ready, reducedMotion })
   const final = moment === FINAL_MOMENT
   useSceneCue(final ? null : `hero-q${moment}`)
+  // After the cue above is released (same commit, earlier effect): a key skip snaps the camera too.
+  useEffect(() => {
+    if (final && instant) useSceneStore.getState().requestCameraSnap()
+  }, [final, instant])
   const shown = final && ready
   const answer = localize(profile.hero.answer, lang)
 
