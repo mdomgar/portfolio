@@ -1,20 +1,25 @@
 import '@testing-library/jest-dom/vitest'
-if (!window.PointerEvent) window.PointerEvent = window.MouseEvent
 import { afterEach, beforeEach } from 'vitest'
 import { cleanup } from '@testing-library/react'
 import { mockMatchMedia, MockIntersectionObserver } from './mocks'
 
-window.IntersectionObserver = MockIntersectionObserver
+// Server-side tests run with `@vitest-environment node`: only touch browser globals when they exist.
+const hasDom = typeof window !== 'undefined'
+
+if (hasDom) {
+  if (!window.PointerEvent) window.PointerEvent = window.MouseEvent
+  window.IntersectionObserver = MockIntersectionObserver
+  window.scrollTo = () => {}
+  HTMLCanvasElement.prototype.getContext = () => null
+  mockMatchMedia(() => false)
+}
 globalThis.IntersectionObserver = MockIntersectionObserver
-HTMLCanvasElement.prototype.getContext = () => null
-window.scrollTo = () => {}
-mockMatchMedia(() => false)
 
 beforeEach(() => {
-  mockMatchMedia(() => false)
+  if (hasDom) mockMatchMedia(() => false)
 })
 
 afterEach(() => {
-  cleanup()
+  if (hasDom) cleanup()
   MockIntersectionObserver.instances = []
 })
