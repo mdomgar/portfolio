@@ -1,4 +1,5 @@
 import { localize } from './localize.js'
+import { getCase } from './cases/index.js'
 
 const PAGES = {
   '/': {
@@ -21,7 +22,23 @@ const PAGES = {
   },
 }
 
+const CASE_PATH = /^\/casos\/([a-z0-9-]+)$/
+const CASE_STUDY = { es: 'Caso de estudio', en: 'Case study' }
+
+function caseSeo(slug, lang) {
+  const item = getCase(slug)
+  if (!item) return null
+  return {
+    title: `${item.name} · ${localize(CASE_STUDY, lang)} · Miguel Ángel Domínguez`,
+    description: `${localize(item.label, lang)}. ${localize(item.tagline, lang)}`,
+    image: undefined,
+    noindex: false,
+  }
+}
+
 export function getPageSeo(path, lang = 'es') {
+  const slug = CASE_PATH.exec(path)?.[1]
+  if (slug) return caseSeo(slug, lang)
   const page = PAGES[path]
   if (!page) return null
   return {

@@ -236,6 +236,19 @@ main {
   transition: rotate var(--dur-ui) var(--ease-out);
 }
 
+/* Card → case page shared transition (React Router <Link viewTransition>). */
+::view-transition-group(*) {
+  animation-duration: var(--dur-panel);
+  animation-timing-function: var(--ease-in-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Cross-fade only: the named header snaps to its new place instead of flying. */
+  ::view-transition-group(*) {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

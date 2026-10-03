@@ -1,4 +1,5 @@
 import { TECH } from '../data/skills'
+import './css/TechList.css'
 
 export default function TechList({ ids, label }) {
   return (
