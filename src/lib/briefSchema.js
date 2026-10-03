@@ -65,7 +65,9 @@ const CHECKS = {
   phone: ({ phone }) => {
     if (!phone) return null
     if (CONTROL_CHAR_RE.test(phone)) return 'invalid_phone'
-    if (phone.length < MIN_PHONE_LENGTH || phone.length > LIMITS.phone) return 'invalid_phone'
+    if (phone.length > LIMITS.phone) return 'invalid_phone'
+    // Punctuation alone ('------') is not a number: count the digits.
+    if (phone.replace(/\D/g, '').length < MIN_PHONE_LENGTH) return 'invalid_phone'
     return PHONE_RE.test(phone) ? null : 'invalid_phone'
   },
   privacy: ({ privacy }) => (privacy ? null : 'must_accept'),

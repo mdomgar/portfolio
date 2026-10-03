@@ -23,10 +23,10 @@ function setup({ send = vi.fn().mockResolvedValue({ data: { id: 'email_1' }, err
   return { handler, send, logger }
 }
 
-function post(body, { ip = '203.0.113.7', raw } = {}) {
+function post(body, { ip = '203.0.113.7', raw, type = 'application/json' } = {}) {
   return new Request('https://example.dev/api/brief', {
     method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-forwarded-for': `${ip}, 10.0.0.1` },
+    headers: { 'content-type': type, 'x-forwarded-for': `${ip}, 10.0.0.1` },
     body: raw ?? JSON.stringify(body),
   })
 }
@@ -90,6 +90,35 @@ describe('POST /api/brief', () => {
     const { handler } = setup()
     expect((await handler(post(null, { raw: '{"type":' }))).status).toBe(400)
     expect((await handler(post(null, { raw: '[]' }))).status).toBe(400)
+  })
+
+  it('only accepts JSON bodies, so a cross-site form post cannot skip the CORS preflight', async () => {
+    const { handler, send } = setup()
+    for (const type of ['text/plain', 'application/x-www-form-urlencoded', 'multipart/form-data; boundary=x']) {
+      const response = await handler(post(VALID, { type }))
+      expect(response.status).toBe(415)
+      expect(await response.json()).toEqual({ error: 'unsupported_media_type' })
+    }
+    expect(send).not.toHaveBeenCalled()
+    expect((await handler(post(VALID, { type: 'application/json; charset=utf-8' }))).status).toBe(200)
+  })
+
+  it('answers 400 when the body stream cannot be read', async () => {
+    const { handler, send } = setup()
+    const broken = new Request('https://example.dev/api/brief', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: new ReadableStream({
+        start(controller) {
+          controller.error(new Error('connection reset'))
+        },
+      }),
+      duplex: 'half',
+    })
+    const response = await handler(broken)
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({ error: 'invalid', fields: [] })
+    expect(send).not.toHaveBeenCalled()
   })
 
   it('only accepts POST', async () => {

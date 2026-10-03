@@ -109,6 +109,13 @@ describe('validateBrief', () => {
     expect(errorsFor({ phone: '600\n000\n000' }).phone).toBe('invalid_phone')
   })
 
+  it('needs at least MIN_PHONE_LENGTH digits, not just punctuation', () => {
+    expect(errorsFor({ phone: '------' }).phone).toBe('invalid_phone')
+    expect(errorsFor({ phone: '(  ) .-' }).phone).toBe('invalid_phone')
+    expect(errorsFor({ phone: '6 0 0-0 0' }).phone).toBe('invalid_phone')
+    expect(errorsFor({ phone: '600-000' }).phone).toBeUndefined()
+  })
+
   it('enforces phone length limits from LIMITS.phone', () => {
     // 30 digits without + is valid
     expect(errorsFor({ phone: '0'.repeat(30) }).phone).toBeUndefined()
@@ -119,8 +126,9 @@ describe('validateBrief', () => {
     expect(errorsFor({ phone: '+' + '0'.repeat(30) }).phone).toBe('invalid_phone')
     // 6 characters without + is valid
     expect(errorsFor({ phone: '000000' }).phone).toBeUndefined()
-    // + plus 5 digits (6 total) is valid
-    expect(errorsFor({ phone: '+00000' }).phone).toBeUndefined()
+    // + plus 6 digits is valid; + plus 5 digits is not (too few digits)
+    expect(errorsFor({ phone: '+000000' }).phone).toBeUndefined()
+    expect(errorsFor({ phone: '+00000' }).phone).toBe('invalid_phone')
     // 5 characters is invalid
     expect(errorsFor({ phone: '00000' }).phone).toBe('invalid_phone')
   })

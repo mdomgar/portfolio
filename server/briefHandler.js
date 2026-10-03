@@ -28,6 +28,9 @@ export function createRateLimiter({ limit = 5, windowMs = 60 * 60 * 1000, now = 
   }
 }
 
+// Only JSON: a cross-site `text/plain` or form POST is a "simple" request and skips the CORS preflight.
+const isJson = (request) => (request.headers.get('content-type') ?? '').split(';')[0].trim().toLowerCase() === 'application/json'
+
 function clientIp(request) {
   const forwarded = request.headers.get('x-forwarded-for')
   return forwarded?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
@@ -75,10 +78,16 @@ export function renderBriefEmail(brief) {
 export function createBriefHandler({ getResend, env, limiter = createRateLimiter(), logger = console }) {
   return async function handleBrief(request) {
     if (request.method !== 'POST') return json(405, { error: 'method_not_allowed' }, { Allow: 'POST' })
+    if (!isJson(request)) return json(415, { error: 'unsupported_media_type' })
     if (!limiter.hit(clientIp(request))) return json(429, { error: 'rate_limited' })
 
     if (Number(request.headers.get('content-length')) > MAX_BODY_BYTES) return json(413, { error: 'too_large' })
-    const raw = await request.text()
+    let raw
+    try {
+      raw = await request.text()
+    } catch {
+      return json(400, { error: 'invalid', fields: [] })
+    }
     if (new TextEncoder().encode(raw).length > MAX_BODY_BYTES) return json(413, { error: 'too_large' })
 
     let body
