@@ -15,7 +15,9 @@ export const STEP_COUNT = STEP_FIELDS.length
 export const EMPTY_BRIEF = { type: '', details: '', tags: [], timeline: '', name: '', email: '', phone: '', privacy: false }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-const PHONE_RE = new RegExp(`^\\+?[\\d\\s().-]{6,${LIMITS.phone}}$`)
+const PHONE_RE = new RegExp(`^\\+?[\\d ().-]{6,${LIMITS.phone - 1}}$`)
+// eslint-disable-next-line no-control-regex
+const CONTROL_CHAR_RE = /[\u0000-\u001F\u007F-\u009F]/
 
 // Code points, not UTF-16 units: an emoji counts as one character.
 export const characterCount = (value) => [...value].length
@@ -45,16 +47,26 @@ const CHECKS = {
     return length > LIMITS.detailsMax ? 'too_long' : null
   },
   tags: ({ type, tags }) => {
-    const allowed = BRIEF_TAGS[type] ?? []
+    const allowed = Object.hasOwn(BRIEF_TAGS, type) ? BRIEF_TAGS[type] : []
     return tags.every((tag) => allowed.includes(tag)) ? null : 'invalid_choice'
   },
   timeline: ({ timeline }) => (BRIEF_TIMELINES.includes(timeline) ? null : timeline ? 'invalid_choice' : 'required'),
-  name: ({ name }) => (!name ? 'required' : characterCount(name) > LIMITS.name ? 'too_long' : null),
+  name: ({ name }) => {
+    if (!name) return 'required'
+    if (CONTROL_CHAR_RE.test(name)) return 'required'
+    return characterCount(name) > LIMITS.name ? 'too_long' : null
+  },
   email: ({ email }) => {
     if (!email) return 'required'
+    if (CONTROL_CHAR_RE.test(email)) return 'invalid_email'
     return email.length > LIMITS.email || !EMAIL_RE.test(email) ? 'invalid_email' : null
   },
-  phone: ({ phone }) => (!phone || PHONE_RE.test(phone) ? null : 'invalid_phone'),
+  phone: ({ phone }) => {
+    if (!phone) return null
+    if (CONTROL_CHAR_RE.test(phone)) return 'invalid_phone'
+    if (phone.length > LIMITS.phone) return 'invalid_phone'
+    return PHONE_RE.test(phone) ? null : 'invalid_phone'
+  },
   privacy: ({ privacy }) => (privacy ? null : 'must_accept'),
 }
 

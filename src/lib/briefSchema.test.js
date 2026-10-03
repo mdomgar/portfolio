@@ -92,6 +92,28 @@ describe('validateBrief', () => {
     expect(validateBrief(null).ok).toBe(false)
     expect(normalizeBrief({ tags: 'web', name: 42 })).toMatchObject({ tags: [], name: '' })
   })
+
+  it('protects against prototype pollution with inherited properties', () => {
+    for (const type of ['__proto__', 'constructor', 'toString', 'hasOwnProperty']) {
+      const result = validateBrief({ ...VALID, type, tags: ['x'] })
+      expect(result.ok).toBe(false)
+      expect(result.errors.type).toBe('invalid_choice')
+      expect(() => validateBrief({ ...VALID, type, tags: ['x'] })).not.toThrow()
+      expect(() => validateStep({ type, tags: ['x'] }, 1)).not.toThrow()
+    }
+  })
+
+  it('rejects control characters in name, email, and phone', () => {
+    expect(errorsFor({ name: 'Ana\r\nBcc: x@y.z' }).name).toBe('required')
+    expect(errorsFor({ email: 'a@b.c\r\nBcc: x@y.z' }).email).toBe('invalid_email')
+    expect(errorsFor({ phone: '600\n000\n000' }).phone).toBe('invalid_phone')
+  })
+
+  it('enforces phone length limits from LIMITS.phone', () => {
+    expect(errorsFor({ phone: '+' + '0'.repeat(29) }).phone).toBeUndefined() // 30 chars
+    expect(errorsFor({ phone: '+' + '0'.repeat(30) }).phone).toBe('invalid_phone') // 31 chars
+    expect(errorsFor({ phone: '00000' }).phone).toBe('invalid_phone') // 5 chars
+  })
 })
 
 describe('steps', () => {
