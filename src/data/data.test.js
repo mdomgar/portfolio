@@ -3,7 +3,6 @@ import { localize } from './localize'
 import { profile } from './profile'
 import { SECTIONS, SECTION_IDS } from './sections'
 import { experience } from './experience'
-import { projects } from './projects'
 import { education } from './education'
 import { TECH, skillCategories } from './skills'
 import { strings } from '../i18n/strings'
@@ -42,11 +41,6 @@ describe('content', () => {
       expect(isLocalized(job.period), job.id).toBe(true)
       expect(job.tasks.es.length, job.id).toBe(job.tasks.en.length)
     }
-    for (const project of projects) {
-      for (const key of ['tag', 'summary', 'problem', 'solution']) {
-        expect(isLocalized(project[key]), `${project.id}.${key}`).toBe(true)
-      }
-    }
     for (const item of education) {
       expect(isLocalized(item.degree), item.id).toBe(true)
       expect(isLocalized(item.note), item.id).toBe(true)
@@ -67,7 +61,7 @@ describe('content', () => {
   })
 
   it('only references known technologies', () => {
-    const used = [...skillCategories.flatMap((c) => c.items), ...projects.flatMap((p) => p.stack)]
+    const used = skillCategories.flatMap((c) => c.items)
     for (const id of used) expect(TECH[id], id).toBeDefined()
   })
 })

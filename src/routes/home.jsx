@@ -3,7 +3,7 @@ import Hero from '../components/Hero'
 import Services from '../components/Services'
 import About from '../components/About'
 import Experience from '../components/Experience'
-import Projects from '../components/Projects'
+import Cases from '../components/Cases'
 import Education from '../components/Education'
 import Contact from '../components/Contact'
 import { useActiveSection } from '../hooks/useActiveSection'
@@ -32,9 +32,9 @@ export default function Home() {
     <>
       <Hero ready={ready} reducedMotion={reducedMotion} />
       <Services reducedMotion={reducedMotion} />
+      <Cases />
       <About reducedMotion={reducedMotion} />
       <Experience reducedMotion={reducedMotion} />
-      <Projects reducedMotion={reducedMotion} />
       <Education />
       <Contact />
     </>
