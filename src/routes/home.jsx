@@ -5,7 +5,7 @@ import Cases from '../components/Cases'
 import Process from '../components/Process'
 import WhoAmI from '../components/WhoAmI'
 import Now from '../components/Now'
-import Contact from '../components/Contact'
+import Brief from '../components/Brief'
 import { useActiveSection } from '../hooks/useActiveSection'
 import { SECTION_IDS } from '../data/sections'
 import { getPageSeo } from '../data/seo'
@@ -36,7 +36,7 @@ export default function Home() {
       <Process reducedMotion={reducedMotion} />
       <WhoAmI reducedMotion={reducedMotion} />
       <Now />
-      <Contact />
+      <Brief />
     </>
   )
 }

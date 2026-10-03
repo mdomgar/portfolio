@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { renderPage } from '../test/router'
+import { SECTION_IDS } from '../data/sections'
 import Home, { meta } from './home'
 
 describe('home route', () => {
@@ -8,6 +9,12 @@ describe('home route', () => {
     renderPage(Home)
     expect(await screen.findByRole('heading', { level: 1 })).toBeInTheDocument()
     expect(document.getElementById('hero')).toBeInTheDocument()
+  })
+
+  it('renders every home section in page order', async () => {
+    renderPage(Home)
+    await screen.findByRole('heading', { level: 1 })
+    expect([...document.querySelectorAll('section[id]')].map((section) => section.id)).toEqual(SECTION_IDS)
   })
 
   it('declares its SEO tags', () => {
