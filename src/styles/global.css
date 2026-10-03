@@ -91,8 +91,8 @@ ol {
   background: var(--accent);
   color: var(--bg);
   font-weight: 600;
+  /* No transition: it appears on a key press, and keyboard actions do not animate. */
   transform: translateY(-200%);
-  transition: transform 0.2s;
 }
 
 .skip-link:focus {
@@ -222,13 +222,6 @@ main {
   }
 }
 
-.gradient-text {
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
     background-image: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 229, 255, 0.09), transparent 45%);
@@ -247,13 +240,18 @@ main {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Cross-fade only: the named header snaps to its new place instead of flying. */
+  /* Cross-fade only: the named header snaps to its new place instead of flying. Only the name is
+     reset: the shorthand would also zero the duration that ::view-transition-old/new inherit, which
+     turned the fade into an instant swap. `*` below never matches these pseudo-elements. */
   ::view-transition-group(*) {
-    animation: none;
+    animation-name: none;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: var(--dur-ui);
+  }
+
   *,
   *::before,
   *::after {
