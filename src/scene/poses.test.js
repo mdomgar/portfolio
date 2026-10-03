@@ -29,7 +29,7 @@ describe('camera poses', () => {
   })
 
   it('dims only the text-heavy poses', () => {
-    expect([...DIMMED_POSES].sort()).toEqual(['case', 'process'])
+    expect([...DIMMED_POSES].sort()).toEqual(['about', 'case', 'process'])
   })
 })
 

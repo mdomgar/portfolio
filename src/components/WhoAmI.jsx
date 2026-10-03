@@ -21,10 +21,11 @@ export default function WhoAmI({ reducedMotion }) {
   useGSAP(
     () => {
       if (reducedMotion) return
-      // The text "reads itself": each word goes from 0.15 to full opacity with the scroll.
+      // The text "reads itself": each word goes from 0.7 to full opacity with the scroll. The spec's 0.15
+      // left the unread words far below AA contrast; 0.7 keeps them AA over the dimmed desk (0.6 did not).
       gsap.fromTo(
         '.whoami-text .w',
-        { opacity: 0.15 },
+        { opacity: 0.7 },
         {
           opacity: 1,
           ease: 'none',

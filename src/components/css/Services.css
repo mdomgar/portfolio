@@ -117,8 +117,14 @@
     pointer-events: none;
   }
 
+  /* Here the copy sits straight on the scene: the halo and full-strength text keep it AA. */
   .service-copy {
     gap: 0.9rem;
+    text-shadow: var(--text-halo);
+  }
+
+  .service-includes {
+    color: var(--text);
   }
 
   .services-number {

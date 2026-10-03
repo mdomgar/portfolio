@@ -27,7 +27,8 @@ export const SECTION_POSES = {
   case: 'case',
 }
 
-export const DIMMED_POSES = new Set(['process', 'case'])
+// Text-heavy poses: the scene steps back so the copy over it keeps AA contrast.
+export const DIMMED_POSES = new Set(['process', 'about', 'case'])
 
 const MAIN_SCREENS = {
   'hero-q1': 'site-build',

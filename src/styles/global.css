@@ -151,7 +151,8 @@ main {
   padding: 0.8rem 1.35rem;
   border: 1px solid var(--border-strong);
   border-radius: 999px;
-  background: rgba(7, 8, 13, 0.4);
+  /* Outline buttons also sit on the scene: dark enough for AA over its brightest props. */
+  background: rgba(7, 8, 13, 0.75);
   color: var(--text);
   font: 600 0.95rem/1 var(--font-body);
   cursor: pointer;

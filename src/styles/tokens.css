@@ -10,6 +10,8 @@
   --success: #3ddc97;
   --text: #e8ecf4;
   --text-muted: #8a93a6;
+  /* Dark halo of the page colour for copy that sits straight on the 3D scene (AA over bright props). */
+  --text-halo: 0 0 1px var(--bg), 0 0 4px var(--bg), 0 0 10px rgb(7 8 13 / 0.95), 0 0 22px rgb(7 8 13 / 0.9);
 
   --font-display: 'Clash Display', 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;

@@ -8,7 +8,7 @@
 /* The 3D desk sits behind this column: a soft halo of the page colour keeps the small text readable. */
 .brief-lead,
 .brief-other-title {
-  text-shadow: 0 0 14px var(--bg), 0 0 4px var(--bg);
+  text-shadow: var(--text-halo);
 }
 
 .brief-lead {

@@ -150,6 +150,12 @@
   pointer-events: none;
 }
 
+/* On tablets and phones the intro and the proof line cross the lit desk. */
+.hero-intro,
+.hero-proof {
+  text-shadow: var(--text-halo);
+}
+
 .hero-intro {
   font-size: clamp(1rem, 1.4vw, 1.15rem);
 }

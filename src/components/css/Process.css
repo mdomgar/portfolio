@@ -66,7 +66,9 @@
   color: var(--text-muted);
 }
 
+/* Even dimmed, the desk's brightest props can sit behind the steps on narrow screens. */
 .process-text {
+  text-shadow: var(--text-halo);
   transition:
     opacity var(--dur-ui) var(--ease-out) 80ms,
     transform var(--dur-ui) var(--ease-out) 80ms;
