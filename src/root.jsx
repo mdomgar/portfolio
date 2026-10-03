@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from 'react-router'
 import 'lenis/dist/lenis.css'
 import './styles/tokens.css'
@@ -25,6 +25,31 @@ const PRELOAD_TASKS = [
   () => (useSceneStore.getState().tier === 'static' ? null : loadScene()),
 ]
 
+// Without JavaScript (or if the bundle never loads) nothing would lift the preloader or play the hero:
+// show the final hero composition instead. Hidden from React, which never hydrates <noscript> content.
+const NO_SCRIPT_CSS = `
+.preloader { display: none !important; }
+.hero .hero-content { visibility: visible !important; }
+.hero .hero-questions { display: flex; flex-direction: column; gap: 0.3rem; }
+.hero .hero-q { opacity: 1 !important; max-width: none; font: 500 clamp(1rem, 1.5vw, 1.2rem) / 1.4 var(--font-body); color: var(--text-muted); }
+.hero .hero-answer { position: relative !important; opacity: 1 !important; pointer-events: auto !important; }
+.hero .hero-q .w-inner, .hero .hero-answer .w-inner { transform: none !important; animation: none !important; }
+.hero .hero-answer::after { display: none; }
+.hero .hero-body, .hero .hero-portrait { opacity: 1 !important; transform: none !important; pointer-events: auto !important; }
+@media (max-width: 767px) { .hero .hero-portrait { opacity: 0.35 !important; } }
+`
+
+const noopSubscribe = () => () => {}
+
+// false in the prerendered HTML and during hydration, true afterwards: lets the shell lock the page
+// behind the preloader without baking `inert` into the static HTML.
+const useHydrated = () =>
+  useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  )
+
 export const links = () => [
   { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -46,6 +71,7 @@ export function Layout({ children }) {
         <meta name="theme-color" content="#07080d" />
         <Meta />
         <Links />
+        <noscript dangerouslySetInnerHTML={{ __html: `<style>${NO_SCRIPT_CSS}</style>` }} />
       </head>
       <body>
         {/* #root is the R3F event source: the canvas and the HTML both live inside it. */}
@@ -87,6 +113,7 @@ export default function App() {
   const [ready, setReady] = useState(false)
   const handleLoaded = useCallback(() => setReady(true), [])
   const { pathname } = useLocation()
+  const locked = useHydrated() && !ready
 
   useQualityTier()
   useSmoothScroll(ready && !reducedMotion)
@@ -105,8 +132,8 @@ export default function App() {
   return (
     <>
       <SceneLayer reducedMotion={reducedMotion} />
-      <Navbar ready={ready} />
-      <main id="main" inert={!ready}>
+      <Navbar ready={!locked} />
+      <main id="main" inert={locked}>
         <Outlet context={{ ready, reducedMotion }} />
       </main>
       <Footer />
