@@ -151,6 +151,34 @@ describe('Brief', () => {
     expect(screen.getByRole('button', { name: 'Enviando…' })).toBeDisabled()
   })
 
+  it('announces that the brief is being sent', async () => {
+    fetch.mockImplementation(() => new Promise(() => {}))
+    const user = userEvent.setup()
+    render(<Brief />)
+    await fillAll(user)
+    await user.click(screen.getByRole('button', { name: 'Enviar' }))
+    expect(document.querySelector('.brief-form [aria-live="polite"]')).toHaveTextContent('Enviando…')
+  })
+
+  it('drops the failure banner once the visitor goes back to edit', async () => {
+    fetch.mockImplementationOnce(json(500, { error: 'send_failed' }))
+    const user = userEvent.setup()
+    render(<Brief />)
+    await fillAll(user)
+    await user.click(screen.getByRole('button', { name: 'Enviar' }))
+    await screen.findByText('No se ha podido enviar. Tus respuestas siguen aquí.')
+    await user.click(screen.getByRole('button', { name: /Atrás/ }))
+    expect(screen.queryByText('No se ha podido enviar. Tus respuestas siguen aquí.')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Reintentar' })).not.toBeInTheDocument()
+  })
+
+  it('survives a tampered draft whose type is an inherited key', async () => {
+    window.sessionStorage.setItem(BRIEF_DRAFT_KEY, JSON.stringify({ type: 'constructor', tags: ['booking'] }))
+    render(<Brief />)
+    await waitFor(() => expect(JSON.parse(window.sessionStorage.getItem(BRIEF_DRAFT_KEY)).tags).toEqual([]))
+    expect(question()).toHaveTextContent('¿Qué quieres construir?')
+  })
+
   it('explains the rate limit', async () => {
     fetch.mockImplementationOnce(json(429, { error: 'rate_limited' }))
     const user = userEvent.setup()

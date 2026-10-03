@@ -98,7 +98,7 @@ function TextField({ field, label, type = 'text', autoComplete, inputMode, value
   )
 }
 
-function BriefFailure({ kind, sending, onRetry }) {
+function BriefFailure({ kind, onRetry }) {
   const t = useT()
   if (kind === 'invalid') {
     return (
@@ -112,7 +112,7 @@ function BriefFailure({ kind, sending, onRetry }) {
       <p>{t(kind === 'rate_limited' ? 'briefRateLimited' : 'briefFailed')}</p>
       <p className="brief-failure-actions">
         {kind !== 'rate_limited' && (
-          <button type="button" className="btn" onClick={onRetry} disabled={sending}>
+          <button type="button" className="btn" onClick={onRetry}>
             <FiRefreshCw aria-hidden="true" />
             {t('briefRetry')}
           </button>
@@ -258,7 +258,7 @@ export default function Brief() {
   }
 
   const change = (field) => (value) => dispatch({ type: 'change', field, value })
-  const tags = BRIEF_TAGS[data.type] ?? []
+  const tags = Object.hasOwn(BRIEF_TAGS, data.type) ? BRIEF_TAGS[data.type] : []
   const hint = (briefTypes.find((type) => type.id === data.type) ?? briefTypes[briefTypes.length - 1]).hint
   const stepLabel = fill(t('briefStepOf'), { current: step + 1, total: STEP_COUNT })
 
@@ -314,7 +314,7 @@ export default function Brief() {
                 {stepLabel}
               </p>
               <p className="sr-only" aria-live="polite">
-                {`${stepLabel}: ${t(QUESTIONS[step])}`}
+                {status === 'sending' ? t('briefSending') : `${stepLabel}: ${t(QUESTIONS[step])}`}
               </p>
               <div className="brief-honeypot" aria-hidden="true">
                 <label>
@@ -455,7 +455,7 @@ export default function Brief() {
                 )}
               </fieldset>
 
-              {failure && <BriefFailure kind={failure} sending={status === 'sending'} onRetry={submit} />}
+              {failure && <BriefFailure kind={failure} onRetry={submit} />}
 
               <div className="brief-actions">
                 {step > 0 && (

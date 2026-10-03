@@ -15,6 +15,12 @@ function sanitizeDraft(draft) {
   return clean
 }
 
+// Own keys only: a tampered draft with type 'constructor' must not read Object.prototype.
+const tagsFor = (type) => (Object.hasOwn(BRIEF_TAGS, type) ? BRIEF_TAGS[type] : [])
+
+// Editing or moving makes a failure banner stale. The rate-limit notice stays: the limit still applies.
+const staleFailure = (failure) => (failure === 'rate_limited' ? failure : null)
+
 function withoutError(errors, field) {
   const next = { ...errors }
   delete next[field]
@@ -34,32 +40,45 @@ export function briefReducer(state, action) {
       let data = { ...state.data, ...sanitizeDraft(action.draft) }
       // Apply tag filtering if type was restored, same as 'change' does
       if ('type' in action.draft) {
-        data.tags = data.tags.filter((tag) => (BRIEF_TAGS[data.type] ?? []).includes(tag))
+        data.tags = data.tags.filter((tag) => tagsFor(data.type).includes(tag))
       }
       return { ...state, data }
     }
     case 'change': {
       const data = { ...state.data, [action.field]: action.value }
-      if (action.field === 'type') data.tags = data.tags.filter((tag) => (BRIEF_TAGS[action.value] ?? []).includes(tag))
-      return { ...state, data, errors: withoutError(state.errors, action.field) }
+      if (action.field === 'type') data.tags = data.tags.filter((tag) => tagsFor(action.value).includes(tag))
+      return { ...state, data, errors: withoutError(state.errors, action.field), failure: staleFailure(state.failure) }
     }
     case 'toggleTag': {
       const { tags } = state.data
       const next = tags.includes(action.tag) ? tags.filter((tag) => tag !== action.tag) : [...tags, action.tag]
-      return { ...state, data: { ...state.data, tags: next }, errors: withoutError(state.errors, 'tags') }
+      return {
+        ...state,
+        data: { ...state.data, tags: next },
+        errors: withoutError(state.errors, 'tags'),
+        failure: staleFailure(state.failure),
+      }
     }
     case 'next': {
       const errors = validateStep(state.data, state.step)
-      if (Object.keys(errors).length > 0) return { ...state, errors, attempt: state.attempt + 1 }
+      const failure = staleFailure(state.failure)
+      if (Object.keys(errors).length > 0) return { ...state, errors, failure, attempt: state.attempt + 1 }
       return {
         ...state,
         errors: {},
+        failure,
         step: Math.min(state.step + 1, STEP_COUNT - 1),
         direction: action.instant ? 'none' : 'forward',
       }
     }
     case 'back':
-      return { ...state, errors: {}, step: Math.max(0, state.step - 1), direction: action.instant ? 'none' : 'backward' }
+      return {
+        ...state,
+        errors: {},
+        failure: staleFailure(state.failure),
+        step: Math.max(0, state.step - 1),
+        direction: action.instant ? 'none' : 'backward',
+      }
     case 'invalid': {
       const step = firstStepWithError(action.errors)
       return { ...state, errors: action.errors, step: step === -1 ? state.step : step, direction: 'none', attempt: state.attempt + 1 }

@@ -126,4 +126,28 @@ describe('briefReducer', () => {
     // type changed to 'app', but 'booking' and 'shop' are invalid for 'app', only 'ios-android' is valid
     expect(state.data).toEqual({ ...FILLED, type: 'app', tags: ['ios-android'] })
   })
+
+  it('clears a stale failure as soon as the visitor edits or moves', () => {
+    const failed = (step, failure = 'failed') => ({ ...at(step), failure })
+    expect(briefReducer(failed(3), { type: 'change', field: 'name', value: 'Bea' }).failure).toBeNull()
+    expect(briefReducer(failed(1, 'invalid'), { type: 'toggleTag', tag: 'shop' }).failure).toBeNull()
+    expect(briefReducer(failed(1), { type: 'next', instant: false }).failure).toBeNull()
+    expect(briefReducer(failed(3), { type: 'back', instant: false }).failure).toBeNull()
+  })
+
+  it('keeps the rate-limit notice while the visitor edits, so the other way to reach me stays in view', () => {
+    const limited = { ...at(3), failure: 'rate_limited' }
+    expect(briefReducer(limited, { type: 'change', field: 'name', value: 'Bea' }).failure).toBe('rate_limited')
+    expect(briefReducer(limited, { type: 'back', instant: false }).failure).toBe('rate_limited')
+  })
+
+  it('never reads inherited keys as quick tags (a tampered draft cannot crash the form)', () => {
+    const restored = briefReducer(initialBriefState(), {
+      type: 'restore',
+      draft: { type: 'constructor', tags: ['booking'] },
+    })
+    expect(restored.data).toMatchObject({ type: 'constructor', tags: [] })
+    const changed = briefReducer(at(0), { type: 'change', field: 'type', value: 'constructor' })
+    expect(changed.data.tags).toEqual([])
+  })
 })
