@@ -10,7 +10,8 @@
     "og:images": "node scripts/og-images.js",
     "preview": "node scripts/serve-build.js",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "npm run build && playwright test"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
