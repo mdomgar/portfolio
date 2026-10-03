@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { collectErrors, openStatic } from './helpers.js'
+import { collectErrors, findRightOverflow, openStatic } from './helpers.js'
 
 test.describe('home', () => {
   test('ends on the final hero and can be skipped with a key', async ({ page }) => {
@@ -12,6 +12,9 @@ test.describe('home', () => {
     await expect(page.getByRole('heading', { level: 1, name: 'Te la construyo. A medida.' })).toBeVisible()
     await expect(hero.getByRole('link', { name: 'Cuéntame tu proyecto' })).toBeVisible()
     await expect(hero.getByRole('link', { name: 'Ver casos' })).toBeVisible()
+    // The skip only silences the intro: the calls to action keep their press and hover transitions.
+    const ctaTransition = await hero.locator('.btn').first().evaluate((el) => getComputedStyle(el).transitionDuration)
+    expect(ctaTransition).not.toMatch(/^0s(, 0s)*$/)
     expect(errors).toEqual([])
   })
 
@@ -52,6 +55,23 @@ test.describe('home', () => {
       for (const question of await page.locator('.hero-q').all()) await expect(question).toHaveAttribute('data-state', 'settled')
       await expect(page.locator('#servicios')).toHaveAttribute('data-mode', 'stacked')
     })
+
+    test('opens a case from its home card at the top of the page', async ({ page }) => {
+      const errors = collectErrors(page)
+      await openStatic(page)
+      const card = page.getByRole('link', { name: /Ver el caso.*Seenat/ })
+      await card.scrollIntoViewIfNeeded()
+      expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+      await card.click()
+      await expect(page).toHaveURL(/\/casos\/seenat$/)
+      await expect(page.getByRole('heading', { level: 1, name: 'Seenat' })).toBeVisible()
+      // The old bug restored the home's scroll a frame later: wait a few frames before reading it.
+      await page.evaluate(
+        () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, 100)))),
+      )
+      expect(await page.evaluate(() => window.scrollY)).toBe(0)
+      expect(errors).toEqual([])
+    })
   })
 
   test.describe('on a phone', () => {
@@ -62,6 +82,7 @@ test.describe('home', () => {
       await expect(page.locator('#servicios')).toHaveAttribute('data-mode', 'stacked')
       const width = await page.evaluate(() => document.documentElement.scrollWidth)
       expect(width).toBeLessThanOrEqual(375)
+      expect(await findRightOverflow(page)).toEqual([])
     })
   })
 })
