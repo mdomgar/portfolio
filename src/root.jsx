@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from 'react-router'
 import 'lenis/dist/lenis.css'
+import './styles/fonts.css'
 import './styles/tokens.css'
 import './styles/global.css'
 import './styles/pages.css'
@@ -52,14 +53,9 @@ const useHydrated = () =>
 
 export const links = () => [
   { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
-  { rel: 'preconnect', href: 'https://api.fontshare.com', crossOrigin: 'anonymous' },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap',
-  },
-  { rel: 'stylesheet', href: 'https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap' },
+  // Self-hosted fonts (styles/fonts.css). Every page needs the body text; the home route preloads the
+  // hero h1's display face itself.
+  { rel: 'preload', href: '/fonts/inter-latin-var.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
 ]
 
 export function Layout({ children }) {

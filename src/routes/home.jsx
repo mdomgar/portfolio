@@ -23,6 +23,8 @@ export const links = () => [
     imageSizes: PORTRAIT_SIZES,
     fetchPriority: 'high',
   },
+  // The hero h1 (the LCP text) is Clash Display 700.
+  { rel: 'preload', href: '/fonts/clash-display-700.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
 ]
 
 export default function Home() {
