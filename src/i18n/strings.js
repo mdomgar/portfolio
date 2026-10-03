@@ -13,6 +13,8 @@ export const strings = {
   aboutStack: { es: 'Mi stack', en: 'My stack' },
   experienceTitle: { es: 'Experiencia', en: 'Experience' },
   current: { es: 'Actual', en: 'Current' },
+  servicesTitle: { es: 'Lo que puedo construir para ti', en: 'What I can build for you' },
+  servicesProof: { es: 'Prueba', en: 'Proof' },
   projectsTitle: { es: 'Proyectos', en: 'Projects' },
   projectProblem: { es: 'El problema', en: 'The problem' },
   projectSolution: { es: 'La solución', en: 'The solution' },

@@ -1,5 +1,6 @@
 import { useOutletContext } from 'react-router'
 import Hero from '../components/Hero'
+import Services from '../components/Services'
 import About from '../components/About'
 import Experience from '../components/Experience'
 import Projects from '../components/Projects'
@@ -30,6 +31,7 @@ export default function Home() {
   return (
     <>
       <Hero ready={ready} reducedMotion={reducedMotion} />
+      <Services reducedMotion={reducedMotion} />
       <About reducedMotion={reducedMotion} />
       <Experience reducedMotion={reducedMotion} />
       <Projects reducedMotion={reducedMotion} />
