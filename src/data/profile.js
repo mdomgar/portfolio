@@ -5,6 +5,12 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/in/miguel-%C3%A1ngel-dom%C3%ADnguez-garc%C3%ADa-4a0a03265/',
   github: 'https://github.com/mdomgar',
   location: { es: 'Jaén, España', en: 'Jaén, Spain' },
+  // LSSI requires the NIF and a postal address: Miguel fills them in before publishing.
+  legal: {
+    holder: 'Miguel Ángel Domínguez García',
+    nif: null,
+    address: { es: 'Jaén, España', en: 'Jaén, Spain' },
+  },
   hero: {
     questions: [
       { es: '¿Necesitas una web que te traiga clientes?', en: 'Need a website that brings you customers?' },

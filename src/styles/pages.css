@@ -13,3 +13,51 @@
   margin-bottom: 1.5rem;
   color: var(--text-muted);
 }
+
+.legal-body {
+  display: grid;
+  gap: 1.75rem;
+  max-width: 760px;
+}
+
+.legal-body h2 {
+  margin-bottom: 0.6rem;
+  font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+}
+
+.legal-body section p {
+  margin-bottom: 0.6rem;
+  color: var(--text-muted);
+}
+
+.legal-owner {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.legal-owner div {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.legal-owner dt {
+  color: var(--text-muted);
+}
+
+.legal-owner a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.legal-updated {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 479px) {
+  .legal-owner div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.1rem;
+  }
+}

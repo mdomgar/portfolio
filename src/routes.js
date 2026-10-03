@@ -5,5 +5,7 @@ export default [
   index('routes/home.jsx'),
   // One route per published case (same module, unique id) so unknown slugs fall through to the 404.
   ...CASE_SLUGS.map((slug) => route(`casos/${slug}`, 'routes/case.jsx', { id: `case-${slug}` })),
+  route('privacidad', 'routes/privacy.jsx'),
+  route('aviso-legal', 'routes/legal.jsx'),
   route('*', 'routes/not-found.jsx'),
 ]
