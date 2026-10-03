@@ -8,6 +8,9 @@ html {
   background: var(--bg);
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
+  /* The preloader hides the scrollbar; reserving its gutter keeps the layout width the same before
+     and after, so the pins measured underneath it are not a scrollbar wider than the page. */
+  scrollbar-gutter: stable;
 }
 
 html.is-loading {
