@@ -1,4 +1,8 @@
 import { normalizeSiteUrl } from './siteUrl'
+import { profile } from '../data/profile'
+import { services } from '../data/services'
+import { localize } from '../data/localize'
+import { getPageSeo } from '../data/seo'
 
 // `import.meta.env` does not exist when Node scripts (Playwright, og-images) import this file.
 const env = import.meta.env ?? {}
@@ -8,6 +12,49 @@ export const DEFAULT_OG_IMAGE = '/img/og-image.jpg'
 
 export function absoluteUrl(path) {
   return path === '/' ? `${SITE_URL}/` : `${SITE_URL}${path}`
+}
+
+export function buildJsonLd() {
+  const personId = `${SITE_URL}/#person`
+  const address = { '@type': 'PostalAddress', addressLocality: 'Jaén', addressCountry: 'ES' }
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Person',
+        '@id': personId,
+        name: profile.name,
+        url: `${SITE_URL}/`,
+        jobTitle: 'Desarrollador web',
+        email: `mailto:${profile.email}`,
+        address,
+        sameAs: [profile.github, profile.linkedin],
+      },
+      {
+        '@type': 'ProfessionalService',
+        '@id': `${SITE_URL}/#service`,
+        name: `${profile.name} · Desarrollo web`,
+        url: `${SITE_URL}/`,
+        image: absoluteUrl(DEFAULT_OG_IMAGE),
+        description: getPageSeo('/').description,
+        founder: { '@id': personId },
+        areaServed: 'ES',
+        address,
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: 'Servicios',
+          itemListElement: services.map((service) => ({
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: localize(service.title, 'es'),
+              description: localize(service.message, 'es'),
+            },
+          })),
+        },
+      },
+    ],
+  }
 }
 
 export function buildMeta({ title, description, path, image = DEFAULT_OG_IMAGE, noindex = false, type = 'website' }) {

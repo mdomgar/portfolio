@@ -45,7 +45,7 @@ function caseSeo(slug, lang) {
   return {
     title: `${item.name} · ${localize(CASE_STUDY, lang)} · Miguel Ángel Domínguez`,
     description: `${localize(item.label, lang)}. ${localize(item.tagline, lang)}`,
-    image: undefined,
+    image: `/img/og-${slug}.jpg`,
     noindex: false,
   }
 }

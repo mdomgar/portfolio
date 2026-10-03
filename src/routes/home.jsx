@@ -9,9 +9,9 @@ import Brief from '../components/Brief'
 import { useActiveSection } from '../hooks/useActiveSection'
 import { SECTION_IDS } from '../data/sections'
 import { getPageSeo } from '../data/seo'
-import { buildMeta } from '../lib/seo'
+import { buildJsonLd, buildMeta } from '../lib/seo'
 
-export const meta = () => buildMeta({ path: '/', ...getPageSeo('/') })
+export const meta = () => [...buildMeta({ path: '/', ...getPageSeo('/') }), { 'script:ld+json': buildJsonLd() }]
 
 export const links = () => [
   {

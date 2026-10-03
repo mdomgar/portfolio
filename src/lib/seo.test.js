@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { absoluteUrl, buildMeta, SITE_URL } from './seo'
+import { absoluteUrl, buildJsonLd, buildMeta, SITE_URL } from './seo'
+import { getPageSeo } from '../data/seo'
 import { DEFAULT_SITE_URL, normalizeSiteUrl } from './siteUrl'
 
 describe('normalizeSiteUrl', () => {
@@ -39,5 +40,28 @@ describe('buildMeta', () => {
     const notFound = buildMeta({ title: '404', description: 'No existe', path: '/404', noindex: true })
     expect(notFound.find((entry) => entry.name === 'robots').content).toBe('noindex')
     expect(notFound.find((entry) => entry.rel === 'canonical')).toBeUndefined()
+  })
+})
+
+describe('buildJsonLd', () => {
+  it('describes me as a person offering a professional service', () => {
+    const { '@context': context, '@graph': graph } = buildJsonLd()
+    expect(context).toBe('https://schema.org')
+    const person = graph.find((node) => node['@type'] === 'Person')
+    const service = graph.find((node) => node['@type'] === 'ProfessionalService')
+    expect(person).toMatchObject({ name: 'Miguel Ángel Domínguez García', url: `${SITE_URL}/` })
+    expect(person.sameAs).toEqual(['https://github.com/mdomgar', expect.stringContaining('linkedin.com')])
+    expect(service.founder).toEqual({ '@id': person['@id'] })
+    expect(service.hasOfferCatalog.itemListElement.map((offer) => offer.itemOffered.name)).toEqual([
+      'Tu web',
+      'Tu herramienta',
+      'Tu app',
+    ])
+  })
+})
+
+describe('case social images', () => {
+  it('uses a dedicated image per case', () => {
+    expect(getPageSeo('/casos/seenat').image).toBe('/img/og-seenat.jpg')
   })
 })
