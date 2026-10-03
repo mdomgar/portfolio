@@ -1,6 +1,6 @@
 /*
  * Stacked is the default layout: phones, reduced motion, and the prerendered HTML (which cannot know
- * either). The pinned layout is opt-in through the media query at the bottom, so the page never flips
+ * either). The pinned layout is opt-in through the media query below, so the page never flips
  * after hydration. Services.jsx arms the ScrollTrigger pin only where that query applies.
  */
 .services-panels {
@@ -68,7 +68,7 @@
   display: none;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .service-panel {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: clamp(2rem, 5vw, 4rem);
@@ -78,7 +78,7 @@
 }
 
 /* Pinned: the message on the left, the 3D scene shows the piece on the right. */
-@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+@media (width >= 768px) and (prefers-reduced-motion: no-preference) {
   .services {
     padding-block: 0;
   }
@@ -190,9 +190,19 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+@media (768px <= width < 1024px) and (prefers-reduced-motion: no-preference) {
   .service-panel {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Single column: the copy sits over the monitor bezel, so it gets the stacked layout's panel. */
+  .service-copy {
+    padding: 1.5rem;
+    background: rgba(19, 23, 34, 0.72);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
   }
 }
 

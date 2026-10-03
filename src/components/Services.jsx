@@ -14,7 +14,8 @@ import ScreenPreview from './ScreenPreview'
 import SplitWords from './SplitWords'
 import './css/Services.css'
 
-const NARROW = '(max-width: 767px)'
+// Range syntax, same as Services.css: no fractional width (zoom) falls between the two queries.
+const NARROW = '(width < 768px)'
 const REDUCED = '(prefers-reduced-motion: reduce)'
 
 function ServiceProof({ service }) {
@@ -114,7 +115,8 @@ export default function Services({ reducedMotion }) {
                     <ServiceProof service={service} />
                   </div>
                   <figure className="service-figure">
-                    <ScreenPreview screen={service.screen} reducedMotion={stacked} />
+                    {/* A hidden pinned panel still intersects the viewport: draw it still, with no rAF loop. */}
+                    <ScreenPreview screen={service.screen} reducedMotion={stacked || index !== active} />
                   </figure>
                 </li>
               ))}

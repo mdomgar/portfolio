@@ -13,7 +13,7 @@ beforeEach(() => {
 
 describe('Services', () => {
   it('stacks the three services, each with a preview, on small screens', () => {
-    mockMatchMedia((query) => query === '(max-width: 767px)')
+    mockMatchMedia((query) => query === '(width < 768px)')
     renderWithRouter(<Services reducedMotion={false} />)
     expect(section()).toHaveAttribute('data-mode', 'stacked')
     expect(screen.getByRole('heading', { level: 2, name: 'Lo que puedo construir para ti' })).toBeInTheDocument()
