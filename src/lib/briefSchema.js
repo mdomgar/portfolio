@@ -8,6 +8,7 @@ export const BRIEF_TAGS = {
   unsure: [],
 }
 export const LIMITS = { detailsMin: 20, detailsMax: 2000, name: 100, email: 254, phone: 30 }
+export const MIN_PHONE_LENGTH = 6
 export const MIN_ELAPSED_MS = 3000
 export const MAX_BODY_BYTES = 10 * 1024
 export const STEP_FIELDS = [['type'], ['details', 'tags'], ['timeline'], ['name', 'email', 'phone', 'privacy']]
@@ -15,7 +16,7 @@ export const STEP_COUNT = STEP_FIELDS.length
 export const EMPTY_BRIEF = { type: '', details: '', tags: [], timeline: '', name: '', email: '', phone: '', privacy: false }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-const PHONE_RE = new RegExp(`^\\+?[\\d ().-]{6,${LIMITS.phone - 1}}$`)
+const PHONE_RE = /^\+?[\d ().-]+$/
 // eslint-disable-next-line no-control-regex
 const CONTROL_CHAR_RE = /[\u0000-\u001F\u007F-\u009F]/
 
@@ -64,7 +65,7 @@ const CHECKS = {
   phone: ({ phone }) => {
     if (!phone) return null
     if (CONTROL_CHAR_RE.test(phone)) return 'invalid_phone'
-    if (phone.length > LIMITS.phone) return 'invalid_phone'
+    if (phone.length < MIN_PHONE_LENGTH || phone.length > LIMITS.phone) return 'invalid_phone'
     return PHONE_RE.test(phone) ? null : 'invalid_phone'
   },
   privacy: ({ privacy }) => (privacy ? null : 'must_accept'),

@@ -110,9 +110,19 @@ describe('validateBrief', () => {
   })
 
   it('enforces phone length limits from LIMITS.phone', () => {
-    expect(errorsFor({ phone: '+' + '0'.repeat(29) }).phone).toBeUndefined() // 30 chars
-    expect(errorsFor({ phone: '+' + '0'.repeat(30) }).phone).toBe('invalid_phone') // 31 chars
-    expect(errorsFor({ phone: '00000' }).phone).toBe('invalid_phone') // 5 chars
+    // 30 digits without + is valid
+    expect(errorsFor({ phone: '0'.repeat(30) }).phone).toBeUndefined()
+    // + plus 29 digits (30 total) is valid
+    expect(errorsFor({ phone: '+' + '0'.repeat(29) }).phone).toBeUndefined()
+    // 31 characters with and without + is invalid
+    expect(errorsFor({ phone: '0'.repeat(31) }).phone).toBe('invalid_phone')
+    expect(errorsFor({ phone: '+' + '0'.repeat(30) }).phone).toBe('invalid_phone')
+    // 6 characters without + is valid
+    expect(errorsFor({ phone: '000000' }).phone).toBeUndefined()
+    // + plus 5 digits (6 total) is valid
+    expect(errorsFor({ phone: '+00000' }).phone).toBeUndefined()
+    // 5 characters is invalid
+    expect(errorsFor({ phone: '00000' }).phone).toBe('invalid_phone')
   })
 })
 
