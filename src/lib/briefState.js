@@ -22,9 +22,22 @@ function withoutError(errors, field) {
 }
 
 export function briefReducer(state, action) {
+  // While sending, ignore actions that modify state or submit again
+  if (state.status === 'sending') {
+    if (['change', 'next', 'back', 'invalid', 'restore', 'toggleTag', 'submitStart'].includes(action.type)) {
+      return state
+    }
+  }
+
   switch (action.type) {
-    case 'restore':
-      return { ...state, data: { ...state.data, ...sanitizeDraft(action.draft) } }
+    case 'restore': {
+      let data = { ...state.data, ...sanitizeDraft(action.draft) }
+      // Apply tag filtering if type was restored, same as 'change' does
+      if ('type' in action.draft) {
+        data.tags = data.tags.filter((tag) => (BRIEF_TAGS[data.type] ?? []).includes(tag))
+      }
+      return { ...state, data }
+    }
     case 'change': {
       const data = { ...state.data, [action.field]: action.value }
       if (action.field === 'type') data.tags = data.tags.filter((tag) => (BRIEF_TAGS[action.value] ?? []).includes(tag))
@@ -52,10 +65,16 @@ export function briefReducer(state, action) {
       return { ...state, errors: action.errors, step: step === -1 ? state.step : step, direction: 'none', attempt: state.attempt + 1 }
     }
     case 'submitStart':
+      // Only submit from 'editing' status
+      if (state.status !== 'editing') return state
       return { ...state, status: 'sending', failure: null }
     case 'submitSuccess':
+      // Only succeed from 'sending' status
+      if (state.status !== 'sending') return state
       return { ...state, status: 'success', failure: null }
     case 'submitFailure': {
+      // Only fail from 'sending' status
+      if (state.status !== 'sending') return state
       if (action.kind === 'invalid' && action.fields?.length) {
         const errors = Object.fromEntries(action.fields.map((field) => [field, 'invalid']))
         const step = firstStepWithError(errors)

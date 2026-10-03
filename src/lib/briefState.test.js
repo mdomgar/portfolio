@@ -83,4 +83,47 @@ describe('briefReducer', () => {
     })
     expect(briefReducer(sending, { type: 'submitSuccess' }).status).toBe('success')
   })
+
+  it('submitStart while sending returns the same state', () => {
+    const sending = briefReducer(at(3), { type: 'submitStart' })
+    const result = briefReducer(sending, { type: 'submitStart' })
+    expect(result).toBe(sending)
+  })
+
+  it('submitStart after success returns the same state', () => {
+    const sending = briefReducer(at(3), { type: 'submitStart' })
+    const success = briefReducer(sending, { type: 'submitSuccess' })
+    const result = briefReducer(success, { type: 'submitStart' })
+    expect(result).toBe(success)
+  })
+
+  it('submitFailure after success is ignored', () => {
+    const sending = briefReducer(at(3), { type: 'submitStart' })
+    const success = briefReducer(sending, { type: 'submitSuccess' })
+    const result = briefReducer(success, { type: 'submitFailure', kind: 'failed' })
+    expect(result).toBe(success)
+  })
+
+  it('change while sending is ignored', () => {
+    const sending = briefReducer(at(3), { type: 'submitStart' })
+    const result = briefReducer(sending, { type: 'change', field: 'name', value: 'Bob' })
+    expect(result).toBe(sending)
+    expect(result.data.name).toBe('Ana')
+  })
+
+  it('after submitStart then submitFailure, data is deep-equal to before submitting', () => {
+    const beforeSubmit = { ...at(3) }
+    const sending = briefReducer(beforeSubmit, { type: 'submitStart' })
+    const afterFailure = briefReducer(sending, { type: 'submitFailure', kind: 'failed' })
+    expect(afterFailure.data).toEqual(beforeSubmit.data)
+  })
+
+  it('restore filters incompatible tags for the restored type', () => {
+    const state = briefReducer(at(0, { ...FILLED, type: 'web', tags: ['booking', 'shop'] }), {
+      type: 'restore',
+      draft: { type: 'app', tags: ['booking', 'shop', 'ios-android'] },
+    })
+    // type changed to 'app', but 'booking' and 'shop' are invalid for 'app', only 'ios-android' is valid
+    expect(state.data).toEqual({ ...FILLED, type: 'app', tags: ['ios-android'] })
+  })
 })
