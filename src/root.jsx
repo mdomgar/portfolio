@@ -93,8 +93,12 @@ export default function App() {
   useMicroInteractions(ready && !reducedMotion)
 
   useEffect(() => {
-    // A new page means new trigger positions (pins, scroll-linked effects).
-    const frame = requestAnimationFrame(() => ScrollTrigger.refresh())
+    // A new page means new trigger positions (pins, scroll-linked effects). Only refresh when the page
+    // has triggers: with none, refresh() just restores the scroll it recorded on the previous page, which
+    // left a case page opened from the home (reduced motion) part-way down.
+    const frame = requestAnimationFrame(() => {
+      if (ScrollTrigger.getAll().length) ScrollTrigger.refresh()
+    })
     return () => cancelAnimationFrame(frame)
   }, [pathname])
 
