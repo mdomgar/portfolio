@@ -16,6 +16,7 @@ export const strings = {
   servicesTitle: { es: 'Lo que puedo construir para ti', en: 'What I can build for you' },
   servicesProof: { es: 'Prueba', en: 'Proof' },
   casesTitle: { es: 'Casos', en: 'Case studies' },
+  processTitle: { es: 'Cómo trabajo', en: 'How I work' },
   caseCta: { es: 'Ver el caso', en: 'Read the case study' },
   caseStack: { es: 'Tecnologías', en: 'Technologies' },
   dashboardAlt: {
