@@ -72,6 +72,12 @@
   animation: none;
 }
 
+/* Nothing in the copy shows before the hand-over, so keep it out of paint altogether: the web fonts
+   swap in under the preloader and re-wrap the hidden questions, which would count as layout shift. */
+.hero[data-ready='false'] .hero-content {
+  visibility: hidden;
+}
+
 .hero-q[data-state='past'] {
   animation: hero-q-out 280ms var(--ease-out) both;
 }
