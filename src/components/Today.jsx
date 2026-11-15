@@ -3,7 +3,7 @@ import { localize } from '../data/localize'
 import { useLang, useT } from '../i18n/useLang'
 import './css/Today.css'
 
-export default function Today() {
+export default function Today({ reducedMotion: _reducedMotion }) {
   const lang = useLang()
   const t = useT()
 

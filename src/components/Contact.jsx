@@ -4,7 +4,7 @@ import { useT } from '../i18n/useLang'
 import CopyEmailButton from './CopyEmailButton'
 import './css/Contact.css'
 
-export default function Contact() {
+export default function Contact({ reducedMotion: _reducedMotion }) {
   const t = useT()
 
   return (

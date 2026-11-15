@@ -49,7 +49,9 @@
   margin-inline: auto;
 }
 
+/* Every act word shares one size, set by the longest, SERVIDORES (measured 6.3em wide). */
 .act-word {
+  --em: 6.6;
   grid-area: word;
 }
 

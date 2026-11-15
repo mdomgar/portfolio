@@ -9,6 +9,7 @@ describe('Opening', () => {
     const heading = screen.getByRole('heading', { level: 1 })
     expect(heading).toHaveTextContent('Miguel Ángel')
     expect(heading).toHaveTextContent('Web developer')
+    expect(heading).toHaveAccessibleName(/^Miguel Ángel,\s*Web developer$/)
   })
 
   it('shows the statement and the context, and keeps the sequence slot out of the accessibility tree', () => {

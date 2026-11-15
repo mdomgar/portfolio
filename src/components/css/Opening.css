@@ -15,7 +15,7 @@
   --em: 8.6;
   grid-area: title;
   align-self: end;
-  font-size: clamp(2.5rem, calc(92vw / var(--em)), 15rem);
+  font-size: clamp(1.75rem, calc(92vw / var(--em)), 15rem);
 }
 
 .opening-line {
@@ -75,7 +75,7 @@
   /* Each line wraps by word, so up to four stacked words: the longest is "DEVELOPER". */
   .opening-title {
     --em: 6;
-    font-size: clamp(2.5rem, calc(90vw / var(--em)), 15rem);
+    font-size: clamp(1.75rem, calc(90vw / var(--em)), 15rem);
   }
 
   .opening-line {

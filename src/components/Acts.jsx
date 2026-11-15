@@ -4,7 +4,7 @@ import './css/Acts.css'
 
 // Four stacked colour blocks. The order is thematic (hardware to code), not chronological, so each
 // fact sheet shows its real period. `.act-art` is the slot for the act's illustration.
-export default function Acts() {
+export default function Acts({ reducedMotion: _reducedMotion }) {
   const lang = useLang()
   const t = useT()
   const acts = getActs(lang)
@@ -19,7 +19,7 @@ export default function Acts() {
       {acts.map((act, index) => (
         <article key={act.id} className="act" data-act={act.id}>
           <div className="act-inner">
-            <p className="giant act-word" style={{ '--em': 7.6 }} aria-hidden="true">
+            <p className="giant act-word" aria-hidden="true">
               {act.word}
             </p>
             <div className="act-sheet">

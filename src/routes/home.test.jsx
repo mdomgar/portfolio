@@ -6,7 +6,7 @@ import Home, { meta } from './home'
 describe('home route', () => {
   it('renders the name and the role as the page heading', async () => {
     renderPage(Home)
-    expect(await screen.findByRole('heading', { level: 1, name: /Miguel Ángel\s*Web developer/ })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1, name: /Miguel Ángel,\s*Web developer/ })).toBeInTheDocument()
   })
 
   it('renders the six sections in order', async () => {

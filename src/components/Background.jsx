@@ -5,7 +5,7 @@ import { useLang, useT } from '../i18n/useLang'
 import TechList from './TechList'
 import './css/Background.css'
 
-export default function Background() {
+export default function Background({ reducedMotion: _reducedMotion }) {
   const lang = useLang()
   const t = useT()
 
