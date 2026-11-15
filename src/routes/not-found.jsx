@@ -1,6 +1,5 @@
 import { Link } from 'react-router'
 import { useT } from '../i18n/useLang'
-import { usePageScene } from '../hooks/usePageScene'
 import { getPageSeo } from '../data/seo'
 import { NOT_FOUND_PATH } from '../data/site'
 import { buildMeta } from '../lib/seo'
@@ -8,7 +7,6 @@ import { buildMeta } from '../lib/seo'
 export const meta = () => buildMeta({ path: NOT_FOUND_PATH, ...getPageSeo(NOT_FOUND_PATH) })
 
 export default function NotFound() {
-  usePageScene('case')
   const t = useT()
   return (
     <section className="section page-simple" aria-labelledby="not-found-title">

@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { NOT_FOUND_PATH, PRERENDER_PATHS, PUBLIC_PATHS } from './site'
 import { getPageSeo } from './seo'
@@ -24,6 +25,18 @@ describe('site routes', () => {
       titles.add(getPageSeo(path).title)
     }
     expect(titles.size).toBe(PRERENDER_PATHS.length)
+  })
+
+  it('publishes the home, the SolarMetrics case and the legal notice', () => {
+    expect(PUBLIC_PATHS).toEqual(['/', '/casos/solarmetrics', '/aviso-legal'])
+  })
+
+  it('redirects the retired pages to the home and has no serverless functions', () => {
+    const config = JSON.parse(readFileSync('vercel.json', 'utf8'))
+    expect(config).not.toHaveProperty('functions')
+    for (const source of ['/casos/seenat', '/privacidad']) {
+      expect(config.redirects).toContainEqual({ source, destination: '/', permanent: true })
+    }
   })
 
   it('returns null for unknown pages', () => {

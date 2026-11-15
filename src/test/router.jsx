@@ -5,9 +5,9 @@ export function renderWithRouter(ui, { route = '/' } = {}) {
   return render(<MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>)
 }
 
-// Renders a route module the way root.jsx does: inside an <Outlet> that provides { ready, reducedMotion }.
+// Renders a route module the way root.jsx does: inside an <Outlet> that provides { reducedMotion }.
 export function renderPage(Page, { path = '/', route = path === '*' ? '/' : path, context } = {}) {
-  const outletContext = context ?? { ready: true, reducedMotion: true }
+  const outletContext = context ?? { reducedMotion: true }
   function Shell() {
     return <Outlet context={outletContext} />
   }

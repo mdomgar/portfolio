@@ -12,13 +12,6 @@ const PAGES = {
       en: 'Web developer based in Jaén, Spain. I build websites for businesses, custom web tools and mobile apps, from idea to launch.',
     },
   },
-  '/privacidad': {
-    title: { es: 'Privacidad · Miguel Ángel Domínguez', en: 'Privacy · Miguel Ángel Domínguez' },
-    description: {
-      es: 'Qué datos trato cuando me envías tu proyecto desde el formulario, para qué, cuánto tiempo y cómo ejercer tus derechos.',
-      en: 'What data I process when you send me your project through the form, why, for how long and how to exercise your rights.',
-    },
-  },
   '/aviso-legal': {
     title: { es: 'Aviso legal · Miguel Ángel Domínguez', en: 'Legal notice · Miguel Ángel Domínguez' },
     description: {

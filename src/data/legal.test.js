@@ -16,11 +16,4 @@ describe('legal pages', () => {
       }
     }
   })
-
-  it('cover what the spec asks the privacy policy to say', () => {
-    const text = legalPages.privacy.sections.flatMap((section) => section.body.es).join(' ')
-    for (const fragment of ['responderte', 'consentimiento', '12 meses', 'Resend', 'encargado', 'aepd.es', '{email}']) {
-      expect(text, fragment).toContain(fragment)
-    }
-  })
 })

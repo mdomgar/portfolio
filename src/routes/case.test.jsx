@@ -1,18 +1,12 @@
 import { screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import CasePage, { meta } from './case'
 import { renderPage } from '../test/router'
-import { useSceneStore } from '../store/sceneStore'
-
-beforeEach(() => {
-  useSceneStore.setState(useSceneStore.getInitialState(), true)
-})
 
 describe('case route', () => {
-  it('renders the case for the current URL and dims the scene', async () => {
-    renderPage(CasePage, { path: '/casos/seenat' })
-    expect(await screen.findByRole('heading', { level: 1, name: 'Seenat' })).toBeInTheDocument()
-    expect(useSceneStore.getState().section).toBe('case')
+  it('renders the case for the current URL', async () => {
+    renderPage(CasePage, { path: '/casos/solarmetrics' })
+    expect(await screen.findByRole('heading', { level: 1, name: 'SolarMetrics' })).toBeInTheDocument()
   })
 
   it('falls back to the not-found content for an unknown case', async () => {

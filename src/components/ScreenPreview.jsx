@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { SCREENS } from '../scene/screens'
+import { SCREENS } from '../lib/screens'
 import { useLang, useT } from '../i18n/useLang'
 import './css/ScreenPreview.css'
 

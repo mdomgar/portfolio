@@ -1,8 +1,8 @@
 export const NOT_FOUND_PATH = '/404'
 
-export const CASE_SLUGS = ['solarmetrics', 'seenat']
+export const CASE_SLUGS = ['solarmetrics']
 
-export const LEGAL_PATHS = ['/privacidad', '/aviso-legal']
+export const LEGAL_PATHS = ['/aviso-legal']
 
 export const PUBLIC_PATHS = ['/', ...CASE_SLUGS.map((slug) => `/casos/${slug}`), ...LEGAL_PATHS]
 

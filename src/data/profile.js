@@ -23,8 +23,8 @@ export const profile = {
       en: "I'm Miguel Ángel, a web developer. I offer my services to build whatever your project needs: a website, a custom tool or a mobile app, from idea to launch.",
     },
     proof: {
-      es: 'Web Developer en Macrosad · Creador de Seenat y SolarMetrics',
-      en: 'Web Developer at Macrosad · Creator of Seenat and SolarMetrics',
+      es: 'Web Developer en Macrosad · Creador de SolarMetrics',
+      en: 'Web Developer at Macrosad · Creator of SolarMetrics',
     },
   },
   about: {

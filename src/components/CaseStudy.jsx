@@ -1,4 +1,3 @@
-import { Link } from 'react-router'
 import { FaGithub } from 'react-icons/fa'
 import { FiExternalLink } from 'react-icons/fi'
 import { localize } from '../data/localize'
@@ -120,13 +119,6 @@ export default function CaseStudy({ item, reducedMotion }) {
             </ol>
           </section>
         )}
-
-        <aside className="card case-cta" aria-labelledby="case-cta-title">
-          <h2 id="case-cta-title">{t('caseCtaTitle')}</h2>
-          <Link className="btn btn-primary" to="/#brief">
-            {t('ctaBrief')}
-          </Link>
-        </aside>
       </div>
     </article>
   )

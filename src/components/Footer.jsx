@@ -15,9 +15,6 @@ export default function Footer() {
         </p>
         <ul className="footer-links">
           <li>
-            <Link to="/privacidad">{t('footerPrivacy')}</Link>
-          </li>
-          <li>
             <Link to="/aviso-legal">{t('footerLegal')}</Link>
           </li>
           <li>
@@ -33,7 +30,6 @@ export default function Footer() {
             </a>
           </li>
         </ul>
-        <p className="mono">{t('footerBuilt')}</p>
       </div>
     </footer>
   )

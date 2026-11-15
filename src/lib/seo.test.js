@@ -28,12 +28,12 @@ describe('buildMeta', () => {
 
   it('keeps the trailing slash only for the home page', () => {
     expect(absoluteUrl('/')).toBe(`${SITE_URL}/`)
-    expect(absoluteUrl('/privacidad')).toBe(`${SITE_URL}/privacidad`)
+    expect(absoluteUrl('/aviso-legal')).toBe(`${SITE_URL}/aviso-legal`)
   })
 
   it('accepts a page-specific social image', () => {
-    const custom = buildMeta({ title: 'T', description: 'D', path: '/', image: '/img/og-seenat.jpg' })
-    expect(custom.find((entry) => entry.property === 'og:image').content).toBe(`${SITE_URL}/img/og-seenat.jpg`)
+    const custom = buildMeta({ title: 'T', description: 'D', path: '/', image: '/img/og-example.jpg' })
+    expect(custom.find((entry) => entry.property === 'og:image').content).toBe(`${SITE_URL}/img/og-example.jpg`)
   })
 
   it('marks pages as noindex and leaves out the canonical', () => {
@@ -44,7 +44,7 @@ describe('buildMeta', () => {
 })
 
 describe('buildJsonLd', () => {
-  it('describes me as a person offering a professional service', () => {
+  it('describes me as a person with a professional service', () => {
     const { '@context': context, '@graph': graph } = buildJsonLd()
     expect(context).toBe('https://schema.org')
     const person = graph.find((node) => node['@type'] === 'Person')
@@ -52,16 +52,11 @@ describe('buildJsonLd', () => {
     expect(person).toMatchObject({ name: 'Miguel Ángel Domínguez García', url: `${SITE_URL}/` })
     expect(person.sameAs).toEqual(['https://github.com/mdomgar', expect.stringContaining('linkedin.com')])
     expect(service.founder).toEqual({ '@id': person['@id'] })
-    expect(service.hasOfferCatalog.itemListElement.map((offer) => offer.itemOffered.name)).toEqual([
-      'Tu web',
-      'Tu herramienta',
-      'Tu app',
-    ])
   })
 })
 
 describe('case social images', () => {
   it('uses a dedicated image per case', () => {
-    expect(getPageSeo('/casos/seenat').image).toBe('/img/og-seenat.jpg')
+    expect(getPageSeo('/casos/solarmetrics').image).toBe('/img/og-solarmetrics.jpg')
   })
 })

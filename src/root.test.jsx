@@ -1,8 +1,11 @@
 import { render } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import { MemoryRouter, Route, Routes } from 'react-router'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import App, { links } from './root'
+
+// Lenis needs ResizeObserver, which jsdom lacks.
+vi.mock('./hooks/useSmoothScroll', () => ({ useSmoothScroll: () => {} }))
 
 const tree = (
   <MemoryRouter>
@@ -29,17 +32,14 @@ describe('document links', () => {
 })
 
 describe('App shell', () => {
-  it('never prerenders main or the navbar as inert, so the page still works if the JavaScript fails', () => {
-    const container = document.createElement('div')
-    container.innerHTML = renderToString(tree)
-    expect(container.querySelector('main')).not.toHaveAttribute('inert')
-    expect(container.querySelector('header')).not.toHaveAttribute('inert')
-    expect(container.querySelector('main')).toHaveTextContent('Página')
-  })
-
-  it('locks main and the navbar behind the preloader once hydrated', () => {
+  it('never renders main or the navbar as inert, before or after hydration', () => {
+    const prerendered = document.createElement('div')
+    prerendered.innerHTML = renderToString(tree)
     const { container } = render(tree)
-    expect(container.querySelector('main')).toHaveAttribute('inert')
-    expect(container.querySelector('header')).toHaveAttribute('inert')
+    for (const root of [prerendered, container]) {
+      expect(root.querySelector('main')).not.toHaveAttribute('inert')
+      expect(root.querySelector('header')).not.toHaveAttribute('inert')
+      expect(root.querySelector('main')).toHaveTextContent('Página')
+    }
   })
 })

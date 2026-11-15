@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { profile } from './profile'
-import { services } from './services'
-import { processSteps } from './process'
-import { now } from './now'
 import { experience, JOURNEY_IDS } from './experience'
 import { cases, getCase } from './cases'
 import { CASE_SLUGS } from './site'
@@ -23,49 +20,12 @@ describe('hero and about copy', () => {
     for (const key of ['answer', 'intro', 'proof']) expect(isLocalized(profile.hero[key]), key).toBe(true)
     expect(profile.hero.questions[0].es).toBe('¿Necesitas una web que te traiga clientes?')
     expect(profile.hero.answer.es).toBe('Te la construyo. A medida.')
-    expect(profile.hero.proof.es).toBe('Web Developer en Macrosad · Creador de Seenat y SolarMetrics')
+    expect(profile.hero.proof.es).toBe('Web Developer en Macrosad · Creador de SolarMetrics')
   })
 
   it('tells the story in both languages', () => {
     for (const key of ['hook', 'text', 'education']) expect(isLocalized(profile.about[key]), key).toBe(true)
     expect(profile.about.education.es).toBe('Doble titulación ASIR + DAM · nota media 9,7')
-  })
-})
-
-describe('services', () => {
-  it('offers web, tool and app in order, each with its proof', () => {
-    expect(services.map((service) => service.id)).toEqual(['web', 'tool', 'app'])
-    expect(services.map((service) => service.number)).toEqual(['01', '02', '03'])
-    for (const service of services) {
-      for (const key of ['title', 'message', 'includes']) expect(isLocalized(service[key]), `${service.id}.${key}`).toBe(true)
-      if (service.caseSlug !== null) expect(CASE_SLUGS).toContain(service.caseSlug)
-    }
-    // The hair-salon demo arrives in phase E; until then the web service has no proof link.
-    expect(services[0].caseSlug).toBeNull()
-  })
-})
-
-describe('process', () => {
-  it('has four numbered steps', () => {
-    expect(processSteps.map((step) => step.number)).toEqual(['01', '02', '03', '04'])
-    for (const step of processSteps) {
-      expect(isLocalized(step.title), step.id).toBe(true)
-      expect(isLocalized(step.detail), step.id).toBe(true)
-    }
-  })
-})
-
-describe('right now', () => {
-  it('was updated less than 120 days ago (update src/data/now.js if this fails)', () => {
-    expect(now.updated).toMatch(/^\d{4}-\d{2}-\d{2}$/)
-    const ageInDays = (Date.now() - Date.parse(`${now.updated}T00:00:00Z`)) / 86_400_000
-    expect(ageInDays).toBeGreaterThanOrEqual(0)
-    expect(ageInDays).toBeLessThan(120)
-  })
-
-  it('lists what I am building, learning and enjoying', () => {
-    expect(now.items.map((item) => item.id)).toEqual(['building', 'learning', 'enjoying'])
-    for (const item of now.items) expect(isLocalized(item.label) && isLocalized(item.text), item.id).toBe(true)
   })
 })
 
@@ -83,7 +43,7 @@ describe('journey', () => {
 describe('cases', () => {
   it('matches the published slugs', () => {
     expect(cases.map((item) => item.slug)).toEqual(CASE_SLUGS)
-    expect(getCase('seenat').name).toBe('Seenat')
+    expect(getCase('solarmetrics').name).toBe('SolarMetrics')
     expect(getCase('nope')).toBeNull()
   })
 
@@ -99,8 +59,7 @@ describe('cases', () => {
       for (const id of item.stack) expect(TECH[id], `${item.slug}: ${id}`).toBeDefined()
     }
     expect(getCase('solarmetrics').label.es).toContain('Proyecto de fin de grado')
-    expect(getCase('seenat').label.es).toContain('En desarrollo')
-    expect(getCase('seenat').status).toBe('in-progress')
+    expect(getCase('solarmetrics').status).toBe('done')
   })
 
   it('only shows real figures: a highlight sentence or numeric stats, never both empty', () => {
@@ -113,31 +72,5 @@ describe('cases', () => {
       }
     }
     expect(getCase('solarmetrics').stats).toEqual([])
-  })
-
-  it('uses "160+" for Seenat tests and avoids exact counts', () => {
-    const seenatTests = getCase('seenat').stats.find((s) => s.id === 'tests')
-    expect(seenatTests.value).toBe('160+')
-    // Verify that the serialized Seenat data never contains the exact count '163'
-    const seenatSerialized = JSON.stringify(getCase('seenat'))
-    expect(seenatSerialized).not.toContain('"163"')
-  })
-
-  it('keeps the development journal dated and newest first', () => {
-    const journal = getCase('seenat').journal
-    expect(journal.length).toBeGreaterThan(0)
-    for (const entry of journal) {
-      expect(entry.date).toMatch(/^\d{4}-\d{2}-\d{2}$/)
-      expect(isLocalized(entry.text)).toBe(true)
-    }
-    const dates = journal.map((entry) => entry.date)
-    expect([...dates].sort().reverse()).toEqual(dates)
-  })
-
-  it('describes the privacy flow step by step', () => {
-    const { flow } = getCase('seenat')
-    expect(isLocalized(flow.title)).toBe(true)
-    expect(flow.steps).toHaveLength(3)
-    for (const step of flow.steps) expect(isLocalized(step.title) && isLocalized(step.text)).toBe(true)
   })
 })

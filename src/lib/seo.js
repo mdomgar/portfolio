@@ -1,7 +1,5 @@
 import { normalizeSiteUrl } from './siteUrl'
 import { profile } from '../data/profile'
-import { services } from '../data/services'
-import { localize } from '../data/localize'
 import { getPageSeo } from '../data/seo'
 
 // `import.meta.env` does not exist when Node scripts (Playwright, og-images) import this file.
@@ -40,18 +38,6 @@ export function buildJsonLd() {
         founder: { '@id': personId },
         areaServed: 'ES',
         address,
-        hasOfferCatalog: {
-          '@type': 'OfferCatalog',
-          name: 'Servicios',
-          itemListElement: services.map((service) => ({
-            '@type': 'Offer',
-            itemOffered: {
-              '@type': 'Service',
-              name: localize(service.title, 'es'),
-              description: localize(service.message, 'es'),
-            },
-          })),
-        },
       },
     ],
   }

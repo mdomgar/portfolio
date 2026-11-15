@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { localize } from './localize'
 import { profile } from './profile'
-import { NAV_ITEMS, SECTIONS, SECTION_IDS } from './sections'
 import { experience } from './experience'
 import { TECH } from './skills'
 import { strings } from '../i18n/strings'
@@ -40,14 +39,8 @@ describe('content', () => {
       expect(isLocalized(job.period), job.id).toBe(true)
       expect(job.tasks.es.length, job.id).toBe(job.tasks.en.length)
     }
-    for (const section of SECTIONS) expect(isLocalized(section.label), section.id).toBe(true)
-    for (const item of NAV_ITEMS) expect(isLocalized(item.label), item.id).toBe(true)
     for (const [key, value] of Object.entries(strings)) expect(isLocalized(value), key).toBe(true)
     expect(isLocalized(profile.location)).toBe(true)
-  })
-
-  it('uses unique section ids in page order', () => {
-    expect(SECTION_IDS).toEqual(['hero', 'servicios', 'casos', 'proceso', 'quien-soy', 'ahora', 'brief'])
   })
 
   it('gives every technology a name, an icon and a colour', () => {

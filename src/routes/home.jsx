@@ -1,45 +1,15 @@
-import { useOutletContext } from 'react-router'
-import Hero from '../components/Hero'
-import { PORTRAIT_SIZES } from '../components/HeroPortrait'
-import Services from '../components/Services'
-import Cases from '../components/Cases'
-import Process from '../components/Process'
-import WhoAmI from '../components/WhoAmI'
-import Now from '../components/Now'
-import Brief from '../components/Brief'
-import { useActiveSection } from '../hooks/useActiveSection'
-import { SECTION_IDS } from '../data/sections'
+import { profile } from '../data/profile'
 import { getPageSeo } from '../data/seo'
 import { buildJsonLd, buildMeta } from '../lib/seo'
 
 export const meta = () => [...buildMeta({ path: '/', ...getPageSeo('/') }), { 'script:ld+json': buildJsonLd() }]
 
-export const links = () => [
-  {
-    rel: 'preload',
-    as: 'image',
-    href: '/img/portrait-1086.webp',
-    imageSrcSet: '/img/portrait-540.webp 540w, /img/portrait-1086.webp 1086w',
-    imageSizes: PORTRAIT_SIZES,
-    fetchPriority: 'high',
-  },
-  // The hero h1 (the LCP text) is Clash Display 700.
-  { rel: 'preload', href: '/fonts/clash-display-700.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
-]
-
 export default function Home() {
-  const { ready, reducedMotion } = useOutletContext()
-  useActiveSection(SECTION_IDS)
-
   return (
-    <>
-      <Hero ready={ready} reducedMotion={reducedMotion} />
-      <Services reducedMotion={reducedMotion} />
-      <Cases />
-      <Process reducedMotion={reducedMotion} />
-      <WhoAmI reducedMotion={reducedMotion} />
-      <Now />
-      <Brief />
-    </>
+    <section id="inicio" className="section">
+      <div className="container">
+        <h1>{profile.shortName}</h1>
+      </div>
+    </section>
   )
 }

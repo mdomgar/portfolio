@@ -3,7 +3,6 @@ import CaseStudy from '../components/CaseStudy'
 import NotFound from './not-found'
 import { getCase } from '../data/cases'
 import { getPageSeo } from '../data/seo'
-import { usePageScene } from '../hooks/usePageScene'
 import { buildMeta } from '../lib/seo'
 
 export const meta = ({ location }) => {
@@ -15,7 +14,6 @@ export const meta = ({ location }) => {
 export default function CasePage() {
   const { pathname } = useLocation()
   const { reducedMotion } = useOutletContext()
-  usePageScene('case')
   const item = getCase(pathname.split('/').filter(Boolean).pop())
   // Defensive: routes.js only registers published slugs, so this is unreachable today.
   if (!item) return <NotFound />

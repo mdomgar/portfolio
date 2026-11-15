@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
+import { useEffect } from 'react'
 import { Link, Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from 'react-router'
 import 'lenis/dist/lenis.css'
 import './styles/fonts.css'
@@ -7,54 +7,14 @@ import './styles/global.css'
 import './styles/pages.css'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import Preloader from './components/Preloader'
-import SceneLayer from './scene/SceneLayer'
-import { loadScene } from './scene/loadScene'
-import { useQualityTier } from './scene/useQualityTier'
 import { useReducedMotion } from './hooks/useReducedMotion'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
-import { useMicroInteractions } from './hooks/useMicroInteractions'
 import { useT } from './i18n/useLang'
-import { loadImage } from './lib/loadImage'
 import { ScrollTrigger } from './lib/gsap'
-import { useSceneStore } from './store/sceneStore'
-
-// Runs only in the browser (inside the preloader's effect), never during prerender.
-const PRELOAD_TASKS = [
-  () => document.fonts?.ready,
-  () => loadImage(window.innerWidth < 768 ? '/img/portrait-540.webp' : '/img/portrait-1086.webp'),
-  () => (useSceneStore.getState().tier === 'static' ? null : loadScene()),
-]
-
-// Without JavaScript (or if the bundle never loads) nothing would lift the preloader or play the hero:
-// show the final hero composition instead. Hidden from React, which never hydrates <noscript> content.
-const NO_SCRIPT_CSS = `
-.preloader { display: none !important; }
-.hero .hero-content { visibility: visible !important; }
-.hero .hero-questions { display: flex; flex-direction: column; gap: 0.3rem; }
-.hero .hero-q { opacity: 1 !important; max-width: none; font: 500 clamp(1rem, 1.5vw, 1.2rem) / 1.4 var(--font-body); color: var(--text-muted); }
-.hero .hero-answer { position: relative !important; opacity: 1 !important; pointer-events: auto !important; }
-.hero .hero-q .w-inner, .hero .hero-answer .w-inner { transform: none !important; animation: none !important; }
-.hero .hero-answer::after { display: none; }
-.hero .hero-body, .hero .hero-portrait { opacity: 1 !important; transform: none !important; pointer-events: auto !important; }
-@media (max-width: 767px) { .hero .hero-portrait { opacity: 0.35 !important; } }
-`
-
-const noopSubscribe = () => () => {}
-
-// false in the prerendered HTML and during hydration, true afterwards: lets the shell lock the page
-// behind the preloader without baking `inert` into the static HTML.
-const useHydrated = () =>
-  useSyncExternalStore(
-    noopSubscribe,
-    () => true,
-    () => false,
-  )
 
 export const links = () => [
   { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-  // Self-hosted fonts (styles/fonts.css). Every page needs the body text; the home route preloads the
-  // hero h1's display face itself.
+  // Self-hosted fonts (styles/fonts.css). Every page needs the body text.
   { rel: 'preload', href: '/fonts/inter-latin-var.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
 ]
 
@@ -67,10 +27,8 @@ export function Layout({ children }) {
         <meta name="theme-color" content="#07080d" />
         <Meta />
         <Links />
-        <noscript dangerouslySetInnerHTML={{ __html: `<style>${NO_SCRIPT_CSS}</style>` }} />
       </head>
       <body>
-        {/* #root is the R3F event source: the canvas and the HTML both live inside it. */}
         <div id="root">{children}</div>
         <ScrollRestoration />
         <Scripts />
@@ -80,13 +38,7 @@ export function Layout({ children }) {
 }
 
 export function HydrateFallback() {
-  return (
-    <div className="preloader" role="status" aria-busy="true">
-      <p className="preloader-brand" aria-hidden="true">
-        &lt;MDG /&gt;
-      </p>
-    </div>
-  )
+  return null
 }
 
 export function ErrorBoundary() {
@@ -106,14 +58,9 @@ export function ErrorBoundary() {
 
 export default function App() {
   const reducedMotion = useReducedMotion()
-  const [ready, setReady] = useState(false)
-  const handleLoaded = useCallback(() => setReady(true), [])
   const { pathname } = useLocation()
-  const locked = useHydrated() && !ready
 
-  useQualityTier()
-  useSmoothScroll(ready && !reducedMotion)
-  useMicroInteractions(ready && !reducedMotion)
+  useSmoothScroll(!reducedMotion)
 
   useEffect(() => {
     // A new page means new trigger positions (pins, scroll-linked effects). Only refresh when the page
@@ -127,13 +74,11 @@ export default function App() {
 
   return (
     <>
-      <SceneLayer reducedMotion={reducedMotion} />
-      <Navbar ready={!locked} />
-      <main id="main" inert={locked}>
-        <Outlet context={{ ready, reducedMotion }} />
+      <Navbar />
+      <main id="main">
+        <Outlet context={{ reducedMotion }} />
       </main>
       <Footer />
-      <Preloader tasks={PRELOAD_TASKS} reducedMotion={reducedMotion} onDone={handleLoaded} />
     </>
   )
 }

@@ -5,7 +5,8 @@
   "outputDirectory": "build/client",
   "cleanUrls": true,
   "trailingSlash": false,
-  "functions": {
-    "api/brief.js": { "maxDuration": 10 }
-  }
+  "redirects": [
+    { "source": "/casos/seenat", "destination": "/", "permanent": true },
+    { "source": "/privacidad", "destination": "/", "permanent": true }
+  ]
 }

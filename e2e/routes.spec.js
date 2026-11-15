@@ -8,7 +8,7 @@ for (const path of PUBLIC_PATHS) {
     const response = await request.get(path)
     expect(response.status()).toBe(200)
     expect(await response.text()).toContain(`<title>${title}</title>`)
-    await page.goto(`${path}?scene=static`)
+    await page.goto(`${path}`)
     await expect(page).toHaveTitle(title)
   })
 }
@@ -17,7 +17,7 @@ test('answers unknown URLs with the 404 page and status', async ({ page, request
   for (const path of ['/no-existe', '/casos/no-existe']) {
     expect((await request.get(path)).status()).toBe(404)
   }
-  await page.goto('/casos/no-existe?scene=static')
+  await page.goto('/casos/no-existe')
   await expect(page.getByRole('heading', { level: 1, name: 'Esta página no existe' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Volver al inicio' })).toHaveAttribute('href', '/')
 })

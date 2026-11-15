@@ -147,17 +147,6 @@
   font: 500 0.85rem var(--font-mono);
 }
 
-.case-cta {
-  display: grid;
-  gap: 1rem;
-  justify-items: start;
-  padding: clamp(1.5rem, 3vw, 2.25rem);
-}
-
-.case-cta h2 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-}
-
 @media (max-width: 767px) {
   .case-flow {
     grid-template-columns: minmax(0, 1fr);

@@ -5,10 +5,9 @@ export const BASE_URL = 'http://localhost:4173'
 // Third-party origins whose failures are not ours to fix. Empty: the fonts are self-hosted.
 const IGNORED_ORIGINS = []
 
-// Static tier: no WebGL, deterministic. The preloader is removed once the page is ready.
-export async function openStatic(page, path = '/', hash = '') {
-  await page.goto(`${path}?scene=static${hash}`)
-  await expect(page.locator('.preloader')).toHaveCount(0, { timeout: 15_000 })
+export async function open(page, path = '/', hash = '') {
+  await page.goto(`${path}${hash}`)
+  await expect(page.locator('main')).toBeVisible()
 }
 
 // Every uncaught exception, every console error and every failed same-origin request.
@@ -30,7 +29,7 @@ export function collectErrors(page) {
 
 // Elements that stick out past the right edge of the viewport and that nothing clips: the page
 // itself hides horizontal overflow (body), so scrollWidth alone cannot see them. Overflow that an
-// ancestor clips on purpose (the hero portrait, the marquee) is not counted.
+// ancestor clips on purpose is not counted.
 export function findRightOverflow(page) {
   return page.evaluate(() => {
     const limit = window.innerWidth + 1
