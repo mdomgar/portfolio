@@ -1,7 +1,8 @@
-import { useSyncExternalStore } from 'react'
+import { useEffect, useRef, useSyncExternalStore } from 'react'
 import { getActs } from '../data/acts'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { useLang, useT } from '../i18n/useLang'
+import { ScrollTrigger } from '../lib/gsap'
 import ActArt from './acts/ActArt'
 import ActsStage from './acts/ActsStage'
 import './css/Acts.css'
@@ -26,9 +27,39 @@ export default function Acts({ reducedMotion }) {
   const hydrated = useHydrated()
   const tooShort = useMediaQuery('(max-height: 539px)')
   const showStage = hydrated && !reducedMotion && !tooShort
+  const sectionRef = useRef(null)
+  const wasInside = useRef(false)
+  const previous = useRef({ hydrated: false, stage: false })
+
+  // Remember whether the visitor is inside the section, so a path switch can bring them back to its top.
+  useEffect(() => {
+    if (!hydrated) return undefined
+    const update = () => {
+      const rect = sectionRef.current?.getBoundingClientRect()
+      wasInside.current = !!rect && rect.top <= 0 && rect.bottom > 0
+    }
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [hydrated])
+
+  // The stage and the stacked blocks have very different heights: after a runtime switch (reduced motion
+  // toggled, phone rotated) never leave the visitor somewhere arbitrary inside or below the show.
+  useEffect(() => {
+    const before = previous.current
+    previous.current = { hydrated, stage: showStage }
+    if (!hydrated || !before.hydrated || before.stage === showStage || !wasInside.current) return
+    const frame = requestAnimationFrame(() => {
+      ScrollTrigger.refresh()
+      const nav = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10) || 64
+      const top = sectionRef.current.getBoundingClientRect().top + window.scrollY - nav
+      window.scrollTo({ top, behavior: 'instant' })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [hydrated, showStage])
 
   return (
-    <section id="trayectoria" className="acts" aria-labelledby="acts-title">
+    <section id="trayectoria" ref={sectionRef} className="acts" aria-labelledby="acts-title">
       <header className="acts-intro">
         <h2 id="acts-title" className="acts-title">
           {t('actsTitle')}

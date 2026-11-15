@@ -69,11 +69,6 @@ export const CHIPS = {
 // Where the dragged ERP card ends up (it lives in the hold of act 3).
 export const ERP_DRAG = { from: { x: 284, y: 302 }, to: { x: 404, y: 338 } }
 
-// Centre of each act's body, used to open the background circle from the object.
-export const BODY_CENTER = Object.fromEntries(
-  ACT_IDS.map((id) => [id, { x: BODY[id].x + BODY[id].width / 2, y: BODY[id].y + BODY[id].height / 2 }]),
-)
-
 // Lines of code typed in during act 4: each is `M<x> <y>h<width>`.
 export const CODE_LINES = [
   'M162 190h138',

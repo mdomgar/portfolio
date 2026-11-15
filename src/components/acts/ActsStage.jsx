@@ -27,6 +27,18 @@ const HOLD_AT = 1.7
 const TOTAL = 9.1
 const SCROLL_SCREENS = 4.6
 
+// A direct load of /#proyectos lands against the static page; once the stage (and its pin spacer) mounts,
+// the target has moved far down. Re-resolve the hash once, for anything that comes after the show.
+let hashResolved = false
+function resolveHash(stage) {
+  const id = decodeURIComponent(window.location.hash.slice(1))
+  const target = id && document.getElementById(id)
+  if (!target || !(stage.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING)) return
+  if (stage.contains(target)) return
+  const nav = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10) || 64
+  window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - nav, behavior: 'instant' })
+}
+
 const part = (group, name) => group.find((el) => el.dataset.part === name)
 
 export default function ActsStage({ acts, label }) {
@@ -39,7 +51,8 @@ export default function ActsStage({ acts, label }) {
       const bgs = all('.stage-bg')
       const words = all('.stage-word')
       const chars = words.map((word) => Array.from(word.querySelectorAll('.ch')))
-      const sheetKids = all('.stage-sheet').map((sheet) => Array.from(sheet.children))
+      const sheets = all('.stage-sheet')
+      const sheetKids = sheets.map((sheet) => Array.from(sheet.children))
       const ticks = all('.stage-tick b')
       const marks = all('.stage-mark')
       const body = stage.querySelector('.stage-body')
@@ -84,10 +97,12 @@ export default function ActsStage({ acts, label }) {
       const origin = () => `${art.offsetLeft + art.offsetWidth / 2}px ${art.offsetTop + art.offsetHeight / 2}px`
       const circle = (radius) => () => `circle(${radius}% at ${origin()})`
 
-      // Entrance of act 1, scrubbed while the stage scrolls into view (before it pins).
+      // Entrance of act 1, scrubbed while the stage scrolls into view (before it pins). It shares elements with
+      // the pinned timeline, so it must render instantly (scrub: true) and never after that smoothed one,
+      // or a jump straight into the show would leave act 1's parts in their entrance state.
       const intro = gsap.timeline({
         defaults: { ease: 'power3.out' },
-        scrollTrigger: { trigger: stage, start: 'top 85%', end: 'top top', scrub: 0.5, invalidateOnRefresh: true },
+        scrollTrigger: { trigger: stage, start: 'top 85%', end: 'top top', scrub: true, invalidateOnRefresh: true },
       })
       intro
         .fromTo(
@@ -115,6 +130,7 @@ export default function ActsStage({ acts, label }) {
           scrub: 0.6,
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          onToggle: (self) => stage.toggleAttribute('data-live', self.isActive),
           onUpdate: (self) => {
             setTilt(gsap.utils.clamp(-4, 4, self.getVelocity() / -300))
             idle.restart(true)
@@ -244,10 +260,31 @@ export default function ActsStage({ acts, label }) {
       // Pad the timeline to its exact length: no dead scroll after the last act.
       tl.to({}, { duration: 0.0001 }, TOTAL)
 
+      // Sheets can only be selected while they are the one on show.
+      sheets.forEach((sheet, k) => {
+        if (k < sheets.length - 1) tl.set(sheet, { pointerEvents: 'none' }, STARTS[k])
+        if (k > 0) tl.set(sheet, { pointerEvents: 'auto' }, STARTS[k - 1] + 0.9)
+      })
+
       let alive = true
-      document.fonts?.ready.then(() => alive && ScrollTrigger.refresh())
+      let frame = 0
+      if (!hashResolved) {
+        hashResolved = true
+        frame = requestAnimationFrame(() => {
+          ScrollTrigger.refresh()
+          resolveHash(stage)
+        })
+        document.fonts?.ready.then(() => {
+          if (!alive) return
+          ScrollTrigger.refresh()
+          resolveHash(stage)
+        })
+      } else {
+        document.fonts?.ready.then(() => alive && ScrollTrigger.refresh())
+      }
       return () => {
         alive = false
+        cancelAnimationFrame(frame)
       }
     },
     { scope: root },

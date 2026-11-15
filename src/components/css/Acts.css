@@ -312,6 +312,9 @@
 
 .stage-word .ch {
   display: inline-block;
+}
+
+.stage[data-live] .stage-word .ch {
   will-change: transform;
 }
 
@@ -356,6 +359,10 @@
   align-content: start;
   max-width: 34rem;
   pointer-events: none;
+}
+
+.stage-sheet:first-child {
+  pointer-events: auto;
 }
 
 .stage .act-role {
