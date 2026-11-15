@@ -1,21 +1,12 @@
-import { useEffect, useRef, useSyncExternalStore } from 'react'
+import { useEffect, useRef } from 'react'
 import { getActs } from '../data/acts'
+import { useHydrated } from '../hooks/useHydrated'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { useLang, useT } from '../i18n/useLang'
 import { ScrollTrigger } from '../lib/gsap'
 import ActArt from './acts/ActArt'
 import ActsStage from './acts/ActsStage'
 import './css/Acts.css'
-
-const noopSubscribe = () => () => {}
-// False while prerendering and during hydration, true afterwards: the server HTML and the first client
-// render are both the complete static version, so there is nothing to mismatch.
-const useHydrated = () =>
-  useSyncExternalStore(
-    noopSubscribe,
-    () => true,
-    () => false,
-  )
 
 // Four colour blocks. The order is thematic (hardware to code), not chronological, so each fact sheet
 // shows its real period. Static and stacked for reduced motion, short windows, prerender and no JS;

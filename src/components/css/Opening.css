@@ -1,21 +1,41 @@
+/* The opening is one stage. Static (prerender, reduced motion, no JS): a grid with the name on top, the
+   statement below it and the first frame as a plain image in the free corner. Pinned (data-pinned): the
+   same grid, one viewport tall and clipped; the frames live on a canvas layer behind the text and the
+   empty .opening-slot marks where the computer sits before it grows to cover the viewport. */
 .opening {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  grid-template-areas:
-    'lead seq'
-    'title title';
-  align-content: space-between;
-  gap: clamp(1.5rem, 4vh, 3rem) clamp(1.5rem, 4vw, 4rem);
-  min-height: 100svh;
-  padding: calc(var(--nav-h) + clamp(1.5rem, 4vh, 3rem)) var(--gutter) clamp(1.5rem, 4vh, 3rem);
+  background: var(--paper);
   scroll-margin-top: 0;
+}
+
+.opening-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    'title title'
+    'lead seq';
+  gap: clamp(1rem, 3vh, 2.25rem) clamp(1.5rem, 4vw, 4rem);
+  min-height: 100svh;
+  padding: calc(var(--nav-h) + clamp(1.5rem, 4vh, 2.5rem)) var(--gutter) clamp(1rem, 3vh, 2rem);
+  overflow: clip;
+}
+
+.opening[data-pinned] .opening-stage {
+  height: 100svh;
+  min-height: 0;
+}
+
+.opening-title-wrap {
+  position: relative;
+  z-index: 3;
+  grid-area: title;
+  transform-origin: 0 0;
 }
 
 .opening-title {
   --em: 8.6;
-  grid-area: title;
-  align-self: end;
-  font-size: clamp(1.75rem, calc(92vw / var(--em)), 15rem);
+  font-size: clamp(1.75rem, min(calc(92vw / var(--em)), 15.5svh), 15rem);
 }
 
 .opening-line {
@@ -27,10 +47,15 @@
   color: var(--orange-text);
 }
 
-.opening-lead {
+.opening-lead-wrap {
+  position: relative;
+  z-index: 3;
   grid-area: lead;
+  align-self: end;
+}
+
+.opening-lead {
   display: grid;
-  align-content: start;
   gap: 1.25rem;
 }
 
@@ -45,40 +70,100 @@
   color: var(--ink-soft);
 }
 
-/* Empty slot of the sequence: a plain screen-shaped box until the frames arrive. */
+/* Static: the first frame sits in its cell, no taller than the cell. */
 .opening-seq {
+  position: relative;
+  z-index: 1;
   grid-area: seq;
-  justify-self: end;
-  width: 100%;
-  max-height: 52svh;
-  aspect-ratio: 4 / 3;
-  border: 3px solid var(--ink);
-  border-radius: var(--radius);
-  background: var(--white);
+  min-height: 14rem;
 }
 
-@media (max-width: 767px) {
-  .opening {
+.opening-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+  object-position: right bottom;
+}
+
+/* Pinned: the layers fill the whole stage (also behind the fixed bar). */
+.opening[data-pinned] .opening-seq {
+  grid-area: auto;
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  z-index: 1;
+}
+
+.opening[data-pinned] .opening-frame {
+  object-fit: cover;
+  object-position: center;
+}
+
+.opening-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+}
+
+/* The frame at "cover" size, centred on the stage: wider or taller than the stage when the aspect ratios
+   differ, and the stage clips it. Nothing of the frame is cropped while it is scaled down. */
+.opening-wrap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, calc(100svh * var(--ar)));
+  aspect-ratio: var(--ar);
+  translate: -50% -50%;
+  will-change: transform;
+}
+
+.opening-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.opening-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.opening-slot {
+  grid-area: seq;
+  pointer-events: none;
+}
+
+/* Portrait or narrow: the name on top, the drawing in the middle, the statement at the bottom. Each line
+   of the name wraps by word, so up to four stacked words: the longest is "DEVELOPER". */
+@media (orientation: portrait), (max-width: 767px) {
+  .opening-stage {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
     grid-template-areas:
-      'seq'
       'title'
+      'seq'
       'lead';
-    align-content: start;
   }
 
-  .opening-seq {
-    max-height: none;
-    aspect-ratio: 16 / 10;
-  }
-
-  /* Each line wraps by word, so up to four stacked words: the longest is "DEVELOPER". */
   .opening-title {
     --em: 6;
-    font-size: clamp(1.75rem, calc(90vw / var(--em)), 15rem);
+    font-size: clamp(1.75rem, min(calc(90vw / var(--em)), 9svh), 15rem);
   }
 
   .opening-line {
     white-space: normal;
+  }
+
+  .opening-statement {
+    max-width: 30em;
+    font-size: clamp(1rem, 2.6vw, 1.25rem);
+  }
+
+  .opening-frame {
+    object-position: center bottom;
   }
 }

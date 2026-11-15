@@ -39,3 +39,90 @@
     grid-column: 2;
   }
 }
+
+/* The rule under each row draws with the scroll (--rule 0..1; 1 when nothing animates). */
+.today-item {
+  position: relative;
+  border-bottom: 0;
+}
+
+.today-item::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--paper);
+  transform: scaleX(var(--rule, 1));
+  transform-origin: 0 50%;
+}
+
+.today-list {
+  border-top: 0;
+  position: relative;
+}
+
+.today-list::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: var(--paper);
+}
+
+.today {
+  overflow-x: clip;
+}
+
+.today-strip {
+  display: grid;
+  gap: clamp(0.5rem, 2vh, 1.25rem);
+  margin-top: clamp(3rem, 9vh, 6rem);
+}
+
+.today-strip-row {
+  overflow: hidden;
+}
+
+/* Static: every name is shown, wrapped. Live (scroll-driven): one long line that slides. */
+.today-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2em 0.6em;
+  padding-inline: var(--gutter);
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 8.5vw, 8rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.today[data-live] .today-track {
+  flex-wrap: nowrap;
+  width: max-content;
+  gap: 0.5em;
+}
+
+.today-tech {
+  white-space: nowrap;
+}
+
+.today-tech::after {
+  content: '/';
+  margin-left: 0.5em;
+  color: var(--act-taller);
+}
+
+.today-strip-row[data-row='1'] .today-tech {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--paper);
+}
+
+.today-strip-row[data-row='1'] .today-tech::after {
+  -webkit-text-stroke: 0;
+  color: var(--act-servidores);
+}
+
+.today-tech:last-child::after {
+  content: none;
+}

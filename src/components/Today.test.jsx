@@ -13,4 +13,12 @@ describe('Today', () => {
       expect(screen.getByText(capability.proof.es)).toBeInTheDocument()
     }
   })
+
+  it('keeps the technology strip out of the accessibility tree but in the page', () => {
+    const { container } = renderWithRouter(<Today reducedMotion />)
+    const strip = container.querySelector('.today-strip')
+    expect(strip).toHaveAttribute('aria-hidden', 'true')
+    expect(strip).toHaveTextContent('React')
+    expect(strip).toHaveTextContent('Spring Boot')
+  })
 })

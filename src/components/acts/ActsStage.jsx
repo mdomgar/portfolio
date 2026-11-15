@@ -1,5 +1,6 @@
 import { useRef } from 'react'
-import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap'
+import { gsap, useGSAP } from '../../lib/gsap'
+import { landOnHash } from '../../lib/hashLanding'
 import { DECOR } from './decor'
 import { ACT_IDS, BODY, CHIPS, CODE_LINES, ERP_DRAG } from './scene'
 
@@ -26,18 +27,6 @@ const STARTS = [1, 3.6, 6.2]
 const HOLD_AT = 1.7
 const TOTAL = 9.1
 const SCROLL_SCREENS = 4.6
-
-// A direct load of /#proyectos lands against the static page; once the stage (and its pin spacer) mounts,
-// the target has moved far down. Re-resolve the hash once, for anything that comes after the show.
-let hashResolved = false
-function resolveHash(stage) {
-  const id = decodeURIComponent(window.location.hash.slice(1))
-  const target = id && document.getElementById(id)
-  if (!target || !(stage.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING)) return
-  if (stage.contains(target)) return
-  const nav = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10) || 64
-  window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - nav, behavior: 'instant' })
-}
 
 const part = (group, name) => group.find((el) => el.dataset.part === name)
 
@@ -266,26 +255,7 @@ export default function ActsStage({ acts, label }) {
         if (k > 0) tl.set(sheet, { pointerEvents: 'auto' }, STARTS[k - 1] + 0.9)
       })
 
-      let alive = true
-      let frame = 0
-      if (!hashResolved) {
-        hashResolved = true
-        frame = requestAnimationFrame(() => {
-          ScrollTrigger.refresh()
-          resolveHash(stage)
-        })
-        document.fonts?.ready.then(() => {
-          if (!alive) return
-          ScrollTrigger.refresh()
-          resolveHash(stage)
-        })
-      } else {
-        document.fonts?.ready.then(() => alive && ScrollTrigger.refresh())
-      }
-      return () => {
-        alive = false
-        cancelAnimationFrame(frame)
-      }
+      return landOnHash(stage, 'acts')
     },
     { scope: root },
   )
