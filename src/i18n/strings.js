@@ -12,7 +12,6 @@ export const strings = {
   caseResultSoFar: { es: 'Resultado hasta ahora', en: 'Result so far' },
   caseNextDone: { es: 'Qué haría distinto', en: 'What I would do differently' },
   caseNextInProgress: { es: 'Siguiente paso', en: 'Next step' },
-  caseJournal: { es: 'Diario de desarrollo', en: 'Development journal' },
   dashboardAlt: {
     es: 'Vista animada del panel de SolarMetrics con potencia, energía y curva de producción solar',
     en: 'Animated view of the SolarMetrics dashboard with power, energy and the solar production curve',

@@ -2,6 +2,8 @@ export const solarmetrics = {
   slug: 'solarmetrics',
   name: 'SolarMetrics',
   status: 'done',
+  // The project's colour block on the home page and at the top of its case page (ink on it is 7.6:1).
+  color: '#5aa9ff',
   label: {
     es: 'Herramienta a medida · Proyecto de fin de grado',
     en: 'Custom tool · Final degree project',

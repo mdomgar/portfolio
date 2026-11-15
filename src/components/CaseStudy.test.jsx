@@ -25,7 +25,22 @@ describe('CaseStudy', () => {
     expect(screen.getByRole('img', { name: /panel de SolarMetrics/ })).toBeInTheDocument()
   })
 
-  it('shares its header name with the card on the home page', () => {
+  it('keeps every piece of the case and a way back to the home page', () => {
+    const item = getCase('solarmetrics')
+    renderWithRouter(<CaseStudy item={item} reducedMotion />)
+    expect(screen.getByText(item.challenge.es)).toBeInTheDocument()
+    for (const line of item.built.es) expect(screen.getByText(line)).toBeInTheDocument()
+    for (const decision of item.decisions) {
+      expect(screen.getByRole('heading', { level: 3, name: decision.title.es })).toBeInTheDocument()
+      expect(screen.getByText(decision.why.es)).toBeInTheDocument()
+    }
+    expect(screen.getByText(item.result.es)).toBeInTheDocument()
+    expect(screen.getByText(item.next.es)).toBeInTheDocument()
+    const back = screen.getAllByRole('link', { name: 'Volver al inicio' })
+    expect(back[0]).toHaveAttribute('href', '/')
+  })
+
+  it('names its header for the view transition into the case page', () => {
     renderWithRouter(<CaseStudy item={getCase('solarmetrics')} reducedMotion />)
     expect(screen.getByRole('heading', { level: 1 }).closest('div').style.viewTransitionName).toBe('case-solarmetrics')
   })

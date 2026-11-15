@@ -1,94 +1,134 @@
+.projects {
+  padding-block: 0 clamp(2.5rem, 7vh, 4.5rem);
+  overflow-x: clip;
+}
+
 .projects-list {
   display: grid;
+  gap: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+/* SolarMetrics: a block of its own colour, close to a full screen. */
+.solar {
+  display: grid;
+  align-items: center;
+  min-height: calc(100svh - var(--nav-h));
+  padding-block: clamp(2rem, 6vh, 4rem);
+  background: var(--block, var(--act-erp));
+  border-bottom: var(--line);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.solar-inner {
+  display: grid;
   gap: clamp(1rem, 3vh, 2rem);
-  margin-top: clamp(2rem, 6vh, 4rem);
 }
 
-.project {
-  border: 3px solid var(--ink);
-  border-radius: var(--radius);
+.solar-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
 }
 
-.project-live {
+.solar-kicker {
+  font-size: clamp(1.4rem, 2.6vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+/* The long word is sized from the container (not the screen) so it fills the line exactly. */
+.solar-name {
+  font-size: calc((min(100vw, var(--container)) - 2 * var(--gutter)) / var(--em));
+}
+
+.solar-body {
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
   align-items: center;
-  gap: clamp(1.5rem, 4vw, 4rem);
-  padding: clamp(1.25rem, 3.5vw, 3.5rem);
-  background: var(--white);
+  gap: clamp(1.5rem, 4vw, 4.5rem);
 }
 
-.project-copy {
+.solar-copy {
   display: grid;
   justify-items: start;
   gap: 1.1rem;
   min-width: 0;
 }
 
-.project-label {
-  color: var(--orange-text);
+.solar-tagline {
+  max-width: 24em;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.1vw, 2rem);
+  font-weight: 600;
+  line-height: 1.12;
+  text-wrap: balance;
 }
 
-/* The name lives in a card column, not the full viewport: ~8em wide, sized to the column. */
-.project-name {
-  font-size: clamp(2.2rem, 3.9vw, 7rem);
-}
-
-.project-tagline {
-  max-width: 28em;
-  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+.solar-highlight {
+  max-width: 30em;
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
   font-weight: 500;
+  text-wrap: balance;
 }
 
-.project-links {
+.solar-highlight::before {
+  content: '→ ';
+  font-weight: 700;
+}
+
+.solar-links {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 0.4rem;
 }
 
-.project-figure {
+.solar .btn-primary {
+  background: var(--white);
+}
+
+.solar-figure {
   margin: 0;
   min-width: 0;
 }
 
+/* Vulcania: quiet, dashed and hatched. It exists, it is not ready. */
 .project-building {
   display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr) auto;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) auto;
   align-items: center;
   gap: 0.5rem clamp(1rem, 3vw, 3rem);
-  padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3.5vw, 3.5rem);
-  border-style: dashed;
+  padding: clamp(1.1rem, 2.6vw, 1.75rem) clamp(1.25rem, 3vw, 2.5rem);
+  border: 3px dashed var(--ink);
+  border-radius: var(--radius);
+  background: repeating-linear-gradient(135deg, transparent 0 11px, rgb(18 18 18 / 0.07) 11px 13px);
 }
 
 .project-building-name {
-  font-size: clamp(1.9rem, 4vw, 3.6rem);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
   font-weight: 700;
 }
 
 .project-building-summary {
-  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
   font-weight: 500;
 }
 
 .project-status {
   justify-self: start;
   padding: 0.5rem 0.9rem;
+  border: 2px dashed var(--ink);
   border-radius: 999px;
-  background: var(--act-codigo);
-  border: 2px solid var(--ink);
+  background: var(--paper);
   white-space: nowrap;
 }
 
 @media (max-width: 899px) {
-  .project-name {
-    font-size: clamp(1.75rem, calc((100vw - 5.5rem) / 8.2), 7rem);
-  }
-
-  .project-live {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
+  .solar-body,
   .project-building {
     grid-template-columns: minmax(0, 1fr);
   }
