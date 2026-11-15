@@ -14,13 +14,17 @@ const isLocalized = (value) =>
     : filled(value.es) && filled(value.en))
 
 describe('hero and about copy', () => {
-  it('asks three questions and answers them, in both languages', () => {
-    expect(profile.hero.questions).toHaveLength(3)
-    for (const question of profile.hero.questions) expect(isLocalized(question)).toBe(true)
-    for (const key of ['answer', 'intro', 'proof']) expect(isLocalized(profile.hero[key]), key).toBe(true)
-    expect(profile.hero.questions[0].es).toBe('¿Necesitas una web que te traiga clientes?')
-    expect(profile.hero.answer.es).toBe('Te la construyo. A medida.')
-    expect(profile.hero.proof.es).toBe('Web Developer en Macrosad · Creador de SolarMetrics')
+  it('states the role, a statement and the context, in both languages', () => {
+    for (const key of ['role', 'statement', 'context']) expect(isLocalized(profile.hero[key]), key).toBe(true)
+    expect(profile.hero.role).toEqual({ es: 'Web developer', en: 'Web developer' })
+    expect(profile.hero.statement.es).toBe(
+      'Programo webs y herramientas que la gente usa cada día. Es lo que hago y lo que quiero seguir haciendo.',
+    )
+    expect(profile.hero.context.es).toBe('Jaén · Ahora en Macrosad')
+    expect(profile.hero).not.toHaveProperty('questions')
+    expect(profile.hero).not.toHaveProperty('answer')
+    expect(profile.hero).not.toHaveProperty('intro')
+    expect(profile.hero).not.toHaveProperty('proof')
   })
 
   it('tells the story in both languages', () => {

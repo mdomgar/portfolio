@@ -12,20 +12,12 @@ export const profile = {
     address: { es: 'Jaén, España', en: 'Jaén, Spain' },
   },
   hero: {
-    questions: [
-      { es: '¿Necesitas una web que te traiga clientes?', en: 'Need a website that brings you customers?' },
-      { es: '¿Una herramienta que sustituya tus Excel?', en: 'A tool that replaces your spreadsheets?' },
-      { es: '¿Una app que tus usuarios lleven en el bolsillo?', en: 'An app your users carry in their pocket?' },
-    ],
-    answer: { es: 'Te la construyo. A medida.', en: "I'll build it for you. Made to measure." },
-    intro: {
-      es: 'Soy Miguel Ángel, desarrollador web. Te ofrezco mis servicios para crear lo que tu proyecto necesite: una web, una herramienta personalizada o una app móvil, de la idea al lanzamiento.',
-      en: "I'm Miguel Ángel, a web developer. I offer my services to build whatever your project needs: a website, a custom tool or a mobile app, from idea to launch.",
+    role: { es: 'Web developer', en: 'Web developer' },
+    statement: {
+      es: 'Programo webs y herramientas que la gente usa cada día. Es lo que hago y lo que quiero seguir haciendo.',
+      en: 'I build websites and tools that people use every day. It is what I do and what I want to keep doing.',
     },
-    proof: {
-      es: 'Web Developer en Macrosad · Creador de SolarMetrics',
-      en: 'Web Developer at Macrosad · Creator of SolarMetrics',
-    },
+    context: { es: 'Jaén · Ahora en Macrosad', en: 'Jaén, Spain · Currently at Macrosad' },
   },
   about: {
     hook: {
