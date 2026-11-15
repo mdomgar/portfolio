@@ -1,0 +1,24 @@
+.contact {
+  padding-block: clamp(5rem, 16vh, 10rem);
+}
+
+.contact-lead {
+  max-width: 24em;
+  margin-top: clamp(1.5rem, 4vh, 2.5rem);
+  color: var(--paper-soft);
+  font-size: clamp(1.15rem, 1.8vw, 1.6rem);
+  font-weight: 500;
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem 1rem;
+  margin-top: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+/* The copy button reports its status below itself: keep it from stretching the row. */
+.contact-actions .copy-email {
+  gap: 0.25rem;
+}

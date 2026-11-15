@@ -11,7 +11,7 @@
 }
 
 .case-page-label {
-  color: var(--accent);
+  color: var(--orange-text);
   font-size: 0.85rem;
 }
 
@@ -42,12 +42,6 @@
   margin: 0;
 }
 
-/* Even dimmed, the lit desk shows through behind the muted body text. */
-.case-hero-tagline,
-.case-section {
-  text-shadow: var(--text-halo);
-}
-
 .case-section h2 {
   margin-bottom: 0.9rem;
   font-size: clamp(1.6rem, 3vw, 2.2rem);
@@ -55,7 +49,7 @@
 
 .case-section p,
 .case-section li {
-  color: var(--text-muted);
+  color: var(--ink-soft);
 }
 
 .case-built {
@@ -76,7 +70,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--orange-text);
 }
 
 .case-flow {
@@ -88,9 +82,9 @@
 .case-flow li {
   position: relative;
   padding: 1.1rem;
-  border: 1px solid var(--border);
+  border: 2px solid var(--ink);
   border-radius: var(--radius-sm);
-  background: rgba(19, 23, 34, 0.6);
+  background: var(--white);
 }
 
 .case-flow li:not(:last-child)::after {
@@ -99,13 +93,13 @@
   right: -0.85rem;
   top: 50%;
   translate: 0 -50%;
-  color: var(--accent);
+  color: var(--orange-text);
 }
 
 .case-flow h3,
 .case-decisions h3 {
   margin-bottom: 0.35rem;
-  color: var(--text);
+  color: var(--ink);
   font-size: 1.1rem;
 }
 
@@ -116,7 +110,7 @@
 
 .case-decisions li {
   padding-left: 1rem;
-  border-left: 2px solid var(--accent-2);
+  border-left: 2px solid var(--ink);
 }
 
 .case-page-stats {
@@ -131,9 +125,8 @@
 }
 
 .case-page-stat-value {
-  color: var(--accent);
+  color: var(--orange-text);
   font: 600 clamp(2.2rem, 5vw, 3.2rem) / 1 var(--font-display);
-  text-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
 }
 
 .case-journal {
@@ -143,7 +136,7 @@
 
 .case-journal time {
   display: block;
-  color: var(--accent);
+  color: var(--orange-text);
   font: 500 0.85rem var(--font-mono);
 }
 

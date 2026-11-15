@@ -1,0 +1,131 @@
+.acts {
+  position: relative;
+  scroll-margin-top: var(--nav-h);
+}
+
+.acts-intro {
+  padding: clamp(4.5rem, 12vh, 8rem) var(--gutter) clamp(2.5rem, 6vh, 4rem);
+}
+
+.acts-title {
+  max-width: 14ch;
+  font-size: clamp(2.6rem, 8vw, 8rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.act {
+  padding: clamp(2.5rem, 7vh, 5rem) var(--gutter) clamp(3rem, 8vh, 6rem);
+  border-top: var(--line);
+  color: var(--ink);
+}
+
+.act[data-act='taller'] {
+  background: var(--act-taller);
+}
+
+.act[data-act='servidores'] {
+  background: var(--act-servidores);
+}
+
+.act[data-act='erp'] {
+  background: var(--act-erp);
+}
+
+.act[data-act='codigo'] {
+  background: var(--act-codigo);
+}
+
+.act-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  grid-template-areas:
+    'word word'
+    'sheet art';
+  align-items: start;
+  gap: clamp(1.5rem, 5vh, 3.5rem) clamp(1.5rem, 4vw, 4rem);
+  width: min(100%, var(--container));
+  margin-inline: auto;
+}
+
+.act-word {
+  grid-area: word;
+}
+
+.act-sheet {
+  grid-area: sheet;
+  display: grid;
+  gap: 0.9rem;
+  max-width: 34rem;
+}
+
+.act-count {
+  justify-self: start;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--white);
+}
+
+.act-role {
+  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  line-height: 1;
+}
+
+.act-meta {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.act-tasks {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.act-tasks li {
+  position: relative;
+  padding-left: 1.3rem;
+}
+
+.act-tasks li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 8px;
+  height: 8px;
+  background: var(--ink);
+}
+
+/* Slot for the act's illustration: a plain white panel until it arrives. */
+.act-art {
+  grid-area: art;
+  justify-self: end;
+  width: 100%;
+  max-width: 40rem;
+  aspect-ratio: 1;
+  border: 3px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+
+@media (max-width: 767px) {
+  .act-inner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'word'
+      'art'
+      'sheet';
+  }
+
+  .act-art {
+    justify-self: stretch;
+    max-width: none;
+    aspect-ratio: 4 / 3;
+  }
+}

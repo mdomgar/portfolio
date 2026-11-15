@@ -5,8 +5,8 @@ test.describe('home', () => {
   test('shows the name as the page heading without errors', async ({ page }) => {
     const errors = collectErrors(page)
     await open(page)
-    await expect(page.getByRole('heading', { level: 1, name: 'Miguel Ángel' })).toBeVisible()
-    await expect(page.locator('main section[id]')).toHaveCount(1)
+    await expect(page.getByRole('heading', { level: 1, name: /Miguel Ángel\s*Web developer/ })).toBeVisible()
+    await expect(page.locator('main section[id]')).toHaveCount(6)
     expect(errors).toEqual([])
   })
 

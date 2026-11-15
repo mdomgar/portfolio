@@ -1,0 +1,84 @@
+.opening {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  grid-template-areas:
+    'lead seq'
+    'title title';
+  align-content: space-between;
+  gap: clamp(1.5rem, 4vh, 3rem) clamp(1.5rem, 4vw, 4rem);
+  min-height: 100svh;
+  padding: calc(var(--nav-h) + clamp(1.5rem, 4vh, 3rem)) var(--gutter) clamp(1.5rem, 4vh, 3rem);
+  scroll-margin-top: 0;
+}
+
+.opening-title {
+  --em: 8.6;
+  grid-area: title;
+  align-self: end;
+  font-size: clamp(2.5rem, calc(92vw / var(--em)), 15rem);
+}
+
+.opening-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.opening-role {
+  color: var(--orange-text);
+}
+
+.opening-lead {
+  grid-area: lead;
+  display: grid;
+  align-content: start;
+  gap: 1.25rem;
+}
+
+.opening-statement {
+  max-width: 24em;
+  font-size: clamp(1.15rem, 1.7vw, 1.6rem);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.opening-context {
+  color: var(--ink-soft);
+}
+
+/* Empty slot of the sequence: a plain screen-shaped box until the frames arrive. */
+.opening-seq {
+  grid-area: seq;
+  justify-self: end;
+  width: 100%;
+  max-height: 52svh;
+  aspect-ratio: 4 / 3;
+  border: 3px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+
+@media (max-width: 767px) {
+  .opening {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'seq'
+      'title'
+      'lead';
+    align-content: start;
+  }
+
+  .opening-seq {
+    max-height: none;
+    aspect-ratio: 16 / 10;
+  }
+
+  /* Each line wraps by word, so up to four stacked words: the longest is "DEVELOPER". */
+  .opening-title {
+    --em: 6;
+    font-size: clamp(2.5rem, calc(90vw / var(--em)), 15rem);
+  }
+
+  .opening-line {
+    white-space: normal;
+  }
+}

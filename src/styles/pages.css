@@ -1,3 +1,4 @@
+/* Legal and not-found pages. Restyled further together with the case page. */
 .page-simple {
   min-height: 70svh;
   padding-top: calc(var(--nav-h) + clamp(3rem, 10vh, 6rem));
@@ -11,15 +12,13 @@
 .page-simple p {
   max-width: 60ch;
   margin-bottom: 1.5rem;
-  color: var(--text-muted);
+  color: var(--ink-soft);
 }
 
 .legal-body {
   display: grid;
   gap: 1.75rem;
   max-width: 760px;
-  /* Even dimmed, the lit desk shows through behind the muted body text. */
-  text-shadow: var(--text-halo);
 }
 
 .legal-body h2 {
@@ -29,7 +28,7 @@
 
 .legal-body section p {
   margin-bottom: 0.6rem;
-  color: var(--text-muted);
+  color: var(--ink-soft);
 }
 
 .legal-owner {
@@ -44,16 +43,16 @@
 }
 
 .legal-owner dt {
-  color: var(--text-muted);
+  color: var(--ink-soft);
 }
 
 .legal-owner a {
-  color: var(--accent);
+  color: var(--orange-text);
   text-decoration: underline;
 }
 
 .legal-updated {
-  color: var(--text-muted);
+  color: var(--ink-soft);
   font-size: 0.8rem;
 }
 

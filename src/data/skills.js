@@ -42,3 +42,20 @@ export const TECH = {
   supabase: { name: 'Supabase', Icon: SiSupabase, color: '#3ecf8e' },
   postgresql: { name: 'PostgreSQL', Icon: SiPostgresql, color: '#6b8cff' },
 }
+
+// The stack grouped for the background section. Only ids from TECH.
+export const TECH_GROUPS = [
+  { id: 'frontend', title: { es: 'Frontend', en: 'Frontend' }, ids: ['react', 'javascript', 'html', 'css', 'chartjs'] },
+  { id: 'backend', title: { es: 'Backend', en: 'Backend' }, ids: ['node', 'java', 'springboot', 'python'] },
+  {
+    id: 'datos',
+    title: { es: 'Datos', en: 'Data' },
+    ids: ['mysql', 'postgresql', 'mongodb', 'influxdb', 'supabase'],
+  },
+  {
+    id: 'herramientas',
+    title: { es: 'Herramientas', en: 'Tools' },
+    ids: ['docker', 'github', 'vscode', 'intellij', 'postman', 'virtualbox'],
+  },
+  { id: 'movil', title: { es: 'Móvil', en: 'Mobile' }, ids: ['flutter', 'dart'] },
+]
