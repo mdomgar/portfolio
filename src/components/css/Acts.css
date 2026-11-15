@@ -104,16 +104,13 @@
   background: var(--ink);
 }
 
-/* Slot for the act's illustration: a plain white panel until it arrives. */
+/* The act's illustration sits straight on the colour block. */
 .act-art {
   grid-area: art;
   justify-self: end;
   width: 100%;
-  max-width: 40rem;
+  max-width: 36rem;
   aspect-ratio: 1;
-  border: 3px solid var(--ink);
-  border-radius: var(--radius);
-  background: var(--white);
 }
 
 @media (max-width: 767px) {
@@ -126,8 +123,325 @@
   }
 
   .act-art {
+    justify-self: center;
+    max-width: min(100%, 26rem);
+  }
+}
+
+/* ---------- Illustration: one thick ink line, white fills, no gradients ---------- */
+.art-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.art-svg .s,
+.art-svg .f {
+  stroke: var(--ink);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.art-svg .s {
+  fill: none;
+}
+
+.art-svg .f {
+  fill: var(--white);
+}
+
+.art-svg .k {
+  fill: var(--ink);
+}
+
+.art-svg .fan {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: art-spin 2.4s linear infinite;
+}
+
+.art-svg .led {
+  animation: art-blink 1.1s steps(2) infinite;
+}
+
+.art-svg g:nth-of-type(2n) .led {
+  animation-delay: 0.35s;
+}
+
+.art-svg g:nth-of-type(3n) .led {
+  animation-delay: 0.7s;
+}
+
+.art-svg .caret {
+  animation: art-blink 0.9s steps(2) infinite;
+}
+
+.art-svg .steam {
+  animation: art-steam 2.2s ease-in-out infinite;
+}
+
+@keyframes art-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes art-blink {
+  50% {
+    opacity: 0.15;
+  }
+}
+
+@keyframes art-steam {
+  50% {
+    transform: translateY(-8px);
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art-svg .fan,
+  .art-svg .led,
+  .art-svg .caret,
+  .art-svg .steam {
+    animation: none;
+  }
+}
+
+/* ---------- The pinned stage (motion allowed, after hydration) ---------- */
+.stage {
+  --word-fs: clamp(4rem, min(15vw, 30svh), 18rem);
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  column-gap: clamp(1.5rem, 4vw, 4rem);
+  height: 100svh;
+  padding: calc(var(--nav-h) + clamp(0.5rem, 2svh, 1.25rem)) var(--gutter) clamp(1rem, 4svh, 2.5rem);
+  overflow: hidden;
+  background: var(--act-taller);
+  color: var(--ink);
+  border-top: var(--line);
+}
+
+.stage-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.stage-bg[data-act='taller'] {
+  background: var(--act-taller);
+}
+
+.stage-bg[data-act='servidores'] {
+  background: var(--act-servidores);
+}
+
+.stage-bg[data-act='erp'] {
+  background: var(--act-erp);
+}
+
+.stage-bg[data-act='codigo'] {
+  background: var(--act-codigo);
+}
+
+.stage-marks {
+  position: absolute;
+  inset: var(--nav-h) 0 0 52%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.stage-mark {
+  position: absolute;
+  width: var(--s);
+  height: var(--s);
+  opacity: 0.3;
+}
+
+.stage-mark.plus::before,
+.stage-mark.plus::after {
+  content: '';
+  position: absolute;
+  background: var(--ink);
+}
+
+.stage-mark.plus::before {
+  inset: 0 calc(50% - 2px);
+}
+
+.stage-mark.plus::after {
+  inset: calc(50% - 2px) 0;
+}
+
+.stage-mark.ring {
+  border: 4px solid var(--ink);
+  border-radius: 50%;
+}
+
+.stage-mark.dash {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ink);
+}
+
+.stage-words {
+  position: relative;
+  z-index: 1;
+  grid-area: 1 / 1 / 2 / 3;
+  display: grid;
+  margin-inline: calc(-1 * var(--gutter));
+  padding: 0.22em var(--gutter) 0.02em;
+  overflow: hidden;
+  font-size: var(--word-fs);
+  pointer-events: none;
+}
+
+.stage-word {
+  grid-area: 1 / 1;
+  justify-self: start;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.stage-word .ch {
+  display: inline-block;
+  will-change: transform;
+}
+
+.stage-art {
+  position: relative;
+  z-index: 2;
+  grid-area: 2 / 2 / 4 / 3;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  margin-top: calc(var(--word-fs) * -0.25);
+  /* Parts fly in from outside the drawing but never cross into the fact sheet's column. */
+  clip-path: inset(-60vh -60vw -60vh 0);
+}
+
+.stage-tilt {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
+}
+
+.stage-svg {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+}
+
+.stage-sheets {
+  position: relative;
+  z-index: 3;
+  grid-area: 2 / 1 / 4 / 2;
+  display: grid;
+  align-content: end;
+}
+
+.stage-sheet {
+  grid-area: 1 / 1;
+  align-self: end;
+  align-content: start;
+  max-width: 34rem;
+  pointer-events: none;
+}
+
+.stage .act-role {
+  font-size: clamp(1.5rem, min(3vw, 5svh), 2.8rem);
+}
+
+.stage .act-tasks {
+  font-size: clamp(0.9rem, min(1.2vw, 2.3svh), 1.15rem);
+  line-height: 1.4;
+}
+
+.stage .act-sheet {
+  gap: clamp(0.4rem, 1.2svh, 0.9rem);
+}
+
+.stage-ticks {
+  position: relative;
+  z-index: 3;
+  grid-area: 3 / 2 / 4 / 3;
+  align-self: end;
+  justify-self: end;
+  display: flex;
+  gap: 8px;
+}
+
+.stage-tick {
+  display: block;
+  width: 44px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgb(18 18 18 / 0.22);
+}
+
+.stage-tick b {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+@media (max-width: 767px) {
+  .stage {
+    --word-fs: clamp(2.6rem, 15.5vw, 6rem);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    row-gap: 0.5rem;
+    padding-top: calc(var(--nav-h) + 0.5rem);
+  }
+
+  .stage-marks {
+    inset: var(--nav-h) 0 auto 0;
+    height: 55%;
+  }
+
+  .stage-ticks {
+    grid-area: 1 / 1;
     justify-self: stretch;
-    max-width: none;
-    aspect-ratio: 4 / 3;
+  }
+
+  .stage-tick {
+    flex: 1;
+    width: auto;
+  }
+
+  .stage-words {
+    grid-area: 2 / 1;
+  }
+
+  .stage-art {
+    grid-area: 3 / 1;
+    margin-top: 0;
+    clip-path: inset(-60vh -60vw 0 -60vw);
+  }
+
+  .stage-sheets {
+    grid-area: 4 / 1;
+  }
+
+  .stage .act-role {
+    font-size: clamp(1.35rem, 6vw, 1.8rem);
+  }
+
+  .stage .act-tasks {
+    font-size: 0.88rem;
+    gap: 0.35rem;
   }
 }
