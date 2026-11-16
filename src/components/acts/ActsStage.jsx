@@ -255,7 +255,7 @@ export default function ActsStage({ acts, label }) {
         if (k > 0) tl.set(sheet, { pointerEvents: 'auto' }, STARTS[k - 1] + 0.9)
       })
 
-      return landOnHash(stage, 'acts')
+      landOnHash()
     },
     { scope: root },
   )

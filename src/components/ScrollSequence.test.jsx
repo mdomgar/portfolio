@@ -4,6 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import ScrollSequence from './ScrollSequence'
 
 let loads
+let held
+let holdMobile
 class FakeImage {
   constructor() {
     this.naturalWidth = 1600
@@ -13,6 +15,10 @@ class FakeImage {
 
   set src(value) {
     this._src = value
+    if (holdMobile && value.includes('/mobile/')) {
+      held.push(this)
+      return
+    }
     queueMicrotask(() => this.onload?.())
   }
 
@@ -28,9 +34,12 @@ class FakeImage {
 let drawn
 beforeEach(() => {
   loads = []
+  held = []
+  holdMobile = false
   drawn = []
   vi.stubGlobal('Image', FakeImage)
   vi.stubGlobal('requestIdleCallback', (cb) => setTimeout(cb, 0))
+  vi.stubGlobal('cancelIdleCallback', (id) => clearTimeout(id))
   vi.stubGlobal(
     'ResizeObserver',
     class {
@@ -79,5 +88,36 @@ describe('ScrollSequence', () => {
     await flush()
     ref.current.setProgress(1)
     expect(drawn.at(-1)).toMatch(/\/seq\/mobile\/00\d\d\.webp$/)
+  })
+
+  it('keeps the old frame (no blank canvas) when the variant switches, until a frame of the new set is ready', async () => {
+    const onDraw = vi.fn()
+    const { container, rerender } = render(<ScrollSequence variant="desktop" progress={0} onDraw={onDraw} />)
+    await flush()
+    const canvas = container.querySelector('canvas')
+    const size = [canvas.width, canvas.height]
+    const clears = []
+    const context = canvas.getContext('2d')
+    context.clearRect = () => clears.push('clear')
+    holdMobile = true
+    rerender(<ScrollSequence variant="mobile" progress={0} onDraw={onDraw} />)
+    await flush()
+    expect([canvas.width, canvas.height]).toEqual(size)
+    expect(clears).toHaveLength(0)
+    expect(onDraw).toHaveBeenCalledTimes(1)
+    holdMobile = false
+    held[0].onload()
+    await flush()
+    expect(drawn.at(-1)).toBe('/seq/mobile/0001.webp')
+    expect(onDraw).toHaveBeenCalledTimes(2)
+  })
+
+  it('abandons the frames of the old set on unmount', async () => {
+    const { unmount } = render(<ScrollSequence variant="desktop" progress={0} />)
+    await flush()
+    const before = loads.length
+    unmount()
+    await new Promise((resolve) => setTimeout(resolve, 20))
+    expect(loads.length).toBe(before)
   })
 })

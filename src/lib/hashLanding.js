@@ -1,36 +1,65 @@
 import { ScrollTrigger } from './gsap'
 
-// A direct load of /#proyectos lands against the static page. Once a pinned stage mounts (and adds its pin
-// spacer) everything after it has moved down, so the target is re-resolved once per stage, for anything that
-// comes after it. Each stage asks once; later remounts (a path switch) never pull the visitor back.
-const landed = new Set()
+// A direct load of /#proyectos lands against the static page. Once the pinned stages mount (and add their pin
+// spacers) everything after them has moved down, so the target is re-resolved: once per page load, shared by
+// every stage, after all of them exist. Only stage mounts during that initial load take part (a later switch
+// of reduced motion or viewport must never pull the visitor back), and once the visitor scrolls, or the
+// scroll position is no longer where the jump left it, nothing re-jumps.
+let session = null
 
-function resolveAfter(stage) {
-  const id = decodeURIComponent(window.location.hash.slice(1))
-  const target = id && document.getElementById(id)
-  if (!target || !(stage.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING)) return
-  if (stage.contains(target)) return
-  const nav = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10) || 64
-  window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - nav, behavior: 'instant' })
+function targetOf() {
+  let id = window.location.hash.slice(1)
+  try {
+    id = decodeURIComponent(id)
+  } catch {
+    return null
+  }
+  return id ? document.getElementById(id) : null
 }
 
-// Returns a cleanup. Call it from inside the stage's useGSAP, after its triggers exist.
-export function landOnHash(stage, key) {
-  let alive = true
-  let frame = 0
+function createSession() {
+  const state = { moved: false, jumpedTo: null, closed: false, pending: 0 }
+  const markMoved = () => {
+    state.moved = true
+  }
+  const events = ['wheel', 'touchstart', 'keydown', 'pointerdown']
+  events.forEach((name) => window.addEventListener(name, markMoved, { passive: true }))
+
+  const finish = () => {
+    state.pending -= 1
+    if (state.pending > 0) return
+    state.closed = true
+    events.forEach((name) => window.removeEventListener(name, markMoved))
+  }
+
   const settle = () => {
+    if (state.moved || (state.jumpedTo !== null && Math.abs(window.scrollY - state.jumpedTo) > 2)) return
     ScrollTrigger.refresh()
-    resolveAfter(stage)
+    const target = targetOf()
+    if (!target) return
+    const nav = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10) || 64
+    window.scrollTo({ top: Math.max(0, target.getBoundingClientRect().top + window.scrollY - nav), behavior: 'instant' })
+    state.jumpedTo = window.scrollY
   }
-  if (!landed.has(key)) {
-    landed.add(key)
-    frame = requestAnimationFrame(() => alive && settle())
-    document.fonts?.ready.then(() => alive && settle())
-  } else {
-    document.fonts?.ready.then(() => alive && ScrollTrigger.refresh())
+
+  state.pending = 1
+  requestAnimationFrame(() => {
+    settle()
+    finish()
+  })
+  if (document.fonts?.ready) {
+    state.pending += 1
+    document.fonts.ready.then(() => {
+      settle()
+      finish()
+    })
   }
-  return () => {
-    alive = false
-    cancelAnimationFrame(frame)
-  }
+  return state
+}
+
+// Call from a pinned stage's effect once its triggers exist. Safe to call from several stages and from later
+// mounts (which do nothing).
+export function landOnHash() {
+  // performance.now() counts from the page load: later mounts (a switch at runtime) are not a landing.
+  if (!session && performance.now() < 10000) session = createSession()
 }

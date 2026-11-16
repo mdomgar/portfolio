@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { frameUrl, SEQUENCE } from '../data/sequence'
 import { profile } from '../data/profile'
 import { localize } from '../data/localize'
@@ -22,8 +22,27 @@ const DRAWING = {
   mobile: { x0: 0.095, y0: 0.208, x1: 0.986, y1: 0.889 },
 }
 
+// The same boxes as CSS variables on the section: the static (prerender) image is placed with them, so it
+// sits exactly where the animated canvas starts and nothing jumps when the page hydrates.
+const DRAWING_VARS = Object.fromEntries(
+  Object.entries(DRAWING).flatMap(([variant, box]) => {
+    const key = variant === 'desktop' ? 'd' : 'm'
+    const spec = SEQUENCE[variant]
+    return [
+      [`--${key}-w`, box.x1 - box.x0],
+      [`--${key}-h`, box.y1 - box.y0],
+      [`--${key}-cx`, (box.x0 + box.x1) / 2],
+      [`--${key}-cy`, (box.y0 + box.y1) / 2],
+      [`--${key}-ar`, spec.width / spec.height],
+    ]
+  }),
+)
+
 // First frame that is the flat screen colour edge to edge (measured on the pixels of each set).
 const SOLID_FROM = { desktop: 80, mobile: 51 }
+// Share of the pin's scroll at which the screen already covers the whole viewport (the frame is cropped to the
+// viewport, so a little before the first solid frame). Measured on settled captures; the bar turns ink there.
+const NAV_INK_AT = { desktop: 0.8, mobile: 0.835 }
 
 // Scroll length of the pinned opening, in viewport heights.
 const SCROLL_SCREENS = 2.6
@@ -61,11 +80,45 @@ export default function Opening({ reducedMotion }) {
   const tooShort = useMediaQuery('(max-height: 539px)')
   const portrait = useMediaQuery(PORTRAIT_QUERY)
   const animated = hydrated && !reducedMotion && !tooShort
+  const sectionRef = useRef(null)
+  const wasInside = useRef(false)
+  const previous = useRef({ hydrated: false, animated: false })
+
+  // Remember whether the visitor is inside the opening, so a switch between the pinned and the static
+  // version (reduced motion toggled at runtime) brings them back to its top instead of somewhere arbitrary.
+  useEffect(() => {
+    if (!hydrated) return undefined
+    const update = () => {
+      const rect = sectionRef.current?.getBoundingClientRect()
+      wasInside.current = !!rect && rect.top <= 0 && rect.bottom > 0
+    }
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [hydrated])
+
+  useEffect(() => {
+    const before = previous.current
+    previous.current = { hydrated, animated }
+    if (!hydrated || !before.hydrated || before.animated === animated || !wasInside.current) return undefined
+    const frame = requestAnimationFrame(() => {
+      ScrollTrigger.refresh()
+      window.scrollTo({ top: 0, behavior: 'instant' })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [hydrated, animated])
 
   return (
-    <section id="inicio" className="opening" aria-labelledby="opening-title" data-pinned={animated ? '' : undefined}>
+    <section
+      id="inicio"
+      ref={sectionRef}
+      className="opening"
+      aria-labelledby="opening-title"
+      data-pinned={animated ? '' : undefined}
+      style={DRAWING_VARS}
+    >
       {animated ? (
-        <OpeningShow key={lang} lang={lang} role={role} variant={portrait ? 'mobile' : 'desktop'} />
+        <OpeningShow key={`${lang}-${portrait}`} lang={lang} role={role} variant={portrait ? 'mobile' : 'desktop'} />
       ) : (
         <div className="opening-stage">
           <div className="opening-title-wrap">
@@ -186,7 +239,7 @@ function OpeningShow({ lang, role, variant }) {
       const root = document.documentElement
       const ink = ScrollTrigger.create({
         trigger: stage,
-        start: () => tl.scrollTrigger.start + (tl.scrollTrigger.end - tl.scrollTrigger.start) * share,
+        start: () => tl.scrollTrigger.start + (tl.scrollTrigger.end - tl.scrollTrigger.start) * NAV_INK_AT[variant],
         // The pin spacer is not known to an endTrigger's position, so measure from the pin's own end: once it
         // releases, the stage scrolls away and "hoy" follows it directly.
         end: () => {
@@ -198,9 +251,8 @@ function OpeningShow({ lang, role, variant }) {
         onToggle: (self) => root.classList.toggle('nav-ink', self.isActive),
       })
 
-      const stopLanding = landOnHash(stage, 'opening')
+      landOnHash()
       return () => {
-        stopLanding()
         root.classList.remove('nav-ink')
         ink.kill()
       }

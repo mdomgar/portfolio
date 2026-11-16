@@ -2,6 +2,9 @@ import { useEffect, useImperativeHandle, useRef } from 'react'
 import { frameUrl, SEQUENCE } from '../data/sequence'
 import { createFrameLoader } from '../lib/frameLoader'
 
+// Decoded frames kept around the one on show (see frameLoader): about 20 of 60 or 96, not all of them.
+const WINDOW = { behind: 6, ahead: 14 }
+
 const frameAt = (count, progress) => 1 + Math.round(Math.min(Math.max(progress, 0), 1) * (count - 1))
 
 // A canvas that plays a pre-rendered frame sequence. The frame follows `progress` (0..1), either through
@@ -20,10 +23,14 @@ export default function ScrollSequence({ variant, progress = 0, onDraw, ref, cla
     const spec = SEQUENCE[variant]
     const canvas = canvasRef.current
     const state = live.current
-    const loader = createFrameLoader({ urls: Array.from({ length: spec.count }, (_, i) => frameUrl(variant, i + 1)) })
+    const loader = createFrameLoader({ urls: Array.from({ length: spec.count }, (_, i) => frameUrl(variant, i + 1)),
+      window: WINDOW,
+    })
     state.loader = loader
     state.image = null
 
+    // The backing store is only resized right before a frame of this set is drawn: resizing clears the
+    // canvas, so doing it earlier (a variant switch, a resize) would leave it blank until the next decode.
     const fit = () => {
       const cssW = canvas.clientWidth || spec.width
       const cssH = canvas.clientHeight || spec.height
@@ -31,17 +38,19 @@ export default function ScrollSequence({ variant, progress = 0, onDraw, ref, cla
       const ratio = Math.min(window.devicePixelRatio || 1, 1 / cover)
       const width = Math.max(1, Math.round(cssW * ratio))
       const height = Math.max(1, Math.round(cssH * ratio))
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width
-        canvas.height = height
-        return true
-      }
-      return false
+      if (canvas.width === width && canvas.height === height) return false
+      canvas.width = width
+      canvas.height = height
+      return true
     }
 
     const draw = (force) => {
-      const image = loader.nearestLoaded(frameAt(spec.count, state.progress))
-      if (!image || (image === state.image && !force)) return
+      const index = frameAt(spec.count, state.progress)
+      loader.focus(index)
+      const image = loader.nearestLoaded(index)
+      if (!image) return
+      const resized = fit()
+      if (image === state.image && !force && !resized) return
       const context = canvas.getContext('2d')
       if (!context) return
       const scale = Math.max(canvas.width / spec.width, canvas.height / spec.height)
@@ -57,15 +66,16 @@ export default function ScrollSequence({ variant, progress = 0, onDraw, ref, cla
     }
     drawRef.current = draw
 
-    fit()
+    state.notified = false
     const unsubscribe = loader.subscribe(() => draw(false))
-    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(() => fit() && draw(true)) : null
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(() => draw(true)) : null
     observer?.observe(canvas)
     loader.load()
     draw(false)
 
     return () => {
       unsubscribe()
+      loader.dispose()
       observer?.disconnect()
       drawRef.current = () => {}
       state.loader = null

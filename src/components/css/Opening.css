@@ -70,7 +70,16 @@
   color: var(--ink-soft);
 }
 
-/* Static: the first frame sits in its cell, no taller than the cell. */
+/* Static: the first frame sits in its cell, placed exactly like the animated start: the box of the drawing
+   (--bw/--bh/--bcx/--bcy, fractions of the frame, from Opening.jsx) is fitted into the cell and centred. */
+.opening-stage {
+  --bw: var(--d-w);
+  --bh: var(--d-h);
+  --bcx: var(--d-cx);
+  --bcy: var(--d-cy);
+  --far: var(--d-ar);
+}
+
 .opening-seq {
   position: relative;
   z-index: 1;
@@ -80,12 +89,20 @@
 
 .opening-frame {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
   max-width: none;
-  object-fit: contain;
-  object-position: right bottom;
+  pointer-events: none;
+}
+
+.opening:not([data-pinned]) .opening-seq {
+  container-type: size;
+}
+
+.opening:not([data-pinned]) .opening-frame {
+  --w: min(100cqw / var(--bw), 100cqh * var(--far) / var(--bh));
+  width: var(--w);
+  height: auto;
+  left: calc(50cqw - var(--bcx) * var(--w));
+  top: calc(50cqh - var(--bcy) * var(--w) / var(--far));
 }
 
 /* Pinned: the layers fill the whole stage (also behind the fixed bar). */
@@ -98,8 +115,10 @@
 }
 
 .opening[data-pinned] .opening-frame {
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: center;
 }
 
 .opening-backdrop {
@@ -163,7 +182,11 @@
     font-size: clamp(1rem, 2.6vw, 1.25rem);
   }
 
-  .opening-frame {
-    object-position: center bottom;
+  .opening-stage {
+    --bw: var(--m-w);
+    --bh: var(--m-h);
+    --bcx: var(--m-cx);
+    --bcy: var(--m-cy);
+    --far: var(--m-ar);
   }
 }
