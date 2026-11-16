@@ -30,16 +30,13 @@
   margin-top: clamp(2.5rem, 7vh, 4.5rem);
 }
 
-/* The rule above each group draws with the scroll (--rule 0..1; 1 when nothing animates). */
-.background-group {
+/* One full-width rule over the whole row of groups; it draws with the scroll (--rule 0..1; 1 when static). */
+.background-groups {
   position: relative;
-  display: grid;
-  align-content: start;
-  gap: 0.75rem;
-  padding-top: 1rem;
+  padding-top: clamp(1.25rem, 3vh, 2rem);
 }
 
-.background-group::before {
+.background-groups::before {
   content: '';
   position: absolute;
   inset: 0 0 auto;
@@ -47,6 +44,12 @@
   background: var(--ink);
   transform: scaleX(var(--rule, 1));
   transform-origin: 0 50%;
+}
+
+.background-group {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
 }
 
 .background-group-title {

@@ -1,10 +1,11 @@
 import './css/DeviceFrame.css'
 
 // A browser window drawn in the ink-line style, with a flat plate offset behind it. The dark dashboard
-// sits inside it as the "screen". Pure markup: the home page animates the parts it knows by class name.
-export default function DeviceFrame({ children, className = '' }) {
+// sits inside it as the "screen". Pure markup; the home page animates .device, .device-plate,
+// .device-window, .device-tilt, .device-dot and .device-url.
+export default function DeviceFrame({ children }) {
   return (
-    <div className={`device ${className}`.trim()}>
+    <div className="device">
       <div className="device-plate" aria-hidden="true" />
       <div className="device-tilt">
         <div className="device-window">

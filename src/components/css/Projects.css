@@ -17,10 +17,11 @@
   background: var(--block, var(--act-erp));
   border-bottom: var(--line);
   color: var(--ink);
-  overflow: hidden;
+  overflow-x: clip;
 }
 
 .solar-inner {
+  container-type: inline-size;
   display: grid;
   gap: clamp(1rem, 3vh, 2rem);
 }
@@ -42,7 +43,7 @@
 
 /* The long word is sized from the container (not the screen) so it fills the line exactly. */
 .solar-name {
-  font-size: calc((min(100vw, var(--container)) - 2 * var(--gutter)) / var(--em));
+  font-size: calc(100cqw / var(--em));
 }
 
 .solar-body {

@@ -18,4 +18,12 @@ describe('Projects', () => {
     expect(within(item).queryByRole('link')).not.toBeInTheDocument()
     expect(item.querySelector('img, canvas')).not.toBeInTheDocument()
   })
+
+  it('offers the case, demo and code actions with the right targets', () => {
+    renderWithRouter(<Projects reducedMotion />)
+    expect(screen.getByRole('link', { name: /Ver el caso/ })).toHaveAttribute('href', '/casos/solarmetrics')
+    expect(screen.getByRole('link', { name: /Ver demo/ })).toHaveAttribute('href', 'https://solarmetrics.vercel.app')
+    expect(screen.getByRole('link', { name: /Código/ })).toHaveAttribute('href', 'https://github.com/mdomgar/SolarMetrics')
+    expect(screen.getByText('Vulcania').closest('li').querySelector('a')).toBeNull()
+  })
 })

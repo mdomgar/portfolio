@@ -22,6 +22,7 @@
 }
 
 .legal-hero-inner {
+  container-type: inline-size;
   display: grid;
   gap: clamp(1rem, 2.5vh, 1.5rem);
   justify-items: start;
@@ -37,7 +38,7 @@
 
 .legal-title {
   margin-block: 0;
-  font-size: calc((min(100vw, var(--container)) - 2 * var(--gutter)) / var(--em));
+  font-size: calc(100cqw / var(--em));
 }
 
 .legal-intro {

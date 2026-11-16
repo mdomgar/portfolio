@@ -39,12 +39,18 @@ export default function Background({ reducedMotion }) {
           scrollTrigger: scrub(section.querySelector('.background-education'), 'top 92%', 'top 50%'),
         },
       )
+      const groups = section.querySelector('.background-groups')
+      gsap.fromTo(
+        groups,
+        { '--rule': 0 },
+        { '--rule': 1, ease: 'none', scrollTrigger: scrub(groups, 'top 94%', 'top 70%') },
+      )
       gsap.utils.toArray('.background-group', section).forEach((group) => {
         const tl = gsap.timeline({
           defaults: { ease: 'none' },
           scrollTrigger: scrub(group, 'top 94%', 'top 60%'),
         })
-        tl.fromTo(group, { '--rule': 0 }, { '--rule': 1, duration: 0.4 }, 0).fromTo(
+        tl.fromTo(
           group.querySelectorAll('.chip'),
           { opacity: 0, y: 18 },
           { opacity: 1, y: 0, stagger: 0.08, duration: 0.5, ease: 'power2.out' },

@@ -37,7 +37,7 @@ function LiveProject({ project, reducedMotion }) {
           rotation: 0,
           stagger: 0.07,
           ease: 'power3.out',
-          scrollTrigger: scrub(block, 'top 55%', 'top -5%'),
+          scrollTrigger: scrub(block, 'top 85%', 'top 12%'),
         },
       )
 
@@ -78,7 +78,7 @@ function LiveProject({ project, reducedMotion }) {
           y: 0,
           stagger: 0.12,
           ease: 'power2.out',
-          scrollTrigger: scrub(block.querySelector('.solar-copy'), 'top 90%', 'top 45%'),
+          scrollTrigger: scrub(block.querySelector('.solar-copy'), 'top 92%', 'top 62%'),
         },
       )
 

@@ -3,24 +3,37 @@
   display: grid;
   align-content: center;
   min-height: 100svh;
-  padding-block: clamp(5rem, 14vh, 9rem);
+  padding-block: clamp(3rem, 8vh, 5rem);
   overflow-x: clip;
 }
 
 .contact-inner {
-  display: grid;
-  justify-items: start;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  min-height: calc(100svh - 2 * clamp(3rem, 8vh, 5rem));
+}
+
+/* Word floats in the upper space, the invitation sits at the foot: the screen reads as one composition. */
+.contact-word {
+  margin-top: auto;
+}
+
+.contact-foot {
+  margin-top: auto;
+  padding-top: clamp(2rem, 6vh, 4rem);
 }
 
 /* The closing word fills the container exactly (--em is its measured width in em). */
 .contact-word {
-  font-size: calc((min(100vw, var(--container)) - 2 * var(--gutter)) / var(--em));
+  font-size: calc(100cqw / var(--em));
   max-width: none;
 }
 
 .contact-lead {
   max-width: 22em;
-  margin-top: clamp(1.75rem, 5vh, 3rem);
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 2.6rem);
   font-weight: 600;
