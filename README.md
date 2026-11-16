@@ -1,63 +1,57 @@
 # Portfolio · Miguel Ángel Domínguez García
 
-Web para captar clientes y marca personal: un escritorio de developer en 3D (React Three Fiber) detrás de contenido HTML real y accesible. Home con hero en secuencia, servicios, casos, cómo trabajo, quién soy, ahora mismo y un brief guiado; páginas de caso de SolarMetrics y Seenat; privacidad y aviso legal.
+Portfolio personal de Miguel Ángel, web developer en Jaén. La home abre con una secuencia 3D pre-renderizada con Blender que avanza al hacer scroll; después, cuatro actos con su trayectoria profesional, el caso de estudio de SolarMetrics y el bloque de contacto. Textos en español e inglés, con el español como idioma publicado.
 
 ## Stack
 
-React 19 · React Router 7 (modo framework, prerender estático) · Vite 7 · three.js + @react-three/fiber/drei/postprocessing · GSAP + ScrollTrigger · Lenis · zustand · Resend (Vercel Function) · Vitest + Testing Library · Playwright
+React 19 · React Router 7 (modo framework, prerender estático con `ssr: false`) · Vite 7 · GSAP + ScrollTrigger (`@gsap/react`) · Lenis · react-icons · Vitest + Testing Library · Playwright · Blender 5.x (solo para regenerar los fotogramas)
 
 ## Scripts
 
 ```bash
 npm install
 npm run dev        # desarrollo (http://localhost:5173)
-npm test           # tests unitarios
+npm test           # tests unitarios (Vitest)
 npm run lint       # ESLint
 npm run build      # prerender de todas las rutas en build/client
-npm run preview    # sirve build/client como Vercel (http://localhost:4173)
-npm run test:e2e   # build + Playwright con el Chrome del sistema
-npm run og:images  # regenera public/img/og-<caso>.jpg
+npm run preview    # sirve build/client (http://localhost:4173)
+npm run test:e2e   # build + Playwright
+npm run og:images  # regenera public/img/og-solarmetrics.jpg
 ```
+
+## Rutas
+
+- `/`: home (apertura 3D, hoy, actos de la trayectoria, proyectos, contacto).
+- `/casos/solarmetrics`: caso de estudio de SolarMetrics.
+- `/aviso-legal`: aviso legal.
+- Cualquier otra URL: página 404.
 
 ## Arquitectura
 
-- `src/root.jsx`: layout raíz. La escena 3D (`src/scene/`), la navbar, el pie y el preloader se montan una vez y persisten entre rutas.
-- `src/routes.js` + `src/routes/`: home, casos, legales y 404. `react-router.config.js` prerenderiza todas las rutas públicas (`src/data/site.js`) y, al terminar el build, genera `404.html`, `sitemap.xml` y `robots.txt`.
-- La cámara elige pose con `resolvePoseId` (`src/scene/poses.js`): el `sceneCue` del hero y del pin de servicios manda sobre la sección visible.
-- `/api/brief` (`api/brief.js` → `server/briefHandler.js`) valida con el mismo `src/lib/briefSchema.js` que el formulario y envía el correo con Resend.
-- three.js solo se carga bajo demanda y nunca durante el prerender.
+- `src/root.jsx`: layout raíz con la navbar, el pie y el scroll suave (Lenis). Se monta una vez y persiste entre rutas.
+- `src/routes.js` y `src/routes/`: una ruta por página. `src/routes/home.jsx` compone las secciones de la home.
+- `src/data/`: todo el contenido (perfil, experiencia, actos, proyectos, casos, SEO y textos legales), en `{ es, en }`. Los textos de interfaz están en `src/i18n/strings.js`.
+- `src/data/sequence.js`: número de fotogramas, tamaños y ruta de `public/seq/`. `src/components/Opening.jsx` y `ScrollSequence.jsx` reproducen los fotogramas según el progreso del scroll con GSAP ScrollTrigger.
+- `react-router.config.js`: prerenderiza las rutas públicas (`src/data/site.js`) y, al terminar el build, genera `404.html`, `sitemap.xml` y `robots.txt`.
+- `src/lib/seo.js`: metaetiquetas Open Graph y JSON-LD (`Person`).
+
+## Secuencia de apertura
+
+Los fotogramas de `public/seq/` los genera Blender a partir de `scripts/blender/retro_pc.py`. Para volver a renderizarlos y ver las opciones (variantes, calidad, número de fotogramas), sigue `scripts/blender/README.md`. Si cambias el número de fotogramas, actualiza `src/data/sequence.js`.
 
 ## Contenido
 
-Todo el texto está en `src/data/` y `src/i18n/strings.js`, en español e inglés (la web muestra español; el selector llega en la fase D). `src/data/now.js` debe actualizarse al menos cada 120 días: un test falla para recordarlo.
+Todo el texto está en `src/data/` y `src/i18n/strings.js`. Antes de publicar, revisa cada texto (ver pendientes).
 
 ## Configuración
 
 | Variable | Dónde | Para qué |
 |---|---|---|
-| `VITE_SITE_URL` | `.env` y Vercel | Dominio público (canonical, Open Graph, sitemap). Por defecto `https://miandoga.vercel.app`. |
-| `RESEND_API_KEY` | Vercel (no en `.env`) | Clave de Resend para enviar el brief. |
-| `BRIEF_TO_EMAIL` | Vercel | Dónde llegan los briefs. |
-| `BRIEF_FROM_EMAIL` | Vercel (opcional) | Remitente. Sin dominio verificado: `onboarding@resend.dev`. |
+| `VITE_SITE_URL` | `.env` y Vercel | Dominio público (canonical, Open Graph, sitemap). Ahora: `https://miandoga.vercel.app`. |
 
-En `npm run dev` no existe `/api/brief`: el formulario mostrará el error con "Reintentar" y el email. El envío real se prueba en Vercel; el flujo completo, con la API simulada, en `npm run test:e2e`.
+## Pendiente de Miguel
 
-## Calidad del 3D
-
-La calidad se detecta sola (`src/scene/quality.js`). Para probar un nivel concreto añade `?scene=high|medium|low|static`; `static` muestra el fondo sin WebGL.
-
-## Imágenes
-
-`scripts/process-images.py` genera la foto, el logo y la imagen general para redes (ver el script). Las imágenes por caso salen de `npm run og:images`.
-
-## Pendiente de Miguel antes de publicar
-
-1. **Resend**: crear la cuenta en https://resend.com con tu email, ir a *API Keys* → *Create API Key* (permiso *Sending access*) y copiar la clave (empieza por `re_`). Con `onboarding@resend.dev` como remitente, Resend solo entrega al email de tu propia cuenta: usa ese mismo email en `BRIEF_TO_EMAIL`. Si más adelante verificas un dominio en *Domains*, cambia `BRIEF_FROM_EMAIL` a una dirección de ese dominio.
-2. **Vercel**: en el proyecto → *Settings* → *Environment Variables*, añadir `RESEND_API_KEY`, `BRIEF_TO_EMAIL` y (opcional) `BRIEF_FROM_EMAIL` para *Production* y *Preview*, y `VITE_SITE_URL` si el dominio no es `https://miandoga.vercel.app`. Volver a desplegar después de guardarlas.
-3. **Probar el brief en producción**: enviar uno real desde la web desplegada y comprobar que llega, con "Responder a" apuntando al email escrito en el formulario.
-4. **Textos legales**: revisar `src/data/legal.js` y añadir tu NIF (y domicilio si quieres darlo completo) en `profile.legal` de `src/data/profile.js`; la fila NIF aparece sola cuando no es `null`.
-5. **Seenat**: confirmar con `npx supabase test db` el número real de pruebas del backend. La web dice "160+" (`src/data/cases/seenat.js`); déjalo así salvo que el número real sea menor. Revisar también el diario de desarrollo del mismo archivo y confirmar la frase del estado del backend ("El backend de la versión 1 está hecho…").
-6. **Capturas de Seenat**: aún no hay; el caso usa una vista previa dibujada. Añadir capturas reales de la app cuando las tengas.
-7. **Nota del TFG de SolarMetrics**: añadirla al caso (`src/data/cases/solarmetrics.js`) si quieres mostrarla.
-8. **Copy por revisar**: etiquetas rápidas del brief para herramienta y app (`src/data/brief.js`), "48 h" y "30 días" del proceso.
-9. **Contrato con Macrosad**: confirmar que no impide trabajar como freelance antes de publicar.
+1. **Macrosad**: escribir con tus palabras qué haces en Macrosad. El texto actual de `src/data/experience.js` es provisional.
+2. **NIF**: añadirlo en `profile.legal.nif` de `src/data/profile.js` (LSSI). La fila del NIF aparece sola cuando deja de ser `null`.
+3. **Revisar todos los textos** de `src/data/` y `src/i18n/strings.js` antes de publicar.
+4. **Dominio final**: decidir la URL definitiva y fijar `VITE_SITE_URL` en `.env` y en Vercel; después vuelve a desplegar.

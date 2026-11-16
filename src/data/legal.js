@@ -2,7 +2,7 @@
 export const legalPages = {
   legal: {
     path: '/aviso-legal',
-    updated: '2026-10-01',
+    updated: '2026-11-16',
     title: { es: 'Aviso legal', en: 'Legal notice' },
     intro: {
       es: 'Datos del titular y condiciones de uso de esta web, según la Ley 34/2002 de servicios de la sociedad de la información (LSSI).',
@@ -19,8 +19,8 @@ export const legalPages = {
         id: 'purpose',
         title: { es: 'Objeto', en: 'Purpose' },
         body: {
-          es: ['Esta web presenta mis servicios de desarrollo web y mis proyectos, y permite contactar conmigo.'],
-          en: ['This website presents my web development services and my projects, and lets you contact me.'],
+          es: ['Esta web presenta mi trayectoria profesional y mis proyectos como desarrollador web, con mis perfiles de contacto.'],
+          en: ['This website presents my professional career and my projects as a web developer, with my contact profiles.'],
         },
       },
       {

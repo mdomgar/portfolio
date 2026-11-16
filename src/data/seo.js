@@ -4,12 +4,12 @@ import { getCase } from './cases/index.js'
 const PAGES = {
   '/': {
     title: {
-      es: 'Miguel Ángel Domínguez · Webs, herramientas y apps a medida',
-      en: 'Miguel Ángel Domínguez · Custom websites, tools and apps',
+      es: 'Miguel Ángel Domínguez · Web developer',
+      en: 'Miguel Ángel Domínguez · Web developer',
     },
     description: {
-      es: 'Desarrollador web en Jaén. Construyo webs para negocios, herramientas web personalizadas y apps móviles, de la idea al lanzamiento.',
-      en: 'Web developer based in Jaén, Spain. I build websites for businesses, custom web tools and mobile apps, from idea to launch.',
+      es: 'Web developer en Jaén. Programo aplicaciones y herramientas web con React y Node.js. Trayectoria, proyectos y contacto.',
+      en: 'Web developer in Jaén, Spain. I build web applications and tools with React and Node.js. Career, projects and contact.',
     },
   },
   '/aviso-legal': {
@@ -22,8 +22,8 @@ const PAGES = {
   '/404': {
     title: { es: 'Página no encontrada · Miguel Ángel Domínguez', en: 'Page not found · Miguel Ángel Domínguez' },
     description: {
-      es: 'La página que buscas no existe o se ha movido. Vuelve al inicio para ver mis servicios y casos.',
-      en: 'The page you are looking for does not exist or has moved. Go back home to see my services and case studies.',
+      es: 'La página que buscas no existe o se ha movido. Vuelve al inicio.',
+      en: 'The page you are looking for does not exist or has moved. Go back home.',
     },
     noindex: true,
   },

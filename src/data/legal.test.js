@@ -4,6 +4,16 @@ import { legalPages } from './legal'
 const filled = (value) => typeof value === 'string' && value.trim() !== ''
 
 describe('legal pages', () => {
+  it('do not mention a contact form or personal data collection', () => {
+    const removed = /formulario|form\b|brief|resend|consentimiento|conservaci|datos personales|privacidad|personal data|consent|retention/i
+    for (const page of Object.values(legalPages)) {
+      const texts = [page.intro, ...page.sections.flatMap((section) => [section.title, section.body])]
+      for (const text of texts.flatMap((value) => Object.values(value).flat())) {
+        expect(text, page.path).not.toMatch(removed)
+      }
+    }
+  })
+
   it('have every heading and paragraph in both languages', () => {
     for (const page of Object.values(legalPages)) {
       expect(filled(page.title.es) && filled(page.title.en), page.path).toBe(true)

@@ -44,14 +44,18 @@ describe('buildMeta', () => {
 })
 
 describe('buildJsonLd', () => {
-  it('describes me as a person with a professional service', () => {
+  it('describes me as a Person only, with my profiles and location', () => {
     const { '@context': context, '@graph': graph } = buildJsonLd()
     expect(context).toBe('https://schema.org')
-    const person = graph.find((node) => node['@type'] === 'Person')
-    const service = graph.find((node) => node['@type'] === 'ProfessionalService')
-    expect(person).toMatchObject({ name: 'Miguel Ángel Domínguez García', url: `${SITE_URL}/` })
-    expect(person.sameAs).toEqual(['https://github.com/mdomgar', expect.stringContaining('linkedin.com')])
-    expect(service.founder).toEqual({ '@id': person['@id'] })
+    expect(graph.map((node) => node['@type'])).toEqual(['Person'])
+    const [person] = graph
+    expect(person).toMatchObject({
+      name: 'Miguel Ángel Domínguez García',
+      jobTitle: 'Web developer',
+      url: `${SITE_URL}/`,
+      address: { addressLocality: 'Jaén' },
+    })
+    expect(person.sameAs).toEqual([expect.stringContaining('linkedin.com'), 'https://github.com/mdomgar'])
   })
 })
 

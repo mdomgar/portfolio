@@ -21,6 +21,6 @@ describe('home route', () => {
     expect(tags[0].title).toMatch(/^Miguel Ángel Domínguez · /)
     expect(tags.find((tag) => tag.rel === 'canonical').href).toMatch(/\/$/)
     const jsonLd = tags.find((tag) => 'script:ld+json' in tag)['script:ld+json']
-    expect(jsonLd['@graph'].map((node) => node['@type'])).toEqual(['Person', 'ProfessionalService'])
+    expect(jsonLd['@graph'].map((node) => node['@type'])).toEqual(['Person'])
   })
 })

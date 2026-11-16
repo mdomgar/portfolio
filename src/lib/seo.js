@@ -1,6 +1,5 @@
 import { normalizeSiteUrl } from './siteUrl'
 import { profile } from '../data/profile'
-import { getPageSeo } from '../data/seo'
 
 // `import.meta.env` does not exist when Node scripts (Playwright, og-images) import this file.
 const env = import.meta.env ?? {}
@@ -13,31 +12,17 @@ export function absoluteUrl(path) {
 }
 
 export function buildJsonLd() {
-  const personId = `${SITE_URL}/#person`
-  const address = { '@type': 'PostalAddress', addressLocality: 'Jaén', addressCountry: 'ES' }
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'Person',
-        '@id': personId,
+        '@id': `${SITE_URL}/#person`,
         name: profile.name,
+        jobTitle: 'Web developer',
         url: `${SITE_URL}/`,
-        jobTitle: 'Desarrollador web',
-        email: `mailto:${profile.email}`,
-        address,
-        sameAs: [profile.github, profile.linkedin],
-      },
-      {
-        '@type': 'ProfessionalService',
-        '@id': `${SITE_URL}/#service`,
-        name: `${profile.name} · Desarrollo web`,
-        url: `${SITE_URL}/`,
-        image: absoluteUrl(DEFAULT_OG_IMAGE),
-        description: getPageSeo('/').description,
-        founder: { '@id': personId },
-        areaServed: 'ES',
-        address,
+        sameAs: [profile.linkedin, profile.github],
+        address: { '@type': 'PostalAddress', addressLocality: 'Jaén', addressCountry: 'ES' },
       },
     ],
   }
