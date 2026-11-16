@@ -95,6 +95,13 @@
 
 .opening:not([data-pinned]) .opening-seq {
   container-type: size;
+  min-height: 0;
+}
+
+/* The floor lives on the track, not on the container: a size container that only gets its height from its own
+   min-height reports 0 to cqh, so on short screens (landscape phones) the image collapsed to nothing. */
+.opening:not([data-pinned]) .opening-stage {
+  grid-template-rows: auto minmax(14rem, 1fr);
 }
 
 .opening:not([data-pinned]) .opening-frame {
@@ -128,7 +135,8 @@
   opacity: 0;
 }
 
-/* The frame at "cover" size, centred on the stage: wider or taller than the stage when the aspect ratios
+/* The frame at "cover" size, centred on the stage (the -50% offsets are applied by GSAP as xPercent/yPercent: the
+   CSS `translate` property was parsed inconsistently by GSAP and left the frame off-centre on some phones): wider or taller than the stage when the aspect ratios
    differ, and the stage clips it. Nothing of the frame is cropped while it is scaled down. */
 .opening-wrap {
   position: absolute;
@@ -136,7 +144,6 @@
   top: 50%;
   width: max(100%, calc(100svh * var(--ar)));
   aspect-ratio: var(--ar);
-  translate: -50% -50%;
   will-change: transform;
 }
 
@@ -166,6 +173,10 @@
       'title'
       'seq'
       'lead';
+  }
+
+  .opening:not([data-pinned]) .opening-stage {
+    grid-template-rows: auto minmax(14rem, 1fr) auto;
   }
 
   .opening-title {

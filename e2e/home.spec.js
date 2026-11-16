@@ -76,6 +76,36 @@ test.describe('opening', () => {
     expect(errors).toEqual([])
   })
 
+  for (const viewport of [PHONE, { width: 390, height: 844 }, { width: 360, height: 640 }]) {
+    test(`(j) the computer is centred at the end of the pin and covers the screen at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+      await page.setViewportSize(viewport)
+      await openShow(page)
+      const range = await pinRange(page, '#inicio .opening-stage')
+      await scrollToY(page, range.top + range.length * 0.8)
+      const wrap = await page.locator('.opening-wrap').evaluate((el) => {
+        const { left, top, width, height } = el.getBoundingClientRect()
+        return { cx: left + width / 2, cy: top + height / 2, left, top, right: left + width, bottom: top + height }
+      })
+      expect(Math.abs(wrap.cx - viewport.width / 2), 'frame centred horizontally').toBeLessThan(1.5)
+      expect(Math.abs(wrap.cy - viewport.height / 2), 'frame centred vertically').toBeLessThan(1.5)
+      expect(wrap.left).toBeLessThanOrEqual(0.5)
+      expect(wrap.top).toBeLessThanOrEqual(0.5)
+      expect(wrap.right).toBeGreaterThanOrEqual(viewport.width - 0.5)
+      expect(wrap.bottom).toBeGreaterThanOrEqual(viewport.height - 0.5)
+    })
+  }
+
+  test('(k) the static first frame is drawn on a short landscape phone', async ({ page }) => {
+    await page.setViewportSize({ width: 812, height: 375 })
+    await open(page)
+    const box = await page.locator('.opening-frame').evaluate((el) => {
+      const { width, height } = el.getBoundingClientRect()
+      return { width, height }
+    })
+    expect(box.width).toBeGreaterThan(100)
+    expect(box.height).toBeGreaterThan(50)
+  })
+
   test('(i) the pin releases into #hoy over one flat ink colour', async ({ page }) => {
     await page.setViewportSize(DESKTOP)
     await open(page)

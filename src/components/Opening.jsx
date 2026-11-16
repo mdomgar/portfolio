@@ -208,8 +208,8 @@ function OpeningShow({ lang, role, variant }) {
       // The computer grows from its slot until it covers the viewport.
       tl.fromTo(
         wrapRef.current,
-        { x: () => start().x, y: () => start().y, scale: () => start().scale },
-        { x: 0, y: 0, scale: 1, duration: 0.5, ease: 'power2.inOut', immediateRender: true },
+        { xPercent: -50, yPercent: -50, x: () => start().x, y: () => start().y, scale: () => start().scale },
+        { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 1, duration: 0.5, ease: 'power2.inOut', immediateRender: true },
         0,
       )
 
