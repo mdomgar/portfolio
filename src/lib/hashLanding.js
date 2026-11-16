@@ -5,7 +5,17 @@ import { ScrollTrigger } from './gsap'
 // every stage, after all of them exist. Only stage mounts during that initial load take part (a later switch
 // of reduced motion or viewport must never pull the visitor back), and once the visitor scrolls, or the
 // scroll position is no longer where the jump left it, nothing re-jumps.
-let session = null
+let attempted = false
+let visitorActed = false
+
+const INPUTS = ['wheel', 'touchstart', 'keydown', 'pointerdown']
+function noteVisitor() {
+  visitorActed = true
+  INPUTS.forEach((name) => window.removeEventListener(name, noteVisitor))
+}
+// Watches from the moment the module loads, so a stage that mounts long after the visitor has started
+// scrolling (a switch at runtime) is never taken for the initial landing. Nothing to watch while prerendering.
+if (typeof window !== 'undefined') INPUTS.forEach((name) => window.addEventListener(name, noteVisitor, { passive: true }))
 
 function targetOf() {
   let id = window.location.hash.slice(1)
@@ -60,6 +70,8 @@ function createSession() {
 // Call from a pinned stage's effect once its triggers exist. Safe to call from several stages and from later
 // mounts (which do nothing).
 export function landOnHash() {
-  // performance.now() counts from the page load: later mounts (a switch at runtime) are not a landing.
-  if (!session && performance.now() < 10000) session = createSession()
+  // Only the first stage mount of the page load may land, and only if the visitor has not scrolled yet.
+  if (attempted) return
+  attempted = true
+  if (!visitorActed) createSession()
 }

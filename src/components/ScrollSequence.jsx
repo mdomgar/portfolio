@@ -2,9 +2,6 @@ import { useEffect, useImperativeHandle, useRef } from 'react'
 import { frameUrl, SEQUENCE } from '../data/sequence'
 import { createFrameLoader } from '../lib/frameLoader'
 
-// Decoded frames kept around the one on show (see frameLoader): about 20 of 60 or 96, not all of them.
-const WINDOW = { behind: 6, ahead: 14 }
-
 const frameAt = (count, progress) => 1 + Math.round(Math.min(Math.max(progress, 0), 1) * (count - 1))
 
 // A canvas that plays a pre-rendered frame sequence. The frame follows `progress` (0..1), either through
@@ -23,9 +20,9 @@ export default function ScrollSequence({ variant, progress = 0, onDraw, ref, cla
     const spec = SEQUENCE[variant]
     const canvas = canvasRef.current
     const state = live.current
-    const loader = createFrameLoader({ urls: Array.from({ length: spec.count }, (_, i) => frameUrl(variant, i + 1)),
-      window: WINDOW,
-    })
+    // No decode window: measured at 375x812 and 1440x900, keeping every frame costs fewer requests (60 against
+    // 112, a window refetches what it released) and less renderer memory, with the same GPU-process memory.
+    const loader = createFrameLoader({ urls: Array.from({ length: spec.count }, (_, i) => frameUrl(variant, i + 1)) })
     state.loader = loader
     state.image = null
 

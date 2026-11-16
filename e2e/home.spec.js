@@ -11,6 +11,7 @@ import {
   openShow,
   PHONE,
   pinRange,
+  pinSpacersFor,
   scrollToY,
   seenOpacity,
   settleScroll,
@@ -56,6 +57,18 @@ test.describe('opening', () => {
     })
     const stats = await analyseImage(page, await page.screenshot({ clip: box }), background)
     expect(stats.different / stats.pixels, 'share of pixels that are not the page background').toBeGreaterThan(0.05)
+
+    // Mid-opening, with frames 2.. missing, the sequence area must still show the first frame, not a blank.
+    const opening = await pinRange(page, '#inicio .opening-stage')
+    await scrollToY(page, opening.top + opening.length * 0.5)
+    const midBox = await page.locator('.opening-seq').evaluate((el) => {
+      const { left, top, right, bottom } = el.getBoundingClientRect()
+      const x = Math.max(0, left)
+      const y = Math.max(0, top)
+      return { x, y, width: Math.min(right, innerWidth) - x, height: Math.min(bottom, innerHeight) - y }
+    })
+    const midStats = await analyseImage(page, await page.screenshot({ clip: midBox }), background)
+    expect(midStats.different / midStats.pixels, 'share of non-background pixels at 50% of the opening').toBeGreaterThan(0.05)
 
     await page.evaluate(() => document.getElementById('hoy').scrollIntoView({ behavior: 'instant' }))
     await settleScroll(page)
@@ -176,6 +189,26 @@ test.describe('navigation', () => {
     expect(await inView(), `${selector} stays in view once the scroll has stopped`).toBe(true)
   }
 
+  // Once the glide has stopped the section sits right under the navbar (the last section may stop a little lower
+  // when the page runs out), and the contact actions are fully revealed.
+  async function expectLanded(page, id) {
+    await settleScroll(page, 40)
+    const { top, nav } = await page.evaluate((target) => {
+      const navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10) || 64
+      return { top: document.getElementById(target).getBoundingClientRect().top, nav: navHeight }
+    }, id)
+    expect(Math.abs(top - nav), `#${id} top ${top} vs navbar ${nav}`).toBeLessThanOrEqual(6)
+    if (id === 'contacto') await expectContactRevealed(page)
+  }
+
+  async function expectContactRevealed(page) {
+    const opacities = await page.locator('.contact-actions > *, .contact-lead').evaluateAll((els) => els.map((el) => Number(getComputedStyle(el).opacity)))
+    expect(opacities.length).toBeGreaterThanOrEqual(4)
+    for (const opacity of opacities) expect(opacity).toBeGreaterThan(0.99)
+  }
+
+  const sectionOf = { Trayectoria: 'trayectoria', Proyectos: 'proyectos', Contacto: 'contacto' }
+
   test.describe('desktop', () => {
     test.use({ viewport: DESKTOP })
     for (const { link, heading } of targets) {
@@ -183,8 +216,25 @@ test.describe('navigation', () => {
         await openShow(page)
         await page.getByRole('navigation', { name: 'Navegación principal' }).getByRole('link', { name: link }).click()
         await expectHeadingInView(page, heading)
+        await expectLanded(page, sectionOf[link])
       })
     }
+
+    test('(d) a click as soon as both pin spacers exist still lands under the navbar', async ({ page }) => {
+      await open(page)
+      await expect(page.locator('.pin-spacer')).toHaveCount(2)
+      await page.getByRole('navigation', { name: 'Navegación principal' }).getByRole('link', { name: 'Contacto' }).click()
+      await expectHeadingInView(page, '#contact-title')
+      await expectLanded(page, 'contacto')
+    })
+
+    test('(d) an early click on "Proyectos" lands under the navbar too', async ({ page }) => {
+      await open(page)
+      await expect(page.locator('.pin-spacer')).toHaveCount(2)
+      await page.getByRole('navigation', { name: 'Navegación principal' }).getByRole('link', { name: 'Proyectos' }).click()
+      await expectHeadingInView(page, '#projects-title')
+      await expectLanded(page, 'proyectos')
+    })
   })
 
   test.describe('phone', () => {
@@ -195,8 +245,31 @@ test.describe('navigation', () => {
       await expect(nav.getByRole('link', { name: 'Trayectoria' })).toBeHidden()
       await nav.getByRole('link', { name: 'Contacto' }).click()
       await expectHeadingInView(page, '#contact-title')
+      await expectLanded(page, 'contacto')
     })
   })
+
+  for (const viewport of [DESKTOP, PHONE, { width: 1280, height: 600 }, { width: 320, height: 640 }, { width: 812, height: 375 }]) {
+    test(`(d) Contacto fully reveals its actions at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+      await page.setViewportSize(viewport)
+      await openShow(page)
+      // Narrow screens hide the other links, but Contacto is always in the bar.
+      await page.getByRole('navigation', { name: 'Navegación principal' }).getByRole('link', { name: 'Contacto' }).click()
+      await expectHeadingInView(page, '#contact-title')
+      await expectLanded(page, 'contacto')
+    })
+  }
+
+  for (const viewport of [DESKTOP, PHONE, { width: 1280, height: 600 }, { width: 320, height: 640 }, { width: 812, height: 375 }]) {
+    test(`(e) /#contacto reveals the contact actions at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+      await page.setViewportSize(viewport)
+      await open(page, '/', '#contacto')
+      await expect(page.locator('.pin-spacer')).toHaveCount(pinSpacersFor(viewport))
+      await page.evaluate(() => document.fonts.ready)
+      await settleScroll(page, 40)
+      await expectContactRevealed(page)
+    })
+  }
 
   for (const viewport of [DESKTOP, PHONE]) {
     test.describe(`direct load at ${viewport.width}px`, () => {
@@ -204,6 +277,7 @@ test.describe('navigation', () => {
       for (const id of ['trayectoria', 'proyectos', 'formacion', 'contacto']) {
         test(`(e) /#${id} lands on its section under the navbar`, async ({ page }) => {
           await open(page, '/', `#${id}`)
+          await expect(page.locator('.pin-spacer')).toHaveCount(2)
           await settleScroll(page, 40)
           const { top, nav } = await page.evaluate((target) => {
             const navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10) || 64
@@ -248,8 +322,20 @@ test.describe('acts stage', () => {
       .poll(async () => (await sheetOpacities(page)).map((o) => (o > 0.99 ? 1 : o < 0.01 ? 0 : o.toFixed(2))).join(), { timeout: 8000 })
       .toMatch(/^(1,0,0,0|0,1,0,0|0,0,1,0|0,0,0,1)$/)
 
-    // The visible sheet is the topmost thing over each of its text lines: nothing overlaps it.
-    const covered = await page.evaluate(() => {
+    expect(await coveredLines(page)).toEqual([])
+
+    // Back across the breakpoint the other way and narrower still: one sheet, nothing overlapping.
+    await page.setViewportSize({ width: 600, height: 900 })
+    await settleScroll(page, 40)
+    await expect
+      .poll(async () => (await sheetOpacities(page)).map((o) => (o > 0.99 ? 1 : o < 0.01 ? 0 : o.toFixed(2))).join(), { timeout: 8000 })
+      .toMatch(/^(1,0,0,0|0,1,0,0|0,0,1,0|0,0,0,1)$/)
+    expect(await coveredLines(page)).toEqual([])
+  })
+
+  // The visible sheet is the topmost thing over each of its text lines: nothing overlaps it.
+  function coveredLines(page) {
+    return page.evaluate(() => {
       const seen = (el) => {
         let opacity = 1
         for (let node = el; node && node !== document.documentElement; node = node.parentElement) opacity *= Number(getComputedStyle(node).opacity)
@@ -264,8 +350,7 @@ test.describe('acts stage', () => {
       }
       return hidden
     })
-    expect(covered).toEqual([])
-  })
+  }
 
   test('(g) the longest fact sheet fits a 375x667 screen', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 })

@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { localize } from './localize'
-import { profile } from './profile'
 import { experience } from './experience'
 import { TECH } from './skills'
 import { strings } from '../i18n/strings'
@@ -40,7 +39,6 @@ describe('content', () => {
       expect(job.tasks.es.length, job.id).toBe(job.tasks.en.length)
     }
     for (const [key, value] of Object.entries(strings)) expect(isLocalized(value), key).toBe(true)
-    expect(isLocalized(profile.location)).toBe(true)
   })
 
   it('gives every technology a name, an icon and a colour', () => {

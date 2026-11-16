@@ -1,11 +1,13 @@
+// @vitest-environment node
 import { describe, it, expect } from 'vitest'
 import { existsSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { SEQUENCE, frameUrl } from './sequence.js'
 
-const publicDir = 'public'
-const dirBytes = (dir) =>
-  readdirSync(dir).reduce((sum, f) => sum + statSync(join(dir, f)).size, 0)
+const publicDir = fileURLToPath(new URL('../../public', import.meta.url))
+const frameFiles = (dir) => readdirSync(dir).filter((f) => f.endsWith('.webp'))
+const dirBytes = (dir) => frameFiles(dir).reduce((sum, f) => sum + statSync(join(dir, f)).size, 0)
 
 describe('SEQUENCE', () => {
   it('builds 1-based, 4-digit frame urls', () => {
@@ -34,6 +36,7 @@ describe('SEQUENCE', () => {
         const file = join(publicDir, frameUrl(variant, i))
         expect(existsSync(file), file).toBe(true)
       }
+      expect(frameFiles(join(publicDir, 'seq', variant)).length).toBe(count)
       expect(dirBytes(join(publicDir, 'seq', variant))).toBeLessThanOrEqual(budget)
     })
   }

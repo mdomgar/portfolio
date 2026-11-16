@@ -27,8 +27,10 @@ describe('hero and about copy', () => {
     expect(profile.hero).not.toHaveProperty('proof')
   })
 
-  it('tells the story in both languages', () => {
-    for (const key of ['hook', 'text', 'education']) expect(isLocalized(profile.about[key]), key).toBe(true)
+  it('states the education in both languages', () => {
+    expect(isLocalized(profile.about.education)).toBe(true)
+    expect(profile.about).not.toHaveProperty('hook')
+    expect(profile.about).not.toHaveProperty('text')
     expect(profile.about.education.es).toBe('Doble titulación ASIR + DAM · nota media 9,7')
   })
 })

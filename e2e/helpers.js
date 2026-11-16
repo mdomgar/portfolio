@@ -16,9 +16,12 @@ export async function open(page, path = '/', hash = '') {
 
 // The animated page is ready once it has hydrated (both pin spacers exist) and its fonts have loaded, i.e. once
 // the layout has stopped growing. Clicking earlier makes the smooth scroll aim at positions that then move.
+// Screens shorter than 540 px get no pinned stages (the show is not pinned there), hence no spacers to wait for.
+export const pinSpacersFor = (viewport) => (viewport.height < 540 ? 0 : 2)
+
 export async function openShow(page, path = '/', hash = '') {
   await open(page, path, hash)
-  await expect(page.locator('.pin-spacer')).toHaveCount(2)
+  await expect(page.locator('.pin-spacer')).toHaveCount(pinSpacersFor(page.viewportSize()))
   await page.evaluate(() => document.fonts.ready)
   await page.waitForLoadState('networkidle')
 }
